@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="vm"
+            type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.MainMenuViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.MainMenuFragment"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MainMenuFragment"
+            android:gravity="center"
+            android:layout_marginBottom="50dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Calendar"
+                android:onClick="@{()->vm.moveToCalendar()}"
+                />
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Duedate"
+                android:layout_margin="10dp"
+                android:onClick="@{()->vm.moveToDueDate()}"
+                />
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:text="Setting"
+                android:onClick="@{()->vm.moveToSetting()}"
+                />
+        </LinearLayout>
+        <Button
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:onClick="@{()->vm.test()}"
+            android:backgroundTint="@color/purple_200"
+            />
+
+    </LinearLayout>
+</layout>
