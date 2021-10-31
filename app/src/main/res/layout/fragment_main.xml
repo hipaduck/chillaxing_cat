@@ -1,59 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="vm"
             type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.MainMenuViewModel" />
     </data>
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.MainMenuFragment"
-        android:orientation="vertical"
-        android:gravity="center">
-
+        >
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv_main_public_holiday_remains_label"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:text="MainMenuFragment"
-            android:gravity="center"
-            android:layout_marginBottom="50dp"/>
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:textSize="16sp"
+            android:text="공휴일"
+            tools:text="공휴일"
+            />
+        <TextView
+            android:id="@+id/tv_main_public_holiday_remains_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/tv_main_public_holiday_remains_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_main_public_holiday_remains_label"
+            android:textSize="16sp"
+            tools:text="D-100"
+            />
+        <TextView
+            android:id="@+id/tv_main_personal_holiday_remains_label"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@+id/tv_main_public_holiday_remains_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_main_public_holiday_remains_label"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:text="내 휴일"
+            tools:text="내 휴일"
+            />
+        <TextView
+            android:id="@+id/tv_main_personal_holiday_remains_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/tv_main_personal_holiday_remains_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_main_personal_holiday_remains_label"
+            android:textSize="16sp"
+            tools:text="D-123"
+            />
+        <Button
+            android:id="@+id/btn_main_move_to_settings"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:text="설정"
+            tools:text="설정"
+            />
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/llayout_main_bottom_menu_group"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            android:gravity="center">
+            >
             <Button
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="Calendar"
-                android:onClick="@{()->vm.moveToCalendar()}"
+                android:id="@+id/btn_main_start_working"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:text="출근"
+                />
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 />
             <Button
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="Duedate"
-                android:layout_margin="10dp"
-                android:onClick="@{()->vm.moveToDueDate()}"
+                android:id="@+id/btn_main_end_working"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:text="퇴근"
+                />
+<!--            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 />
             <Button
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="Setting"
+                android:id="@+id/btn_main_move_calendar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:text="달력"
+                />-->
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+            <Button
+                android:id="@+id/btn_main_move_to_statistics"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:text="통계"
                 android:onClick="@{()->vm.moveToSetting()}"
                 />
         </LinearLayout>
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="Test"
+        <ImageView
+            android:id="@+id/iv_main_touch_reaction_button"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_main_move_to_settings"
+            app:layout_constraintBottom_toTopOf="@+id/llayout_main_bottom_menu_group"
+            android:src="@drawable/ic_launcher_background"
             android:onClick="@{()->vm.test()}"
-            android:backgroundTint="@color/purple_200"
+            android:contentDescription="리액션 동작을 한다"
             />
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
