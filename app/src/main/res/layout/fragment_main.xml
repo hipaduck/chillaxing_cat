@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.MainMenuFragment"
+        android:background="@color/base_light"
         >
         <TextView
             android:id="@+id/tv_main_public_holiday_remains_label"
@@ -53,17 +54,18 @@
             android:textSize="16sp"
             tools:text="D-123"
             />
-        <Button
-            android:id="@+id/btn_main_move_to_settings"
+        <ImageView
+            android:id="@+id/iv_main_move_to_settings_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginEnd="10dp"
             android:layout_marginTop="10dp"
-            android:text="설정"
+            android:src="@drawable/setting"
             tools:text="설정"
-            />
+            android:onClick="@{()->vm.moveToSetting()}"
+            android:contentDescription="설정으로 이동하는 버튼" />
         <LinearLayout
             android:id="@+id/llayout_main_bottom_menu_group"
             android:layout_width="0dp"
@@ -76,45 +78,39 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
             >
-            <Button
-                android:id="@+id/btn_main_start_working"
+            <ImageView
+                android:id="@+id/iv_main_start_working"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:text="출근"
+                android:src="@drawable/go_work"
+                android:onClick="@{()->vm.startWork()}"
+                android:contentDescription="일 시작/출근"
                 />
             <Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 />
-            <Button
-                android:id="@+id/btn_main_end_working"
+            <ImageView
+                android:id="@+id/iv_main_finish_working"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:text="퇴근"
+                android:src="@drawable/go_home"
+                android:onClick="@{()->vm.finishWork()}"
+                android:contentDescription="일 마침/퇴근"
                 />
-<!--            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-            <Button
-                android:id="@+id/btn_main_move_calendar"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:text="달력"
-                />-->
             <Space
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 />
-            <Button
-                android:id="@+id/btn_main_move_to_statistics"
+            <ImageView
+                android:id="@+id/iv_main_move_to_calendar"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:text="통계"
-                android:onClick="@{()->vm.moveToSetting()}"
+                android:src="@drawable/calendar"
+                android:onClick="@{()->vm.moveToCalendar()}"
+                android:contentDescription="달력으로 이동"
                 />
         </LinearLayout>
         <ImageView
@@ -123,9 +119,9 @@
             android:layout_height="200dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_main_move_to_settings"
+            app:layout_constraintTop_toBottomOf="@+id/iv_main_move_to_settings_button"
             app:layout_constraintBottom_toTopOf="@+id/llayout_main_bottom_menu_group"
-            android:src="@drawable/ic_launcher_background"
+            android:src="@drawable/cat_normal"
             android:onClick="@{()->vm.test()}"
             android:contentDescription="리액션 동작을 한다"
             />

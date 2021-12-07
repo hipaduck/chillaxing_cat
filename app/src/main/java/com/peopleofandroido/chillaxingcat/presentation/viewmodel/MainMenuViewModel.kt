@@ -36,6 +36,14 @@ class MainMenuViewModel(
         }
     }
 
+    fun startWork() {
+        // 일 시작
+    }
+
+    fun finishWork() {
+        // 일 마침
+    }
+
     fun test() {
         viewModelScope.launch {
             val yearMonth = YearMonth(2021, 9)
