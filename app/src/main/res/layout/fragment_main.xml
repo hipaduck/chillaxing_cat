@@ -13,8 +13,7 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.MainMenuFragment"
         android:orientation="vertical"
-        android:gravity="center"
-        android:background="@color/base_light">
+        android:gravity="center">
         <ImageView
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -54,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:text="달력"
                 android:textAlignment="center"
-                android:textColor="@color/base_font"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 />
@@ -78,7 +76,6 @@
                 android:layout_height="wrap_content"
                 android:text="출근"
                 android:textAlignment="center"
-                android:textColor="@color/base_font"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 />
@@ -103,7 +100,6 @@
                 android:layout_height="wrap_content"
                 android:text="퇴근"
                 android:textAlignment="center"
-                android:textColor="@color/base_font"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 />
