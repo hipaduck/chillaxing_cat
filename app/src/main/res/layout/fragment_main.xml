@@ -7,12 +7,21 @@
             name="vm"
             type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.MainMenuViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.MainMenuFragment"
-        android:background="@color/base_light"
-        >
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/cat_normal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
         <TextView
             android:id="@+id/tv_main_public_holiday_remains_label"
             android:layout_width="60dp"
@@ -55,75 +64,85 @@
             tools:text="D-123"
             />
         <ImageView
-            android:id="@+id/iv_main_move_to_settings_button"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/setting"
-            tools:text="설정"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
             android:onClick="@{()->vm.moveToSetting()}"
-            android:contentDescription="설정으로 이동하는 버튼" />
+            />
+
         <LinearLayout
-            android:id="@+id/llayout_main_bottom_menu_group"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/calendar_layout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
+            android:onClick="@{()->vm.moveToCalendar()}">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/calendar"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="달력"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/go_work_layout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="16dp">
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/go_work"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="출근"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/go_home_layout"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:gravity="center"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal"
-            >
+            android:layout_margin="16dp">
             <ImageView
-                android:id="@+id/iv_main_start_working"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/go_work"
-                android:onClick="@{()->vm.startWork()}"
-                android:contentDescription="일 시작/출근"
-                />
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-            <ImageView
-                android:id="@+id/iv_main_finish_working"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:src="@drawable/go_home"
-                android:onClick="@{()->vm.finishWork()}"
-                android:contentDescription="일 마침/퇴근"
                 />
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                />
-            <ImageView
-                android:id="@+id/iv_main_move_to_calendar"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:src="@drawable/calendar"
-                android:onClick="@{()->vm.moveToCalendar()}"
-                android:contentDescription="달력으로 이동"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="퇴근"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 />
         </LinearLayout>
-        <ImageView
-            android:id="@+id/iv_main_touch_reaction_button"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_main_move_to_settings_button"
-            app:layout_constraintBottom_toTopOf="@+id/llayout_main_bottom_menu_group"
-            android:src="@drawable/cat_normal"
-            android:onClick="@{()->vm.test()}"
-            android:contentDescription="리액션 동작을 한다"
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

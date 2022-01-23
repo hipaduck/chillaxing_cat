@@ -7,8 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="base_normal">#F0E5CF</color>
-    <color name="base_light">#F7F6F2</color>
-    <color name="base_dark">#C8C6C6</color>
-    <color name="base_font">#4B6587</color>
+    <color name="backgroundNormal">#F0E5CF</color>
+    <color name="backgroundLight">#F7F6F2</color>
+    <color name="backgroundDark">#C8C6C6</color>
+    <color name="accentLight">#6E7E95</color>
+    <color name="accentNormal">#4B6587</color>
+    <color name="accentDark">#2A5791</color>
+    <color name="secondaryLight">#9C8F75</color>
+    <color name="secondaryNormal">#A38953</color>
+    <color name="secondaryDark">#AA7B1B</color>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="vm"
@@ -8,78 +8,108 @@
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_square_round_corner"
-        android:orientation="horizontal"
-        android:weightSum="2">
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:background="@drawable/line_square_round_corner"
-            android:orientation="vertical"
-            android:layout_margin="15dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/background_square_round_corner">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:text="출근 시간"/>
-            <TextView
-                android:id="@+id/time_setting_dialog_work_start_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="9:00 AM"/>
-            <Button
-                android:id="@+id/time_setting_dialog_work_start_btn"
+                android:text="출/퇴근 시간 설정하기"
+                android:textSize="24sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/close_box"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_margin="8dp"
+                app:tint="@color/accentNormal" />
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/button_square_round_corner"
-                android:text="수정하기"/>
-        </LinearLayout>
+                android:layout_height="2dp"
+                android:background="@color/accentNormal"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
         <LinearLayout
-            android:layout_width="2dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/base_font"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_horizontal"
-            android:background="@drawable/line_square_round_corner"
-            android:orientation="vertical"
-            android:layout_margin="15dp">
-            <TextView
-                android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:textSize="20dp"
-                android:textStyle="bold"
-                android:text="퇴근 시간"/>
-            <TextView
-                android:id="@+id/time_setting_dialog_work_finish_tv"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_margin="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:text="출근 시간"/>
+                <TextView
+                    android:id="@+id/time_setting_dialog_work_start_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="9:00 AM"/>
+                <Button
+                    android:id="@+id/time_setting_dialog_work_start_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/button_square_round_corner"
+                    android:text="수정하기"/>
+            </LinearLayout>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/accentNormal"/>
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
-                android:text="9:00 PM"/>
-            <Button
-                android:id="@+id/time_setting_dialog_work_finish_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/button_square_round_corner"
-                android:text="수정하기"/>
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_margin="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:text="퇴근 시간"/>
+                <TextView
+                    android:id="@+id/time_setting_dialog_work_finish_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="9:00 PM"/>
+                <Button
+                    android:id="@+id/time_setting_dialog_work_finish_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:background="@drawable/button_square_round_corner"
+                    android:text="수정하기"/>
+            </LinearLayout>
         </LinearLayout>
-
     </LinearLayout>
 </layout>
