@@ -7,21 +7,66 @@
             name="vm"
             type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.CalendarViewModel" />
     </data>
-    <FrameLayout android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".presentation.ui.CalendarFragment">
 
-        <com.kizitonwose.calendarview.CalendarView
-            android:id="@+id/calendarview_calendar"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".presentation.ui.CalendarFragment"
+        >
+        <!-- top layout of calendar view -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbarlayout_calendar_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cv_dayViewResource="@layout/calendar_day_layout"
-            app:cv_monthHeaderResource="@layout/calendar_month_header_layout"
-            app:cv_orientation="horizontal"
-            app:cv_outDateStyle="endOfRow"
-            app:cv_inDateStyle="allMonths"
-            app:cv_scrollMode="paged"
-            />
+            android:background="@color/design_default_color_primary"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="14dp"
+            >
+                <TextView
+                    android:id="@+id/tv_calendar_current_year_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    tools:text="2022"
+                    />
+                <TextView
+                    android:id="@+id/tv_calendar_current_month_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="40sp"
+                    tools:text="February"
+                    />
+            </LinearLayout>
+            <include
+                android:id="@+id/layout_legend"
+                layout="@layout/calendar_day_legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                />
+        </com.google.android.material.appbar.AppBarLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <com.kizitonwose.calendarview.CalendarView
+                android:id="@+id/calendarview_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cv_dayViewResource="@layout/calendar_day_layout"
+                app:cv_orientation="horizontal"
+                app:cv_outDateStyle="endOfRow"
+                app:cv_inDateStyle="allMonths"
+                app:cv_scrollMode="paged"
+                />
 
-    </FrameLayout>
+        </FrameLayout>
+    </LinearLayout>
 </layout>
