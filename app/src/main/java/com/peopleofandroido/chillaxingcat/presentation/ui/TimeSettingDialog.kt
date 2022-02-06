@@ -16,38 +16,77 @@ class TimeSettingDialog(private val context: Context, val binding: DialogTimeSet
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setContentView(binding.root)
 
-        //event 를 setting vm 과 연결
-        binding.timeSettingDialogWorkStartBtn.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(
-                context,
-                TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
-                    binding.timeSettingDialogWorkStartTv.text = "$hourOfDay : $minute"
-                    //vm에서의 PREFERENCE 저장 로직
-                },
-                15,
-                24,
-                true
-            )
 
-            timePickerDialog.show()
+        binding.vm?.let { vm ->
+            binding.timeSettingDialogWorkStartTv.text = vm.workStartTime.value
+            binding.timeSettingDialogWorkFinishTv.text = vm.workFinishTime.value
+
+            val startList = vm.workStartTime.value.split(":")
+            val finishList = vm.workFinishTime.value.split(":")
+            var startHour = 9
+            var startMinute = 0
+            var finishHour = 18
+            var finishMinute = 0
+
+            if (startList.size == 2) {
+                startHour = startList[0].toInt()
+                startMinute = startList[1].toInt()
+            }
+
+            if (finishList.size == 2) {
+                finishHour = finishList[0].toInt()
+                finishMinute = finishList[1].toInt()
+            }
+
+            //event 를 setting vm 과 연결
+            binding.timeSettingDialogWorkStartBtn.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(
+                    context,
+                    TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
+                        startHour = hourOfDay
+                        startMinute = minute
+                        val startDisplayTime = changeToDisplayTime(startHour, startMinute)
+                        binding.timeSettingDialogWorkStartTv.text = startDisplayTime
+
+                        //vm에서의 PREFERENCE 저장 로직
+                        vm.storeWorkStartTime(startDisplayTime)
+                    },
+                    startHour,
+                    startMinute,
+                    true
+                )
+
+                timePickerDialog.show()
+            }
+
+            binding.timeSettingDialogWorkFinishBtn.setOnClickListener {
+                val timePickerDialog = TimePickerDialog(
+                    context,
+                    TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                        finishHour = hourOfDay
+                        finishMinute = minute
+                        val finishDisplayTime = changeToDisplayTime(finishHour, finishMinute)
+                        binding.timeSettingDialogWorkFinishTv.text = finishDisplayTime
+                        //vm에서의 PREFERENCE 저장 로직
+                        vm.storeWorkFinishTime(finishDisplayTime)
+                    },
+                    finishHour,
+                    finishMinute,
+                    true
+                )
+
+                timePickerDialog.show()
+            }
         }
 
-        binding.timeSettingDialogWorkFinishBtn.setOnClickListener {
-            val timePickerDialog = TimePickerDialog(
-                context,
-                TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    binding.timeSettingDialogWorkFinishTv.text = "$hourOfDay : $minute"
-                    //vm에서의 PREFERENCE 저장 로직
-                },
-                15,
-                24,
-                true
-            )
-
-            timePickerDialog.show()
+        binding.timeSettingDialogClose.setOnClickListener {
+            dialog.dismiss()
         }
 
         dialog.show()
     }
 
+    private fun changeToDisplayTime(hour: Int, minute: Int) : String {
+        return String.format("%02d:%02d", hour, minute)
+    }
 }
