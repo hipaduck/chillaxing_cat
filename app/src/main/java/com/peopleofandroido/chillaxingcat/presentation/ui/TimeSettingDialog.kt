@@ -45,7 +45,7 @@ class TimeSettingDialog(private val context: Context, val binding: DialogTimeSet
                     TimePickerDialog.OnTimeSetListener { view, hourOfDay, minute ->
                         startHour = hourOfDay
                         startMinute = minute
-                        val startDisplayTime = changeToDisplayTime(startHour, startMinute)
+                        val startDisplayTime = vm.changeToDisplayTime(startHour, startMinute)
                         binding.timeSettingDialogWorkStartTv.text = startDisplayTime
 
                         //vm에서의 PREFERENCE 저장 로직
@@ -65,10 +65,9 @@ class TimeSettingDialog(private val context: Context, val binding: DialogTimeSet
                     TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
                         finishHour = hourOfDay
                         finishMinute = minute
-                        val finishDisplayTime = changeToDisplayTime(finishHour, finishMinute)
-                        binding.timeSettingDialogWorkFinishTv.text = finishDisplayTime
+                        binding.timeSettingDialogWorkFinishTv.text = vm.changeToDisplayTime(finishHour, finishMinute)
                         //vm에서의 PREFERENCE 저장 로직
-                        vm.storeWorkFinishTime(finishDisplayTime)
+                        vm.storeWorkFinishTime(hourOfDay, minute)
                     },
                     finishHour,
                     finishMinute,
@@ -84,9 +83,5 @@ class TimeSettingDialog(private val context: Context, val binding: DialogTimeSet
         }
 
         dialog.show()
-    }
-
-    private fun changeToDisplayTime(hour: Int, minute: Int) : String {
-        return String.format("%02d:%02d", hour, minute)
     }
 }

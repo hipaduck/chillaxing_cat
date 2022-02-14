@@ -9,6 +9,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import com.peopleofandroido.base.common.BaseBindingFragment
 import com.peopleofandroido.chillaxingcat.R
+import com.peopleofandroido.chillaxingcat.databinding.DialogCatJobBinding
 import com.peopleofandroido.chillaxingcat.databinding.DialogTimeSettingBinding
 import com.peopleofandroido.chillaxingcat.databinding.FragmentSettingBinding
 import com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel
@@ -38,11 +39,18 @@ class SettingFragment : BaseBindingFragment<FragmentSettingBinding>() {
                 when (action) {
                     is SettingViewModel.Action.DialogAction -> {
                         when (action.type) {
-                            "time_setting_dialog" -> {
+                            "setting_time_setting_dialog" -> {
                                 val dialogBinding = DataBindingUtil.inflate<DialogTimeSettingBinding>(
                                     LayoutInflater.from(context), R.layout.dialog_time_setting, null, false)
                                 dialogBinding.vm = binding.vm
                                 val dialog = TimeSettingDialog(requireContext(), dialogBinding)
+                                dialog.show()
+                            }
+                            "setting_job_setting_dialog" -> {
+                                val dialogBinding = DataBindingUtil.inflate<DialogCatJobBinding>(
+                                    LayoutInflater.from(context), R.layout.dialog_cat_job, null, false)
+                                dialogBinding.vm = binding.vm
+                                val dialog = JobSettingDialog(requireContext(), dialogBinding)
                                 dialog.show()
                             }
                         }

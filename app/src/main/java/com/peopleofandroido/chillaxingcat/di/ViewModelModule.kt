@@ -6,7 +6,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appViewModelModule = module {
-    viewModel { MainMenuViewModel(get(), get()) }
-    viewModel { SettingViewModel(androidApplication(), get(), get()) }
+    viewModel { MainMenuViewModel(androidApplication(),get(), get()) }
+    viewModel { SettingViewModel(androidApplication(), get()) }
     viewModel { SplashViewModel(get()) }
 }
