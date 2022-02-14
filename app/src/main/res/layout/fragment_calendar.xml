@@ -19,8 +19,7 @@
             android:id="@+id/appbarlayout_calendar_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/design_default_color_primary"
-            android:theme="@style/AppTheme.AppBarOverlay"
+            android:background="@color/backgroundNormal"
             >
             <LinearLayout
                 android:layout_width="match_parent"

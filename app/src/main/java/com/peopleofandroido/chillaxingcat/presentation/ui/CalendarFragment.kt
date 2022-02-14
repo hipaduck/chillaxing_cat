@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.core.view.children
+import androidx.databinding.DataBindingUtil
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
@@ -17,6 +18,9 @@ import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.common.daysOfWeekFromLocale
 import com.peopleofandroido.chillaxingcat.common.getColorCompat
 import com.peopleofandroido.chillaxingcat.common.setTextColorRes
+import com.peopleofandroido.chillaxingcat.databinding.CalendarDayLegendBinding
+import com.peopleofandroido.chillaxingcat.databinding.DialogDayRecordBinding
+import com.peopleofandroido.chillaxingcat.databinding.DialogTimeSettingBinding
 import com.peopleofandroido.chillaxingcat.databinding.FragmentCalendarBinding
 import com.peopleofandroido.chillaxingcat.presentation.component.calendar.DayViewContainer
 import org.koin.androidx.viewmodel.ext.android.getViewModel
@@ -51,7 +55,7 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
             (v as TextView).apply {
                 text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.getDefault())
                     .uppercase(Locale.getDefault())
-                setTextColorRes(R.color.design_default_color_secondary_variant)
+                setTextColorRes(R.color.accentNormal)
             }
         }
 
@@ -64,6 +68,12 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
         binding.calendarviewCalendar.dayBinder = object : DayBinder<DayViewContainer> {
             override fun create(view: View) = DayViewContainer(view) {day ->
                 binding.calendarviewCalendar.notifyDayChanged(day)
+
+                val dialogBinding = DataBindingUtil.inflate<DialogDayRecordBinding>(
+                    LayoutInflater.from(context), R.layout.dialog_day_record, null, false)
+                dialogBinding.vm = binding.vm
+                val dialog = DayDataDialog(requireContext(), dialogBinding)
+                dialog.show()
             }
 
             override fun bind(container: DayViewContainer, day: CalendarDay) {
@@ -71,20 +81,27 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                 val textView = container.textView
                 textView.text = day.date.dayOfMonth.toString()
                 if (day.owner == DayOwner.THIS_MONTH) {
-                    when {
-                        container.selectedDates.contains(day.date) -> { // 선택된 날짜 표시
-                            textView.setTextColorRes(R.color.design_default_color_primary)
-                            textView.setBackgroundResource(R.drawable.background_square_round_corner)
-                        }
-                        today == day.date -> { // 오늘 날짜 체크 표시
-                            textView.setTextColorRes(R.color.design_default_color_primary_dark)
-                            textView.setBackgroundResource(R.drawable.button_square_round_corner)
-                        }
-                        else -> { // 기본 날짜 색상
-                            textView.setTextColorRes(R.color.design_default_color_on_primary)
-                            textView.background = null
-                        }
+                    if (today == day.date) { // 오늘 날짜 체크 표시
+                        textView.setTextColorRes(R.color.backgroundLight)
+                        textView.setBackgroundResource(R.drawable.button_square_round_corner)
+                    } else { // 기본 날짜 색상
+                        textView.setTextColorRes(R.color.black)
+                        textView.setBackgroundResource(R.drawable.line_square_round_corner)
                     }
+//                    when {
+//                        container.selectedDates.contains(day.date) -> { // 선택된 날짜 표시
+//                            textView.setTextColorRes(R.color.teal_200)
+//                            textView.setBackgroundResource(R.drawable.background_square_round_corner)
+//                        }
+//                        today == day.date -> { // 오늘 날짜 체크 표시
+//                            textView.setTextColorRes(R.color.backgroundLight)
+//                            textView.setBackgroundResource(R.drawable.button_square_round_corner)
+//                        }
+//                        else -> { // 기본 날짜 색상
+//                            textView.setTextColorRes(R.color.black)
+//                            textView.setBackgroundResource(R.drawable.line_square_round_corner)
+//                        }
+//                    }
                 } else { // 선택한 달에 해당하지 않는 날짜들의 색상
                     textView.setTextColorRes(R.color.material_on_primary_disabled)
                     textView.background = null
