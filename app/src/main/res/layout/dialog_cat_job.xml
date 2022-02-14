@@ -10,36 +10,51 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/line_square_round_corner"
+        android:background="@drawable/background_square_round_corner"
         android:layout_margin="20dp">
-        <ImageView
-            android:id="@+id/theme_dialog_close"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/right_arrow"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            />
-        <LinearLayout
-            android:id="@+id/theme_dialog_layout"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/setting_cat_job_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_margin="15dp"
-            android:orientation="vertical"
-            >
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/setting_cat_job_confirm_iv"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="8dp"
+                android:src="@drawable/check"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/accentNormal" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="직업 선택"
-                android:textSize="25sp"
-                android:layout_margin="10dp" />
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/accentNormal"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:id="@+id/theme_dialog_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/setting_cat_job_title"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="15dp"
+            android:orientation="vertical"
+            >
             <RadioGroup
-                android:id="@+id/theme_dialog_radio_group"
+                android:id="@+id/setting_cat_job_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp">
@@ -50,6 +65,7 @@
                     android:buttonTint="@color/accentNormal"
                     android:textSize="20sp"
                     android:textColor="@color/accentNormal"
+                    android:checked="true"
                     android:text="회사원"/>
             </RadioGroup>
         </LinearLayout>
