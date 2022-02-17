@@ -18,6 +18,15 @@
         <entry key="..\:/Workspaces/AndroidStudioWorkspace/chillaxing_cat/app/src/main/res/layout/fragment_main.xml" value="0.30416666666666664" />
         <entry key="..\:/Workspaces/AndroidStudioWorkspace/chillaxing_cat/app/src/main/res/layout/fragment_setting.xml" value="0.30416666666666664" />
         <entry key="..\:/Workspaces/AndroidStudioWorkspace/chillaxing_cat/app/src/main/res/layout/fragment_splash.xml" value="0.30416666666666664" />
+        <entry key="app/src/main/res/drawable/background_circle.xml" value="0.1645" />
+        <entry key="app/src/main/res/drawable/background_square_round_corner.xml" value="0.1645" />
+        <entry key="app/src/main/res/drawable/button_square_round_corner.xml" value="0.1645" />
+        <entry key="app/src/main/res/drawable/line_circle.xml" value="0.1645" />
+        <entry key="app/src/main/res/drawable/line_square_round_corner.xml" value="0.1645" />
+        <entry key="app/src/main/res/layout/calendar_day_layout.xml" value="0.12552083333333333" />
+        <entry key="app/src/main/res/layout/calendar_day_legend.xml" value="0.1734375" />
+        <entry key="app/src/main/res/layout/dialog_day_record.xml" value="0.20199275362318841" />
+        <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.13728470111448834" />
       </map>
     </option>
   </component>

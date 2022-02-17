@@ -12,14 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".presentation.ui.CalendarFragment"
-        >
+        tools:context=".presentation.ui.CalendarFragment">
         <!-- top layout of calendar view -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbarlayout_calendar_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/backgroundNormal"
+            android:background="@color/backgroundLight"
             >
             <LinearLayout
                 android:layout_width="match_parent"
