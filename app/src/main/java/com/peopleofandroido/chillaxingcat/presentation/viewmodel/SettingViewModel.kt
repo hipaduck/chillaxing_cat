@@ -37,6 +37,10 @@ class SettingViewModel(
     private val _workFinishTime: NotNullMutableLiveData<String> = NotNullMutableLiveData("18:00")
     val workFinishTime: NotNullMutableLiveData<String>
         get() = _workFinishTime
+    private val keyPushAvailable = stringPreferencesKey("push_available")
+    private val _pushAvailable: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
+    val pushAvailable: NotNullMutableLiveData<Boolean>
+        get() = _pushAvailable
 
     private val _actionEvent: NotNullMutableLiveData<Event<Action>> = NotNullMutableLiveData(Event(Action()))
     val actionEvent: NotNullMutableLiveData<Event<Action>>
@@ -46,6 +50,7 @@ class SettingViewModel(
     init {
         mCalender = GregorianCalendar()
 
+        loadPushAvailable()
         loadWorkStartTime()
         loadWorkFinishTime()
     }
@@ -56,6 +61,32 @@ class SettingViewModel(
 
     fun showJobSettingDialog() {
         _actionEvent.value = Event(Action.DialogAction("setting_job_setting_dialog"))
+    }
+
+    fun showPushSettingDialog() {
+        _actionEvent.value = Event(Action.DialogAction("setting_push_setting_dialog"))
+    }
+
+    private fun loadPushAvailable() {
+        viewModelScope.launch {
+            val data = getApplication<Application>().dataStore.data
+                .catch { exception ->
+                    if (exception is IOException) {
+                        emit(emptyPreferences())
+                    } else {
+                        throw exception
+                    }
+                }.map { preferences ->
+                    preferences[keyPushAvailable] ?: "true"
+                }
+            when (data.first()) {
+                "true" ->
+                    pushAvailable.value = true
+                "false" ->
+                    pushAvailable.value = false
+            }
+            logd("Load workStartTime: ${workStartTime.value}")
+        }
     }
 
     private fun loadWorkStartTime() {
@@ -120,7 +151,32 @@ class SettingViewModel(
         }
     }
 
+    fun storePushSetting(getPush : Boolean) {
+        viewModelScope.launch {
+            getApplication<Application>().dataStore.edit { preferences ->
+                preferences[keyPushAvailable] = getPush.toString()
+                withContext(Dispatchers.Main) {
+                    pushAvailable.value = getPush
+                    if (getPush) {
+                        val finishTime = workFinishTime.value.split(":")
+                        setAlarm(Integer.parseInt(finishTime[0]), Integer.parseInt(finishTime[1]))
+                    } else {
+                        cancelAlarm()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun cancelAlarm() {
+        val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(getApplication<Application>(), 0, receiverIntent, 0)
+        alarmManager?.cancel(pendingIntent)
+    }
+
     private fun setAlarm(hour: Int, minute: Int) {
+        if (!pushAvailable.value) return
+
         //AlarmReceiver에 값 전달
         val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(getApplication<Application>(), 0, receiverIntent, 0)
