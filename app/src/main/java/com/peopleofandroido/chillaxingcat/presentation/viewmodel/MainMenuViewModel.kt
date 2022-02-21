@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
 import android.content.Intent
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.lifecycle.AndroidViewModel
@@ -22,8 +23,8 @@ import com.peopleofandroido.chillaxingcat.domain.model.YearMonth
 import com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -41,10 +42,11 @@ class MainMenuViewModel(
 
     private val keyWorkStartTime = stringPreferencesKey("work_start_time")
     private val keyWorkFinishTime = stringPreferencesKey("work_finish_time")
+    private val keyFirstTime = booleanPreferencesKey("app_first_initialized")
+    private val keyPushAvailable = stringPreferencesKey("push_available")
 
     init {
-        checkTimeSetting()
-//        _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog")) //TODO : TEST
+        checkFirstTime()
     }
 
     fun moveToSetting() {
@@ -86,26 +88,28 @@ class MainMenuViewModel(
         }
     }
 
-    private fun checkTimeSetting() {
-            viewModelScope.launch {
-                getApplication<Application>().dataStore.data
-                    .catch {
-                        logd("There is no Data")
-                        _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog"))
-                    }.map { preferences ->
-                        if(preferences[keyWorkStartTime] != null) {
-                            _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog"))
-                        } else {
-                            logd("There is Data")
-                        }
-                    }.onEmpty {
-                        logd("There is no Data")
-                        _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog"))
-                    }
+    private fun checkFirstTime() {
+        viewModelScope.launch(Dispatchers.Main) {
+            val data = getApplication<Application>().dataStore.data
+                .catch {
+                    logd("There is no Data")
+                    _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog"))
+                }.map { preferences ->
+                    logd("preferences $preferences")
+                    preferences[keyFirstTime] ?: true
+                }
+
+            val isFirstTime = data.first()
+            if (isFirstTime) {
+                getApplication<Application>().dataStore.edit { preferences ->
+                    preferences[keyFirstTime] = false
+                }
+                _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog"))
+            }
         }
     }
 
-    fun storeWorkStartTime(startTime : String) {
+    fun storeWorkStartTime(startTime: String) {
         viewModelScope.launch {
             getApplication<Application>().dataStore.edit { preferences ->
                 preferences[keyWorkStartTime] = startTime
@@ -131,31 +135,44 @@ class MainMenuViewModel(
     }
 
     private fun setAlarm(hour: Int, minute: Int) {
-        //AlarmReceiver에 값 전달
-        val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(getApplication<Application>(), 0, receiverIntent, 0)
+        viewModelScope.launch {
+            val value = getApplication<Application>().dataStore.data
+                .catch {
+                }.map { preferences ->
+                    logd("preferences $preferences")
+                    preferences[keyPushAvailable] ?: "true"
+                }
 
-        //alarm 등록 전, 이전 push cancel
-        alarmManager?.cancel(pendingIntent)
+            val isPushAvailable = value.first()
+            if (isPushAvailable != "true") return@launch
 
-        // Set the alarm to start at time and minute
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, hour)
-            set(Calendar.MINUTE, minute)
-            set(Calendar.SECOND, 0)
+            //AlarmReceiver에 값 전달
+            val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
+            val pendingIntent =
+                PendingIntent.getBroadcast(getApplication<Application>(), 0, receiverIntent, 0)
+
+            //alarm 등록 전, 이전 push cancel
+            alarmManager?.cancel(pendingIntent)
+
+            // Set the alarm to start at time and minute
+            val calendar: Calendar = Calendar.getInstance().apply {
+                timeInMillis = System.currentTimeMillis()
+                set(Calendar.HOUR_OF_DAY, hour)
+                set(Calendar.MINUTE, minute)
+                set(Calendar.SECOND, 0)
+            }
+
+            if (calendar.time < Date()) {
+                calendar.add(Calendar.DAY_OF_MONTH, 1)
+            }
+
+            alarmManager?.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+            )
         }
-
-        if (calendar.time < Date()) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
-        }
-
-        alarmManager?.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
     }
 
     open class Action {

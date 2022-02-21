@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import com.peopleofandroido.base.common.BaseBindingFragment
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.databinding.DialogCatJobBinding
+import com.peopleofandroido.chillaxingcat.databinding.DialogPushSettingBinding
 import com.peopleofandroido.chillaxingcat.databinding.DialogTimeSettingBinding
 import com.peopleofandroido.chillaxingcat.databinding.FragmentSettingBinding
 import com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel
@@ -51,6 +52,13 @@ class SettingFragment : BaseBindingFragment<FragmentSettingBinding>() {
                                     LayoutInflater.from(context), R.layout.dialog_cat_job, null, false)
                                 dialogBinding.vm = binding.vm
                                 val dialog = JobSettingDialog(requireContext(), dialogBinding)
+                                dialog.show()
+                            }
+                            "setting_push_setting_dialog" -> {
+                                val dialogBinding = DataBindingUtil.inflate<DialogPushSettingBinding>(
+                                    LayoutInflater.from(context), R.layout.dialog_push_setting, null, false)
+                                dialogBinding.vm = binding.vm
+                                val dialog = PushSettingDialog(requireContext(), dialogBinding)
                                 dialog.show()
                             }
                         }
