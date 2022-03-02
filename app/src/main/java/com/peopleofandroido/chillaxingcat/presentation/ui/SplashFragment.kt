@@ -10,6 +10,7 @@ import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.databinding.FragmentSplashBinding
 import kotlinx.coroutines.*
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 
 class SplashFragment : BaseBindingFragment<FragmentSplashBinding>(), CoroutineScope {
@@ -38,6 +39,12 @@ class SplashFragment : BaseBindingFragment<FragmentSplashBinding>(), CoroutineSc
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (Locale.getDefault().language == "ko") {
+            binding.splashFragmentImage.setImageResource(R.drawable.splash_cat_sub_korean)
+        } else {
+            binding.splashFragmentImage.setImageResource(R.drawable.splash_cat_sub_eng)
+        }
+
         launch {
             withContext(Dispatchers.Main) {
                 delay(1200)
