@@ -4,6 +4,7 @@ import android.app.Application
 import com.peopleofandroido.base.di.componentModule
 import com.peopleofandroido.base.di.networkModule
 import com.peopleofandroido.chillaxingcat.di.appViewModelModule
+import com.peopleofandroido.chillaxingcat.di.databaseModule
 import com.peopleofandroido.chillaxingcat.di.repositoryModule
 import com.peopleofandroido.chillaxingcat.di.useCaseModule
 import org.koin.android.ext.koin.androidContext
@@ -22,6 +23,7 @@ class ChillaxingCatApplication : Application() {
                 appViewModelModule,
                 componentModule,
                 repositoryModule,
+                databaseModule,
                 useCaseModule,
                 networkModule,
             )

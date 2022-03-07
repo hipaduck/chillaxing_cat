@@ -6,12 +6,16 @@ import org.koin.dsl.module
 
 val useCaseModule = module {
     single {
-        UseCases(get(), get(), get(), get(), get())
+        UseCases(get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
-    single { AddFreeDay() }
-    single { GetFreeDay() }
-    single { GetHoliday(get(), get()) }
-    single { GetUserInfo() }
-    single { RemoveFreeDay() }
+    single { AddDayOff(get()) }
+    single { GetDayOff(get()) }
+    single { RequestHoliday(get(), get()) }
+    single { GetHoliday(get()) }
+    single { AddHoliday(get()) }
+    single { RemoveDayOff(get()) }
+    single { AddRestingTime(get()) }
+    single { EditRestingTime(get()) }
+    single { GetRestingTime(get()) }
 }
