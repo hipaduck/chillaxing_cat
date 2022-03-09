@@ -11,7 +11,7 @@ import com.peopleofandroido.chillaxingcat.data.entity.DayOff
 import com.peopleofandroido.chillaxingcat.data.entity.Holiday
 import com.peopleofandroido.chillaxingcat.data.entity.RestingTime
 
-const val DB_VERSION = 5
+const val DB_VERSION = 1
 private const val DB_NAME = "chillaxing_cat.db"
 
 @Database(entities = [Holiday::class, RestingTime::class, DayOff::class], version = DB_VERSION, exportSchema = true)

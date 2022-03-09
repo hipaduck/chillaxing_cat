@@ -11,21 +11,11 @@ import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
 @Dao
 interface RestingTimeDao {
     @Query("SELECT * FROM resting_time WHERE id = :id")
-    fun getRestingTime(id: Int) : List<RestingTimeModel>
+    fun getRestingTime(id: Int) : RestingTime
 
     @Insert(onConflict = REPLACE)
     fun insert(restingTime: RestingTime)
 
     @Query("UPDATE resting_time SET history = :history WHERE id = :id")
     fun editRestingTime(id: Int, history: String)
-
-    companion object {
-        internal fun fromDomainModel(restingTimeModel: RestingTimeModel): RestingTime {
-            return RestingTime(
-                id       = restingTimeModel.id,
-                history = restingTimeModel.history,
-                totalTime = restingTimeModel.totalTime
-            )
-        }
-    }
 }

@@ -4,18 +4,18 @@ import com.peopleofandroido.base.domain.Result
 import com.peopleofandroido.base.domain.ResultHandler
 import com.peopleofandroido.base.domain.model.ResultModel
 import com.peopleofandroido.chillaxingcat.domain.model.DayInfoList
-import com.peopleofandroido.chillaxingcat.domain.model.YearMonth
+import com.peopleofandroido.chillaxingcat.domain.model.Period
 import com.peopleofandroido.chillaxingcat.domain.repository.HolidayRepository
 import kotlin.Exception
 
-class RequestHoliday(
+class GetHolidayWithPeriod( //TODO : db에 없으면 서버 조회하도록 수정 필요하나, 어떻게 할 것인가?
     private val repository: HolidayRepository,
     private val resultHandler: ResultHandler
 ) {
-    suspend operator fun invoke(yearMonth: YearMonth): Result<DayInfoList> {
+    suspend operator fun invoke(period: Period): Result<DayInfoList> {
         val result: ResultModel<DayInfoList>
         try {
-            result = repository.getHolidaysInMonth(yearMonth.yearStr, yearMonth.monthStr)
+            result = repository.requestHolidayWithPeriod(period.yearStr, period.monthStr)
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

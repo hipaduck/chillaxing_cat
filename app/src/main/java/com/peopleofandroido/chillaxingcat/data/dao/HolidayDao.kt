@@ -9,18 +9,12 @@ import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 
 @Dao
 interface HolidayDao {
-    @Query("SELECT * FROM holiday_data WHERE id = :id")
-    fun getHoliday(id: Int) : List<DateModel>
+    @Query("SELECT * FROM holiday WHERE id = :id")
+    fun getHoliday(id: Int) : Holiday
+
+//    @Query("SELECT * FROM holiday WHERE id >= :low AND id <= :high")
+//    fun getHolidayWithPeriod(low: Int, high: Int): List<Holiday>
 
     @Insert(onConflict = REPLACE)
     fun insert(holiday: Holiday)
-
-    companion object {
-        internal fun fromDomainModel(dateModel: DateModel) : Holiday {
-            return Holiday(
-                id = dateModel.id,
-                name = dateModel.name
-            )
-        }
-    }
 }

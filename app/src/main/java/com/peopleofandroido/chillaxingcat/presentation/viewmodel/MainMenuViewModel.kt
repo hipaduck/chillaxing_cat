@@ -9,10 +9,9 @@ import com.peopleofandroido.base.util.loge
 import com.peopleofandroido.chillaxingcat.domain.UseCases
 import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
-import com.peopleofandroido.chillaxingcat.domain.model.YearMonth
+import com.peopleofandroido.chillaxingcat.domain.model.Period
 import com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragmentDirections
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -27,11 +26,10 @@ class MainMenuViewModel(
         dbTestAddHoliday()
         dbTestAddRestingTime()
 
-        viewModelScope.launch {
-            dbTestGetDayOff()
-            dbTestGetHoliday()
-            dbTestGetRestingTime()
-        }
+        dbTestGetDayOff()
+        dbTestGetHoliday()
+        dbTestGetRestingTime()
+        dbTestGetDayOffWithPeriod()
     }
 
     fun moveToSetting() {
@@ -57,8 +55,8 @@ class MainMenuViewModel(
 
     fun test() {
         viewModelScope.launch {
-            val yearMonth = YearMonth(2022, 9)
-            val holidayResult = useCases.requestHoliday(yearMonth)
+            val yearMonth = Period(2022, 9, 1)
+            val holidayResult = useCases.getHolidayWithPeriod(yearMonth)
             when (holidayResult.status) {
                 Status.SUCCESS -> {
                     logd("holiday data: ${holidayResult.data}")
@@ -97,30 +95,43 @@ class MainMenuViewModel(
         }
     }
 
-    suspend fun dbTestGetRestingTime() {
-        return withContext (Dispatchers.IO) {
-            val runHoliday = async { useCases.getRestingTime(20220207) }
-            val holidayList = runHoliday.await()
+    fun dbTestGetRestingTime() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = useCases.getRestingTime(20220207)
 
-            logd("Got RestingTime $holidayList")
+            withContext(Dispatchers.Main) {
+                logd("Got RestingTime ${result.data}")
+            }
         }
     }
 
-    suspend fun dbTestGetDayOff() {
-        return withContext (Dispatchers.IO) {
-            val runDayOffList = async { useCases.getDayOff(20220207) }
-            val dayOffList = runDayOffList.await()
-
-            logd("Got DayOff $dayOffList")
+    fun dbTestGetDayOff() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = useCases.getDayOff(20220207)
+            withContext(Dispatchers.Main) {
+                logd("Got DayOff ${result.data}")
+            }
         }
     }
 
-    suspend fun dbTestGetHoliday() {
-        return withContext (Dispatchers.IO) {
-            val runHoliday = async { useCases.getHoliday(20220207) }
-            val holidayList = runHoliday.await()
+    fun dbTestGetHoliday() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = useCases.getHoliday(20220207)
 
-            logd("Got Holiday $holidayList")
+            withContext(Dispatchers.Main) {
+                logd("Got Holiday ${result.data}")
+            }
+        }
+    }
+
+    fun dbTestGetDayOffWithPeriod() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val startingYearMonth = Period(2020, 9, 1)
+            val endingYearMonth = Period(2023, 9, 1)
+            val result = useCases.getDayOffWithPeriod(startingYearMonth, endingYearMonth)
+            withContext(Dispatchers.Main) {
+                logd("Got Holiday Period ${result.data}")
+            }
         }
     }
 }
