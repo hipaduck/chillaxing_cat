@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.peopleofandroido.base.domain.model.ResultModel
 import com.peopleofandroido.chillaxingcat.BuildConfig
 import com.peopleofandroido.chillaxingcat.data.dao.HolidayDao
+import com.peopleofandroido.chillaxingcat.data.entity.DayOff
 import com.peopleofandroido.chillaxingcat.data.entity.Holiday
 import com.peopleofandroido.chillaxingcat.data.remote.api.HolidayApi
 import com.peopleofandroido.chillaxingcat.data.remote.model.toDateModel
@@ -38,7 +39,12 @@ internal class HolidayRepositoryImpl(
         while (startDate <= endDate) {
             //db 조회
             val periodId = periodIdDateFormat.format(startDate.time)
-            val localList : List<Holiday> = holidayDao.getHolidayWithPeriod(periodId)
+
+            val localList : List<Holiday> = try {
+                holidayDao.getHolidayWithPeriod(periodId)
+            } catch (e: Exception) {
+                return ResultModel(1, "request error ${e.message}", arrayListOf())
+            }
 
             if (localList.isNotEmpty()) {
                 for (holiday in localList) {
@@ -85,17 +91,41 @@ internal class HolidayRepositoryImpl(
     }
 
     override suspend fun addHoliday(dateModel: DateModel): ResultModel<String> {
-        holidayDao.insert(Holiday.fromDomainModel(dateModel))
+        var failMessage = ""
 
-        return ResultModel(0, "success", "success")
+        val result: Boolean = try {
+            holidayDao.insert(Holiday.fromDomainModel(dateModel))
+            true
+        } catch (e: Exception) {
+            failMessage = e.message!!
+            false
+        }
+
+        return if(result) {
+            ResultModel(0, "success", "success")
+        } else {
+            ResultModel(1, failMessage, "while adding ${dateModel.id.toString()}")
+        }
     }
 
     override suspend fun getHoliday(id: Int): ResultModel<DateModel> {
-        val holiday = holidayDao.getHoliday(id)
-        val dateModel = DateModel(holiday.id, holiday.name)
+        var failMessage = ""
+        val holiday: Holiday?
+        var dateModel: DateModel? = null
 
-        return ResultModel(0, "success", dateModel)
+        val result: Boolean = try {
+            holiday = holidayDao.getHoliday(id)
+            dateModel = DateModel(holiday.id, holiday.name)
+            true
+        } catch (e: Exception) {
+            failMessage = e.message!!
+            false
+        }
+
+        return if(result) {
+            ResultModel(0, "success", dateModel)
+        } else {
+            ResultModel(1, failMessage, dateModel)
+        }
     }
-
-
 }

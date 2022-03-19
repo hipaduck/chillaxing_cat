@@ -10,20 +10,59 @@ import kotlin.coroutines.suspendCoroutine
 
 class DayOffRepositoryImpl(private val dayOffDao: DayOffDao): DayOffRepository {
     override suspend fun addDayOff(dateModel: DateModel) : ResultModel<String> {
-        dayOffDao.insert(DayOff.fromDomainModel(dateModel))
+        var failMessage = ""
 
-        return ResultModel(0, "success", "success")
+        val result: Boolean = try {
+            dayOffDao.insert(DayOff.fromDomainModel(dateModel))
+            true
+        } catch (e: Exception) {
+            failMessage = e.message!!
+            false
+        }
+
+        return if(result) {
+            ResultModel(0, "success", "success")
+        } else {
+            ResultModel(1, failMessage, "while inserting ${dateModel.id.toString()}")
+        }
     }
 
     override suspend fun getDayOff(id: Int): ResultModel<DateModel> {
-        val dayOff = dayOffDao.getDayOff(id)
-        val dateModel = DateModel(dayOff.id, dayOff.name)
+        var failMessage = ""
+        var dayOff: DayOff? = null
+        var dateModel: DateModel? = null
 
-        return ResultModel(0, "success", dateModel)
+        val result: Boolean = try {
+            dayOff = dayOffDao.getDayOff(id)
+            dateModel = DateModel(dayOff.id, dayOff.name)
+            true
+        } catch (e: Exception) {
+            failMessage = e.message!!
+            false
+        }
+
+        return if(result) {
+            ResultModel(0, "success", dateModel)
+        } else {
+            ResultModel(1, failMessage, dateModel)
+        }
     }
 
     override suspend fun removeDayOff(dateModel: DateModel): ResultModel<String> {
-        dayOffDao.delete(DayOff.fromDomainModel(dateModel))
-        return ResultModel(0, "success", "success")
+        var failMessage = ""
+
+        val result: Boolean = try {
+            dayOffDao.delete(DayOff.fromDomainModel(dateModel))
+            true
+        } catch (e: Exception) {
+            failMessage = e.message!!
+            false
+        }
+
+        return if(result) {
+            ResultModel(0, "success", "success")
+        } else {
+            ResultModel(1, failMessage, "while removing ${dateModel.id.toString()}")
+        }
     }
 }
