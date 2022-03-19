@@ -9,7 +9,6 @@ import com.peopleofandroido.base.util.loge
 import com.peopleofandroido.chillaxingcat.domain.UseCases
 import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
-import com.peopleofandroido.chillaxingcat.domain.model.Period
 import com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragmentDirections
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +28,7 @@ class MainMenuViewModel(
         dbTestGetDayOff()
         dbTestGetHoliday()
         dbTestGetRestingTime()
-        dbTestGetDayOffWithPeriod()
+//        dbTestGetDayOffWithPeriod()
     }
 
     fun moveToSetting() {
@@ -54,9 +53,10 @@ class MainMenuViewModel(
     }
 
     fun test() {
-        viewModelScope.launch {
-            val yearMonth = Period(2022, 9, 1)
-            val holidayResult = useCases.getHolidayWithPeriod(yearMonth)
+        viewModelScope.launch (Dispatchers.IO) {
+            val startPeriod = "202201"
+            val endPeriod = "202203"
+            val holidayResult = useCases.getHolidayWithPeriod(startPeriod, endPeriod)
             when (holidayResult.status) {
                 Status.SUCCESS -> {
                     logd("holiday data: ${holidayResult.data}")
@@ -124,14 +124,14 @@ class MainMenuViewModel(
         }
     }
 
-    fun dbTestGetDayOffWithPeriod() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val startingYearMonth = Period(2020, 9, 1)
-            val endingYearMonth = Period(2023, 9, 1)
-            val result = useCases.getDayOffWithPeriod(startingYearMonth, endingYearMonth)
-            withContext(Dispatchers.Main) {
-                logd("Got Holiday Period ${result.data}")
-            }
-        }
-    }
+//    fun dbTestGetDayOffWithPeriod() {
+//        viewModelScope.launch(Dispatchers.IO) {
+//            val startingYearMonth = Period(2020, 9)
+//            val endingYearMonth = Period(2023, 9)
+//            val result = useCases.getDayOffWithPeriod(startingYearMonth, endingYearMonth)
+//            withContext(Dispatchers.Main) {
+//                logd("Got Holiday Period ${result.data}")
+//            }
+//        }
+//    }
 }

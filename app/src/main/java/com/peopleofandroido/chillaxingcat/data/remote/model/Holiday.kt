@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
+import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 import com.peopleofandroido.chillaxingcat.domain.model.DayInfo
 import com.peopleofandroido.chillaxingcat.domain.model.DayInfoList
 import java.util.*
@@ -37,14 +38,16 @@ data class Item (
     val items : JsonArray,
 )
 
-internal fun Item.toDomainModel(): DayInfoList {
-    val dayInfoList : ArrayList<DayInfo> = arrayListOf()
+internal fun Item.toDateModel(): List<DateModel> {
+    val dateModelList : ArrayList<DateModel> = arrayListOf()
 
     for (jsonElement in items) {
         val itemInfo : DayInfo = Gson().fromJson(jsonElement, DayInfo::class.java)
-        dayInfoList.add(itemInfo)
-        Log.e("GAEGUL", "item : ${itemInfo.dateName} / ${itemInfo.locdate}")
+        if (itemInfo.isHoliday == "Y") {
+            dateModelList.add(DateModel(itemInfo.locdate, itemInfo.dateName))
+            Log.e("GAEGUL", "item : ${itemInfo.dateName} / ${itemInfo.locdate} / ${itemInfo.isHoliday}")
+        }
     }
 
-    return DayInfoList(dayInfoList)
+    return dateModelList
 }

@@ -6,7 +6,7 @@ data class UseCases (
     val addDayOff: AddDayOff,
     val getDayOff: GetDayOff,
     val removeDayOff: RemoveDayOff,
-    val getDayOffWithPeriod: GetDayOffWithPeriod,
+//    val getDayOffWithPeriod: GetDayOffWithPeriod,
     val addHoliday: AddHoliday,
     val getHolidayWithPeriod: GetHolidayWithPeriod,
     val getHoliday: GetHoliday,
