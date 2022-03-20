@@ -6,23 +6,22 @@ import com.peopleofandroido.base.domain.model.ResultModel
 import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 import com.peopleofandroido.chillaxingcat.domain.repository.HolidayRepository
 
-class GetHoliday(
+class AddHoliday(
     private val holidayRepository: HolidayRepository,
     private val resultHandler: ResultHandler
-    ) {
-    suspend operator fun invoke(id: Int): Result<DateModel> {
-        val result: ResultModel<DateModel>
+) {
+    suspend operator fun invoke(holidayModel: DateModel): Result<String> {
+        val addHolidayResult: ResultModel<String>
         try {
-            result = holidayRepository.getHoliday(id)
+            addHolidayResult = holidayRepository.addHoliday(holidayModel)
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)
         }
-
-        return if (result.code == 0) {
-            resultHandler.handleSuccess(result.data!!)
+        return if (addHolidayResult.code == 0) {
+            return resultHandler.handleSuccess(addHolidayResult.data!!)
         } else {
-            resultHandler.handleFailure(result.message)
+            Result.error(addHolidayResult.message, null)
         }
     }
 }

@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 internal interface HolidayApi {
     @GET("getRestDeInfo")
-    suspend fun getHoliday(
+    suspend fun requestHoliday(
         @Query("solYear") year : String,
         @Query("solMonth") month : String,
         @Query("ServiceKey") authKey : String,

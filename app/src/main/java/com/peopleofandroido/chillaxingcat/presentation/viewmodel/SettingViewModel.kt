@@ -2,13 +2,10 @@ package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
 import com.peopleofandroido.base.common.Event
 import com.peopleofandroido.base.common.NavManager
 import com.peopleofandroido.base.util.NotNullMutableLiveData
 import com.peopleofandroido.chillaxingcat.domain.UseCases
-import com.peopleofandroido.chillaxingcat.domain.model.UserInfoModel
-import kotlinx.coroutines.launch
 
 class SettingViewModel(
     application: Application,

@@ -3,9 +3,14 @@ package com.peopleofandroido.chillaxingcat.domain
 import com.peopleofandroido.chillaxingcat.domain.usecase.*
 
 data class UseCases (
-    val addFreeDay: AddFreeDay,
-    val getFreeDay: GetFreeDay,
+    val addDayOff: AddDayOff,
+    val getDayOff: GetDayOff,
+    val removeDayOff: RemoveDayOff,
+//    val getDayOffWithPeriod: GetDayOffWithPeriod,
+    val addHoliday: AddHoliday,
+    val getHolidayWithPeriod: GetHolidayWithPeriod,
     val getHoliday: GetHoliday,
-    val getUserInfo: GetUserInfo,
-    val removeFreeDay: RemoveFreeDay
+    val getRestingTime: GetRestingTime,
+    val addRestingTime: AddRestingTime,
+    val editRestingTime: EditRestingTime,
 )
