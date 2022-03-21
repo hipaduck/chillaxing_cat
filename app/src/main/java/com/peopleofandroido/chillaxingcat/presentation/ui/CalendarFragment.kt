@@ -17,14 +17,19 @@ import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.utils.yearMonth
 import com.peopleofandroido.base.common.BaseBindingFragment
+import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.common.daysOfWeekFromLocale
 import com.peopleofandroido.chillaxingcat.common.getColorCompat
 import com.peopleofandroido.chillaxingcat.common.setTextColorRes
 import com.peopleofandroido.chillaxingcat.databinding.DialogDayRecordBinding
+import com.peopleofandroido.chillaxingcat.databinding.DialogTimeSettingBinding
 import com.peopleofandroido.chillaxingcat.databinding.FragmentCalendarBinding
 import com.peopleofandroido.chillaxingcat.presentation.component.calendar.DayViewContainer
+import com.peopleofandroido.chillaxingcat.presentation.viewmodel.CalendarViewModel
+import com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
@@ -38,7 +43,8 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
 
     private val today = LocalDate.now()
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
-    var i = 0;
+    var i = 0
+//    var dayViewContainer: DayViewContainer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,6 +59,33 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.vm?.actionEvent?.observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let { action ->
+                when (action) {
+                    is CalendarViewModel.Action.CalendarAction -> {
+                        when (action.type) {
+                            "fill_days" -> {
+                                logd("try to initial the calendar view...")
+                                initializeCalendarView()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setStatusBarTheme()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        setStatusBarTheme()
+    }
+
+    private fun initializeCalendarView() {
         val daysOfWeek = daysOfWeekFromLocale()
         (binding.layoutLegend.root as ViewGroup).children.forEachIndexed { index, v ->
             (v as TextView).apply {
@@ -65,62 +98,81 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
         val currentMonth = YearMonth.now()
         val startMonth = currentMonth.minusMonths(10)
         val endMonth = currentMonth.plusMonths(10)
+
+        // 아래의 코드를 실행 전에, 체크해야 하는 날짜의 데이터는 미리 가져와서 변수에 넣어 놓는다.
+        // 그리고 calendar에 bind 되는 시점에 각 date를 loop 도는 동안, 해당 날짜를 필터링하여 원하는 색으로 변경해 놓는다.
         binding.calendarviewCalendar.setup(startMonth, endMonth, daysOfWeek.first())
         binding.calendarviewCalendar.scrollToMonth(currentMonth)
 
         binding.calendarviewCalendar.dayBinder = object : DayBinder<DayViewContainer> {
-            override fun create(view: View) = DayViewContainer(view) {day ->
-                binding.calendarviewCalendar.notifyDayChanged(day)
+            override fun create(view: View) = DayViewContainer(view) { day ->
+                    logd("1 ${day.date}")
+                    binding.calendarviewCalendar.notifyDayChanged(day)
 
-                val dialogBinding = DataBindingUtil.inflate<DialogDayRecordBinding>(
-                    LayoutInflater.from(context), R.layout.dialog_day_record, null, false)
-                dialogBinding.vm = binding.vm
-                val dialog = DayDataDialog(requireContext(), dialogBinding)
-                dialog.show()
-            }
+                    val dialogBinding = DataBindingUtil.inflate<DialogDayRecordBinding>(
+                        LayoutInflater.from(context), R.layout.dialog_day_record, null, false
+                    )
+                    dialogBinding.vm = binding.vm
+                    val dialog = DayDataDialog(requireContext(), dialogBinding)
+                    dialog.show()
+                }
 
             override fun bind(container: DayViewContainer, day: CalendarDay) {
                 container.day = day
                 val textView = container.textView
                 textView.text = day.date.dayOfMonth.toString()
                 if (day.owner == DayOwner.THIS_MONTH) {
-//                    if (today == day.date) { // 오늘 날짜 체크 표시
-//                        textView.setTextColorRes(R.color.backgroundLight)
-//                        textView.setBackgroundResource(R.drawable.button_square_round_corner)
-//                    } else { // 기본 날짜 색상
-//                        textView.setTextColorRes(R.color.black)
-////                        textView.setBackgroundResource(R.drawable.line_square_round_corner)
+//                    when {
+//                        container.selectedDates.contains(day.date) -> { // 선택된 날짜 표시
+//                            textView.setTextColorRes(R.color.backgroundLight)
+//                            textView.setBackgroundResource(R.drawable.background_cat)
+//                            var color: Int = R.color.dayStatusRed
+//                            i++
+//                            when {
+//                                i % 5 == 1 ->
+//                                    color = R.color.dayStatusRed
+//                                i % 5 == 2 ->
+//                                    color = R.color.dayStatusOrange
+//                                i % 5 == 3 ->
+//                                    color = R.color.dayStatusYellow
+//                                i % 5 == 4 ->
+//                                    color = R.color.dayStatusGreen
+//                                i % 5 == 0 ->
+//                                    color = R.color.dayStatusBlue
+//                            }
+//                            context?.let {
+//                                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, color))
+//                            }
+//                        }
+//                        today == day.date -> { // 오늘 날짜 체크 표시
+//                            textView.setTextColorRes(R.color.black)
+//                            textView.setBackgroundResource(R.drawable.line_circle)
+//                        }
+//                        else -> { // 기본 날짜 색상
+//                            textView.setTextColorRes(R.color.black)
+//                        }
 //                    }
-                    when {
-                        container.selectedDates.contains(day.date) -> { // 선택된 날짜 표시
-                            textView.setTextColorRes(R.color.backgroundLight)
-                            textView.setBackgroundResource(R.drawable.background_cat)
-                            var color: Int = R.color.dayStatusRed
-                            i++
-                            when {
-                                i % 5 == 1 ->
-                                    color = R.color.dayStatusRed
-                                i % 5 == 2 ->
-                                    color = R.color.dayStatusOrange
-                                i % 5 == 3 ->
-                                    color = R.color.dayStatusYellow
-                                i % 5 == 4 ->
-                                    color = R.color.dayStatusGreen
-                                i % 5 == 0 ->
-                                    color = R.color.dayStatusBlue
-                            }
-                            context?.let {
-                                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, color))
-                            }
-                        }
-                        today == day.date -> { // 오늘 날짜 체크 표시
-                            textView.setTextColorRes(R.color.black)
-                            textView.setBackgroundResource(R.drawable.line_circle)
-                        }
-                        else -> { // 기본 날짜 색상
-                            textView.setTextColorRes(R.color.black)
-//                            textView.setBackgroundResource(R.drawable.line_square_round_corner)
-                        }
+
+                    // 기록이 있는 날짜를 표시하기 위함
+                    if (binding.vm?.historicalDates?.contains(day.date) == true) {
+                        textView.setBackgroundResource(R.drawable.line_circle)
+                    }
+                    // 오늘 기준으로 미래 날짜에 대한 표현
+                    if (LocalDate.now() < day.date) {
+                        textView.setTextColorRes(R.color.calendarWeekdaysFuture)
+                    } else { // 오늘을 포함하여 과거 날짜에 대한 표현
+                        textView.setTextColorRes(R.color.calendarWeekdaysPast)
+                    }
+
+                    if (day.date.dayOfWeek == DayOfWeek.SATURDAY) {
+                        textView.setTextColorRes(R.color.calendarSaturday)
+                    } else if(day.date.dayOfWeek == DayOfWeek.SUNDAY || binding.vm?.holidaysMap?.contains(day.date) == true) {
+                        textView.setTextColorRes(R.color.calendarSundayHoliday)
+                    }
+
+                    if (today == day.date) { // 오늘 날짜 체크 표시
+                        textView.setTextColorRes(R.color.backgroundLight)
+                        textView.setBackgroundResource(R.drawable.button_square_round_corner)
                     }
                 } else { // 선택한 달에 해당하지 않는 날짜들의 색상
                     textView.setTextColorRes(R.color.material_on_primary_disabled)
@@ -149,16 +201,6 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        setStatusBarTheme()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        setStatusBarTheme()
     }
 
     private fun setStatusBarTheme() {

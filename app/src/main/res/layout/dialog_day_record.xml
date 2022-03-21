@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="vm"
@@ -11,13 +12,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/background_square_round_corner">
+        <TextView
+            android:id="@+id/tv_dialog_day_record_extra_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="대통령 선거일"
+            android:textSize="22sp"
+            android:gravity="center_horizontal"
+            />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/tv_dialog_day_record_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="오늘 기록 보기"
+                tools:text="오늘 기록 보기"
                 android:textSize="24sp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

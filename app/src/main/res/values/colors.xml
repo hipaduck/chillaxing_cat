@@ -22,4 +22,8 @@
     <color name="dayStatusYellow">#f2cc79</color>
     <color name="dayStatusGreen">#a4dfa8</color>
     <color name="dayStatusBlue">#5a9cbf</color>
+    <color name="calendarWeekdaysPast">#656565</color>
+    <color name="calendarWeekdaysFuture">#9E9E9E</color>
+    <color name="calendarSundayHoliday">#DA0101</color>
+    <color name="calendarSaturday">#026DD4</color>
 </resources>
