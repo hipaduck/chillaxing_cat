@@ -14,4 +14,6 @@ data class UseCases (
     val addRestingTime: AddRestingTime,
     val editRestingTime: EditRestingTime,
     val findOutRestingDaysInMonth: FindOutRestingDaysInMonth, // 월을 주면(eg. 202203) 리스트로 조금이라도 쉬었던 날에 대한 목록을 돌려주는 UseCase 필요
+    val getNotificationStatus: GetNotificationStatus,
+    val putNotificationStatus: PutNotificationStatus,
 )

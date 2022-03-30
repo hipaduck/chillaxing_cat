@@ -3,10 +3,7 @@ package com.peopleofandroido.chillaxingcat
 import android.app.Application
 import com.peopleofandroido.base.di.componentModule
 import com.peopleofandroido.base.di.networkModule
-import com.peopleofandroido.chillaxingcat.di.appViewModelModule
-import com.peopleofandroido.chillaxingcat.di.databaseModule
-import com.peopleofandroido.chillaxingcat.di.repositoryModule
-import com.peopleofandroido.chillaxingcat.di.useCaseModule
+import com.peopleofandroido.chillaxingcat.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -26,6 +23,7 @@ class ChillaxingCatApplication : Application() {
                 databaseModule,
                 useCaseModule,
                 networkModule,
+                appDataStoreModule,
             ))
         }
     }
