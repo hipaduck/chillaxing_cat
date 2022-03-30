@@ -19,6 +19,9 @@
             tools:text="대통령 선거일"
             android:textSize="22sp"
             android:gravity="center_horizontal"
+            android:background="@color/accentLight"
+            android:textColor="@color/backgroundLight"
+            android:padding="4dp"
             />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
