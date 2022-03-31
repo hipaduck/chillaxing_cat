@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option java_package = "com.peopleofandroido.chillaxingcat";
+option java_multiple_files = true;
+
+// 생성/수정시 https://developers.google.com/protocol-buffers/docs/proto3?hl=ko 참고
+message Settings {
+  // local notification enabled value
+  bool notification_enabled = 1;
+}

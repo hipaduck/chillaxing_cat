@@ -2,4 +2,12 @@
     <string name="app_name">Chillaxing Cat</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="days_of_week_name_sun">SUN</string>
+    <string name="days_of_week_name_mon">MON</string>
+    <string name="days_of_week_name_tue">TUE</string>
+    <string name="days_of_week_name_wed">WED</string>
+    <string name="days_of_week_name_thu">THU</string>
+    <string name="days_of_week_name_fri">FRI</string>
+    <string name="days_of_week_name_sat">SAT</string>
+    <string name="total_count_time_to_read">총 %s시간 %s분</string>
 </resources>

@@ -52,6 +52,34 @@ class MainMenuViewModel(
         }
     }
 
+    // notification enabled usecase 관련 테스트 코드 1
+    fun startWork() {
+        // 일 시작
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = useCases.getNotificationStatus()
+            logd("getNotificationStatus()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
+        }
+    }
+
+    // notification enabled usecase 관련 테스트 코드 2
+    fun finishWork() {
+        // 일 마침
+        viewModelScope.launch(Dispatchers.IO) {
+            val currentNotiResult = useCases.getNotificationStatus()
+            currentNotiResult.data?.let { notiResult ->
+                val result = useCases.putNotificationStatus(!notiResult)
+                result.data?.let {
+                    if (it)
+                        logd("putNotificationStatus(): success")
+                    else
+                        logd("putNotificationStatus(): fail")
+                } ?: run {
+                    logd("putNotificationStatus(): error")
+                }
+            }
+        }
+    }
+
     fun test() {
         viewModelScope.launch (Dispatchers.IO) {
             val startPeriod = "202201"

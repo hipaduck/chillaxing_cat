@@ -3,6 +3,7 @@ package com.peopleofandroido.chillaxingcat
 import org.junit.Test
 
 import org.junit.Assert.*
+import org.junit.Before
 
 /**
  * Example local unit test, which will execute on the development machine (host).
