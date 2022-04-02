@@ -22,4 +22,5 @@
         <item name="android:colorControlActivated">@color/accentDark</item>
         <item name="android:textColorHighlight">@color/backgroundNormal</item>
     </style>
+
 </resources>

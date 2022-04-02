@@ -1,18 +1,13 @@
 package com.peopleofandroido.chillaxingcat.presentation.ui
 
-import InitializeSettingDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
 import com.peopleofandroido.base.common.BaseBindingFragment
 import com.peopleofandroido.chillaxingcat.R
-import com.peopleofandroido.chillaxingcat.databinding.DialogInitialSettingBinding
-import com.peopleofandroido.chillaxingcat.databinding.DialogTimeSettingBinding
 import com.peopleofandroido.chillaxingcat.databinding.FragmentMainBinding
-import com.peopleofandroido.chillaxingcat.presentation.viewmodel.MainMenuViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class MainMenuFragment : BaseBindingFragment<FragmentMainBinding>() {
