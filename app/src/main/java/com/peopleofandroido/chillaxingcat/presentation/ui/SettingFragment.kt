@@ -45,6 +45,20 @@ class SettingFragment : BaseBindingFragment<FragmentSettingBinding>() {
                                 val dialog = JobSettingDialog(requireContext(), dialogBinding)
                                 dialog.show()
                             }
+                            "setting_job_setting_dialog" -> {
+                                val dialogBinding = DataBindingUtil.inflate<DialogCatJobBinding>(
+                                    LayoutInflater.from(context), R.layout.dialog_cat_job, null, false)
+                                dialogBinding.vm = binding.vm
+                                val dialog = JobSettingDialog(requireContext(), dialogBinding)
+                                dialog.show()
+                            }
+                            "setting_push_setting_dialog" -> {
+                                val dialogBinding = DataBindingUtil.inflate<DialogPushSettingBinding>(
+                                    LayoutInflater.from(context), R.layout.dialog_push_setting, null, false)
+                                dialogBinding.vm = binding.vm
+                                val dialog = PushSettingDialog(requireContext(), dialogBinding)
+                                dialog.show()
+                            }
                         }
                     }
                 }
