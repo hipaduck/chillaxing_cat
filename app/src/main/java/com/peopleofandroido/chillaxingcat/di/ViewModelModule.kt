@@ -9,5 +9,6 @@ val appViewModelModule = module {
     viewModel { MainMenuViewModel(androidApplication(),get(), get()) }
     viewModel { SettingViewModel(androidApplication(), get()) }
     viewModel { CalendarViewModel(get(), get()) }
+    viewModel { UserSettingViewModel(androidApplication(), get(), get()) }
     viewModel { SplashViewModel(get()) }
 }

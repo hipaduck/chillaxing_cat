@@ -25,15 +25,67 @@ class SettingsDataStore(val context: Context) {
             }
         }
 
-    val notificationEnabledFlow: Flow<Boolean> = settingsFlow
+    val pushAvailableFlow: Flow<Boolean> = settingsFlow
         .map { settings ->
-            settings.notificationEnabled
+            settings.pushAvailable
+        }
+
+    val reminderTextFlow: Flow<String> = settingsFlow
+        .map { settings ->
+            settings.reminderText
+        }
+
+    val reminderTimeFlow: Flow<String> = settingsFlow
+        .map { settings ->
+            settings.reminderTime
+        }
+
+    val goalRestingTimeHourFlow: Flow<Int> = settingsFlow
+        .map { settings ->
+            settings.goalRestingTimeHour
+        }
+
+    val goalRestingTimeMinuteFlow: Flow<Int> = settingsFlow
+        .map { settings ->
+            settings.goalRestingTimeMinute
         }
 
     suspend fun writeNotificationEnabled(status: Boolean) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
-                .setNotificationEnabled(status)
+                .setPushAvailable(status)
+                .build()
+        }
+    }
+
+    suspend fun writeReminderText(text: String) {
+        context.settingsDataStore.updateData { currentSettings ->
+            currentSettings.toBuilder()
+                .setReminderText(text)
+                .build()
+        }
+    }
+
+    suspend fun writeGoalRestingTimeHour(hour: Int) {
+        context.settingsDataStore.updateData { currentSettings ->
+            currentSettings.toBuilder()
+                .setGoalRestingTimeHour(hour)
+                .build()
+        }
+    }
+
+    suspend fun writeGoalRestingTimeMinute(minute: Int) {
+        context.settingsDataStore.updateData { currentSettings ->
+            currentSettings.toBuilder()
+                .setGoalRestingTimeMinute(minute)
+                .build()
+        }
+    }
+
+    suspend fun writeReminderTime(time: String) {
+        context.settingsDataStore.updateData { currentSettings ->
+            currentSettings.toBuilder()
+                .setReminderTime(time)
                 .build()
         }
     }

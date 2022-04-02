@@ -6,7 +6,6 @@ data class UseCases (
     val addDayOff: AddDayOff,
     val getDayOff: GetDayOff,
     val removeDayOff: RemoveDayOff,
-//    val getDayOffWithPeriod: GetDayOffWithPeriod,
     val addHoliday: AddHoliday,
     val getHolidayWithPeriod: GetHolidayWithPeriod,
     val getHoliday: GetHoliday,
@@ -16,4 +15,12 @@ data class UseCases (
     val findOutRestingDaysInMonth: FindOutRestingDaysInMonth, // 월을 주면(eg. 202203) 리스트로 조금이라도 쉬었던 날에 대한 목록을 돌려주는 UseCase 필요
     val getNotificationStatus: GetNotificationStatus,
     val putNotificationStatus: PutNotificationStatus,
+    val getReminderText: GetReminderText,
+    val getReminderTime: GetReminderTime,
+    val getGoalRestingTimeHour: GetGoalRestingTimeHour,
+    val goalRestingTimeMinute: GetGoalRestingTimeMinute,
+    val putReminderText: PutReminderText,
+    val putReminderTime: PutReminderTime,
+    val putGoalRestingTimeHour: PutGoalRestingTimeHour,
+    val putGoalRestingTimeMinute: PutGoalRestingTimeMinute,
 )

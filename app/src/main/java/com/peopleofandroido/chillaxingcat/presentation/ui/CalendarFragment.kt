@@ -1,6 +1,5 @@
 package com.peopleofandroido.chillaxingcat.presentation.ui
 
-import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.ViewGroup
 import android.view.WindowInsetsController
 import android.widget.TextView
 import androidx.annotation.LayoutRes
-import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.databinding.DataBindingUtil
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -23,11 +21,9 @@ import com.peopleofandroido.chillaxingcat.common.daysOfWeekFromLocale
 import com.peopleofandroido.chillaxingcat.common.getColorCompat
 import com.peopleofandroido.chillaxingcat.common.setTextColorRes
 import com.peopleofandroido.chillaxingcat.databinding.DialogDayRecordBinding
-import com.peopleofandroido.chillaxingcat.databinding.DialogTimeSettingBinding
 import com.peopleofandroido.chillaxingcat.databinding.FragmentCalendarBinding
 import com.peopleofandroido.chillaxingcat.presentation.component.calendar.DayViewContainer
 import com.peopleofandroido.chillaxingcat.presentation.viewmodel.CalendarViewModel
-import com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import java.time.DayOfWeek
 import java.time.LocalDate

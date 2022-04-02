@@ -6,5 +6,10 @@ option java_multiple_files = true;
 // 생성/수정시 https://developers.google.com/protocol-buffers/docs/proto3?hl=ko 참고
 message Settings {
   // local notification enabled value
-  bool notification_enabled = 1;
+  bool push_available = 1;
+  string reminder_time = 2;
+  string reminder_text = 3;
+  int32 goal_resting_time_hour = 4;
+  int32 goal_resting_time_minute = 5;
+
 }

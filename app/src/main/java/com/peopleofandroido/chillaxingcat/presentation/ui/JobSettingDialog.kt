@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
+import android.widget.LinearLayout
 import com.peopleofandroido.chillaxingcat.databinding.DialogCatJobBinding
 
 class JobSettingDialog(private val context: Context, val binding: DialogCatJobBinding) {
@@ -20,5 +21,6 @@ class JobSettingDialog(private val context: Context, val binding: DialogCatJobBi
         }
 
         dialog.show()
+        dialog.window?.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
     }
 }

@@ -51,11 +51,11 @@
             android:layout_margin="16dp"
             android:background="@drawable/line_square_round_corner"
             android:padding="16dp"
-            android:onClick="@{() -> vm.showTimeSettingDialog()}">
+            android:onClick="@{() -> vm.moveToUserSetting()}">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="기준 출/퇴근 시간 조정"
+                android:text="사용자 설정 정보 수정"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"/>
             <ImageView
