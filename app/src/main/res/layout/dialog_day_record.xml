@@ -59,9 +59,10 @@
             android:orientation="horizontal"
             android:weightSum="2">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dummy data\nDummy data\nDummy data\nDummy data\nDummy data"
+                android:minHeight="100dp"
+                android:text="Dummy data\nDummy data\nDummy data\nDummy data\nDummy data\nDummy data"
                 />
         </LinearLayout>
     </LinearLayout>
