@@ -11,7 +11,7 @@ import androidx.navigation.fragment.navArgs
 import com.peopleofandroido.base.common.BaseBindingFragment
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.databinding.FragmentUserSettingBinding
-import com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel
+import com.peopleofandroido.chillaxingcat.presentation.viewmodel.UserSettingViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class UserSettingFragment : BaseBindingFragment<FragmentUserSettingBinding>() {
@@ -38,7 +38,7 @@ class UserSettingFragment : BaseBindingFragment<FragmentUserSettingBinding>() {
             "initial" -> {
                 binding.settingToolbar.root.visibility = View.GONE
                 binding.initializeToolbar.root.visibility = View.VISIBLE
-                binding.initializeDialogConfirm.text = "시작하기"
+                binding.initializeDialogConfirm.text = context?.getText(R.string.common_start)
                 binding.vm?.isInitial = true
             }
             "setting" -> {
@@ -52,7 +52,7 @@ class UserSettingFragment : BaseBindingFragment<FragmentUserSettingBinding>() {
             binding.vm?.actionEvent?.observe(viewLifecycleOwner) { event ->
                 event.getContentIfNotHandled()?.let { action ->
                     when (action) {
-                        is SettingViewModel.Action.DialogAction -> {
+                        is UserSettingViewModel.Action.DialogAction -> {
                             when (action.type) {
                                 "show_time_dialog" -> {
                                     val reminderTimeHourMinute = vm.reminderTime.value.split(":")

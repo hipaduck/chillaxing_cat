@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import java.lang.Exception
 
-class GetGoalRestingTimeHour(
+class GetIsAppFirstLaunched(
     private val repository: SettingsRepository,
     private val resultHandler: ResultHandler
 ) {
-    suspend operator fun invoke(): Result<Int> {
-        val result: Flow<Int>
+    suspend operator fun invoke(): Result<Boolean> {
+        val result: Flow<Boolean>
         try {
-            result = repository.getGoalRestingTimeHour()
+            result = repository.getIsAppFirstLaunched()
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

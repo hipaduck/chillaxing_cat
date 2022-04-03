@@ -10,4 +10,17 @@
     <string name="days_of_week_name_fri">FRI</string>
     <string name="days_of_week_name_sat">SAT</string>
     <string name="total_count_time_to_read">총 %s시간 %s분</string>
+    <string name="toolbar_setting">설정</string>
+    <string name="toolbar_initialize">초기 설정</string>
+    <string name="user_setting_get_push_notification">푸시 알림 받기</string>
+    <string name="user_setting_reminder_time_title">리마인더 시간</string>
+    <string name="user_setting_set_goal_resting_time_title">목표 쉬는 시간 지정</string>
+    <string name="user_setting_set_reminder_text_title">리마인더 문구 지정</string>
+    <string name="user_setting_reminder_text_hint">퇴근할 시간이다냥 ~~ </string>
+    <string name="alarm_title">퇴근할 시간이다냥..!!</string>
+    <string name="alarm_text">퇴근 안하는고냥? 쉬고싶다냥..</string>
+    <string name="common_modify">수정하기</string>
+    <string name="common_start">시작하기</string>
+    <string name="common_minute">분</string>
+    <string name="common_hour">시간</string>
 </resources>

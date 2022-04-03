@@ -1,21 +1,15 @@
 package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 
 import android.app.Application
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.peopleofandroido.base.common.Event
 import com.peopleofandroido.base.common.NavManager
 import com.peopleofandroido.base.util.NotNullMutableLiveData
 import com.peopleofandroido.base.util.logd
-import com.peopleofandroido.chillaxingcat.dataStore
 import com.peopleofandroido.chillaxingcat.domain.UseCases
 import com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragmentDirections
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainMenuViewModel(
@@ -29,7 +23,6 @@ class MainMenuViewModel(
     val actionEvent: NotNullMutableLiveData<Event<Action>>
         get() = _actionEvent
 
-    private val keyFirstTime = booleanPreferencesKey("app_first_initialized")
 
     init {
         checkFirstTime()
@@ -92,23 +85,16 @@ class MainMenuViewModel(
     }
 
     private fun checkFirstTime() {
-        viewModelScope.launch(Dispatchers.Main) {
-            val data = getApplication<Application>().dataStore.data
-                .catch {
-                    logd("There is no Data")
+        viewModelScope.launch() {
+            val result = useCases.getIsAppFirstLaunched()
+            result.data?.let { it ->
+                if(it) {
                     _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog"))
-                }.map { preferences ->
-                    logd("preferences $preferences")
-                    preferences[keyFirstTime] ?: true
+                } else {
+                    moveToUserSetting()
                 }
-
-            val isFirstTime = data.first()
-            if (isFirstTime) {
-                getApplication<Application>().dataStore.edit { preferences ->
-                    preferences[keyFirstTime] = false
-                }
-                moveToUserSetting()
             }
+            logd("getIsAppFirstLaunched()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
         }
     }
 

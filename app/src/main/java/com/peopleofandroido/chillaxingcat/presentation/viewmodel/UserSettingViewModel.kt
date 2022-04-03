@@ -3,6 +3,7 @@ package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -12,7 +13,6 @@ import com.peopleofandroido.base.common.NavManager
 import com.peopleofandroido.base.util.NotNullMutableLiveData
 import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.chillaxingcat.AlarmReceiver
-import com.peopleofandroido.chillaxingcat.alarmManager
 import com.peopleofandroido.chillaxingcat.domain.UseCases
 import kotlinx.coroutines.launch
 import java.util.*
@@ -22,10 +22,10 @@ class UserSettingViewModel (
     private val navManager : NavManager,
     private val useCases: UseCases
 ) : AndroidViewModel(application) {
-    private val _actionEvent: NotNullMutableLiveData<Event<SettingViewModel.Action>> = NotNullMutableLiveData(
-        Event(SettingViewModel.Action())
+    private val _actionEvent: NotNullMutableLiveData<Event<Action>> = NotNullMutableLiveData(
+        Event(Action())
     )
-    val actionEvent: NotNullMutableLiveData<Event<SettingViewModel.Action>>
+    val actionEvent: NotNullMutableLiveData<Event<Action>>
         get() = _actionEvent
 
     private val _reminderTime: NotNullMutableLiveData<String> = NotNullMutableLiveData("18:00")
@@ -43,20 +43,22 @@ class UserSettingViewModel (
     val goalRestingTimeMinute: NotNullMutableLiveData<String>
         get() = _goalRestingTimeMinute
 
-    private val _pushAvailable: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
+    private val _pushEnable: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
     val pushAvailable: NotNullMutableLiveData<Boolean>
-        get() = _pushAvailable
+        get() = _pushEnable
     private var mCalender: GregorianCalendar? = null
     var isInitial: Boolean = false
 
+    private var alarmManager: AlarmManager?
+
     init {
         mCalender = GregorianCalendar()
-
+        alarmManager =
+            getApplication<Application>().getSystemService(Context.ALARM_SERVICE) as AlarmManager?
         loadPushAvailable()
         loadReminderTime()
         loadReminderText()
-        loadGoalRestingTimeHour()
-        loadGoalRestingTimeMinute()
+        loadGoalRestingTime()
     }
 
     private fun loadPushAvailable() {
@@ -93,31 +95,23 @@ class UserSettingViewModel (
         }
     }
 
-    private fun loadGoalRestingTimeHour() {
+    private fun loadGoalRestingTime() {
         viewModelScope.launch() {
-            val result = useCases.getGoalRestingTimeHour()
+            val result = useCases.getGoalRestingTime()
             result.data?.let { it ->
-                if (it != 0) {
-                    goalRestingTimeHour.value = it.toString()
+                if (it.isNotEmpty() && it.contains(":")) {
+                    val goalRestingTime = it.split(":")
+                    if (goalRestingTime.size >= 2) {
+                        goalRestingTimeHour.value = goalRestingTime[0]
+                        goalRestingTimeMinute.value = goalRestingTime[1]
+                    }
                 }
             }
-            logd("getGoalRestingTimeHour()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
+            logd("getGoalRestingTime()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
         }
     }
 
-    private fun loadGoalRestingTimeMinute() {
-        viewModelScope.launch() {
-            val result = useCases.goalRestingTimeMinute()
-            result.data?.let { it ->
-                if (it != 0) {
-                    goalRestingTimeMinute.value = it.toString()
-                }
-            }
-            logd("getGoalRestingTimeMinute()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
-        }
-    }
-
-    fun storeReminderText(text : String) {
+    private fun storeReminderText(text : String) {
         viewModelScope.launch() {
             val result = useCases.putReminderText(text)
             result.data?.let {
@@ -132,32 +126,17 @@ class UserSettingViewModel (
         }
     }
 
-    private fun storeGoalRestingTimeHour(hour : Int) {
+    private fun storeGoalRestingTime(hour: Int, minute: Int) {
         viewModelScope.launch() {
-            val result = useCases.putGoalRestingTimeHour(hour)
+            val result = useCases.putGoalRestingTime(changeToDisplayTime(hour, minute))
             result.data?.let {
                 if (it) {
-                    logd("putGoalRestingTimeHour(): success")
+                    logd("putGoalRestingTime(): success")
                     goalRestingTimeHour.value = hour.toString()
                 } else
-                    logd("putGoalRestingTimeHour(): fail")
+                    logd("putGoalRestingTime(): fail")
             } ?: run {
-                logd("putGoalRestingTimeHour(): error")
-            }
-        }
-    }
-
-    private fun storeGoalRestingTimeMinute(minute : Int) {
-        viewModelScope.launch() {
-            val result = useCases.putGoalRestingTimeMinute(minute)
-            result.data?.let {
-                if (it) {
-                    logd("putGoalRestingTimeMinute(): success")
-                    goalRestingTimeMinute.value = minute.toString()
-                } else
-                    logd("putGoalRestingTimeMinute(): fail")
-            } ?: run {
-                logd("putGoalRestingTimeMinute(): error")
+                logd("putGoalRestingTime(): error")
             }
         }
     }
@@ -191,14 +170,33 @@ class UserSettingViewModel (
                     }
                 } else
                     logd("putNotificationStatus(): fail")
+
+                //저장이 끝나면 이동
+                if (isInitial) {
+                    _actionEvent.value = Event(Action.DialogAction("pop_to_main"))
+                }
             } ?: run {
                 logd("putNotificationStatus(): error")
             }
         }
     }
 
+    private fun storeIsAppFirstLaunched(status : Boolean) {
+        viewModelScope.launch() {
+            val result = useCases.putIsAppFirstLaunched(status)
+            result.data?.let {
+                if (it) {
+                    logd("putIsAppFirstLaunched(): success")
+                } else
+                    logd("putIsAppFirstLaunched(): fail")
+            } ?: run {
+                logd("putIsAppFirstLaunched(): error")
+            }
+        }
+    }
+
     fun showTimeDialog() {
-        _actionEvent.value = Event(SettingViewModel.Action.DialogAction("show_time_dialog"))
+        _actionEvent.value = Event(Action.DialogAction("show_time_dialog"))
     }
 
     private fun cancelAlarm() {
@@ -240,23 +238,32 @@ class UserSettingViewModel (
     fun saveAll() {
         if ((pushAvailable.value &&
             reminderText.value.isNotEmpty() &&
-            goalRestingTimeHour.value.isNotEmpty() &&
-            goalRestingTimeMinute.value.isNotEmpty()) ||
-            (!pushAvailable.value && goalRestingTimeHour.value.isNotEmpty() &&
-                    goalRestingTimeMinute.value.isNotEmpty())) {
-            Toast.makeText(getApplication(), "저장이 완료되었습니다 :)", Toast.LENGTH_SHORT).show()
+            checkGoalRestingTimeHour() &&
+            checkGoalRestingTimeMinute()) ||
+            (!pushAvailable.value && checkGoalRestingTimeHour() &&
+                    checkGoalRestingTimeMinute())) {
             storeReminderTime(reminderTime.value)
-            storeGoalRestingTimeHour(Integer.parseInt(goalRestingTimeHour.value))
-            storeGoalRestingTimeMinute(Integer.parseInt(goalRestingTimeMinute.value))
+            storeGoalRestingTime(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
             storeReminderText(reminderText.value)
+            storeIsAppFirstLaunched(false)
             storePushSetting(pushAvailable.value)
 
-            if (isInitial) {
-                _actionEvent.value = Event(SettingViewModel.Action.DialogAction("pop_to_main"))
-            }
+            Toast.makeText(getApplication(), "저장이 완료되었습니다 :)", Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(getApplication(), "설정 값을 입력해 주세요 :)", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun checkGoalRestingTimeHour(): Boolean {
+        return (goalRestingTimeHour.value.isNotEmpty() &&
+                Integer.parseInt(goalRestingTimeHour.value) >= 0 &&
+                Integer.parseInt(goalRestingTimeHour.value) <= 12)
+    }
+
+    private fun checkGoalRestingTimeMinute(): Boolean {
+        return (goalRestingTimeMinute.value.isNotEmpty() &&
+                Integer.parseInt(goalRestingTimeMinute.value) >= 0 &&
+                Integer.parseInt(goalRestingTimeMinute.value) <= 60)
     }
 
     fun changeToDisplayTime(hour: Int, minute: Int) : String {

@@ -12,6 +12,8 @@ import com.peopleofandroido.chillaxingcat.presentation.MainActivity
 
 
 class AlarmReceiver : BroadcastReceiver() {
+    var notificationManager: NotificationManager? = null
+
     override fun onReceive(context: Context, intent: Intent) {
         notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -58,8 +60,8 @@ class AlarmReceiver : BroadcastReceiver() {
 
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground) // 아이콘
-            .setContentTitle("퇴근할 시간이다냥..!!") // 제목
-            .setContentText("퇴근 안하는고냥? 쉬고싶다냥..") // 내용
+            .setContentTitle(context.getText(R.string.alarm_title)) // 제목
+            .setContentText(context.getText(R.string.alarm_text)) // 내용
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)

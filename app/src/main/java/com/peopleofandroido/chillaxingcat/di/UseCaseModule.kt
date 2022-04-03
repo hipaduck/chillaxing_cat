@@ -25,8 +25,8 @@ val useCaseModule = module {
     single { PutReminderText(get(), get()) }
     single { GetReminderTime(get(), get()) }
     single { PutReminderTime(get(), get()) }
-    single { GetGoalRestingTimeHour(get(), get()) }
-    single { PutGoalRestingTimeHour(get(), get()) }
-    single { PutGoalRestingTimeMinute(get(), get()) }
-    single { GetGoalRestingTimeMinute(get(), get()) }
+    single { GetGoalRestingTime(get(), get()) }
+    single { PutGoalRestingTime(get(), get()) }
+    single { PutIsAppFirstLaunched(get(), get()) }
+    single { GetIsAppFirstLaunched(get(), get()) }
 }

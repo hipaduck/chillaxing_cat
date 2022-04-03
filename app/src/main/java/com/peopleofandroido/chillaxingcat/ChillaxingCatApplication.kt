@@ -1,22 +1,12 @@
 package com.peopleofandroido.chillaxingcat
 
-import android.app.AlarmManager
 import android.app.Application
-import android.app.NotificationManager
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.peopleofandroido.base.di.componentModule
 import com.peopleofandroido.base.di.networkModule
 import com.peopleofandroido.chillaxingcat.di.*
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-
-internal val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-internal var notificationManager: NotificationManager? = null
-internal var alarmManager: AlarmManager? = null
 
 class ChillaxingCatApplication : Application() {
     override fun onCreate() {

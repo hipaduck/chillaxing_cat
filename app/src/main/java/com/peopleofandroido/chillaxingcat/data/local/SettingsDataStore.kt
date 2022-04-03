@@ -25,9 +25,9 @@ class SettingsDataStore(val context: Context) {
             }
         }
 
-    val pushAvailableFlow: Flow<Boolean> = settingsFlow
+    val pushEnabledFlow: Flow<Boolean> = settingsFlow
         .map { settings ->
-            settings.pushAvailable
+            settings.pushEnabled
         }
 
     val reminderTextFlow: Flow<String> = settingsFlow
@@ -40,20 +40,20 @@ class SettingsDataStore(val context: Context) {
             settings.reminderTime
         }
 
-    val goalRestingTimeHourFlow: Flow<Int> = settingsFlow
+    val goalRestingTimeFlow: Flow<String> = settingsFlow
         .map { settings ->
-            settings.goalRestingTimeHour
+            settings.goalRestingTime
         }
 
-    val goalRestingTimeMinuteFlow: Flow<Int> = settingsFlow
+    val isAppFirstLaunchedFlow: Flow<Boolean> = settingsFlow
         .map { settings ->
-            settings.goalRestingTimeMinute
+            settings.isAppFirstLaunched
         }
 
     suspend fun writeNotificationEnabled(status: Boolean) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
-                .setPushAvailable(status)
+                .setPushEnabled(status)
                 .build()
         }
     }
@@ -66,18 +66,18 @@ class SettingsDataStore(val context: Context) {
         }
     }
 
-    suspend fun writeGoalRestingTimeHour(hour: Int) {
+    suspend fun writeGoalRestingTime(time: String) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
-                .setGoalRestingTimeHour(hour)
+                .setGoalRestingTime(time)
                 .build()
         }
     }
 
-    suspend fun writeGoalRestingTimeMinute(minute: Int) {
+    suspend fun writeIsAppFirstLaunched(isFirst: Boolean) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
-                .setGoalRestingTimeMinute(minute)
+                .setIsAppFirstLaunched(isFirst)
                 .build()
         }
     }
