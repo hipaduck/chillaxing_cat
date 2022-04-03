@@ -14,7 +14,15 @@ class GetHolidayWithPeriod(
     suspend operator fun invoke(startPeriod: String, endPeriod: String): Result<List<DateModel>> {
         val result: ResultModel<List<DateModel>>
         try {
-            result = repository.getHolidayWithPeriod(startPeriod, endPeriod)
+//            result = repository.getHolidayWithPeriod(startPeriod, endPeriod)
+
+            // todo below testcode will be removed
+            val mockList = mutableListOf<DateModel>()
+            mockList.add(DateModel("${startPeriod}03".toInt(),"쉬는날1"))
+            mockList.add(DateModel("${startPeriod}08".toInt(), "쉬는날2"))
+            mockList.add(DateModel("${startPeriod}17".toInt(), "쉬는날3"))
+            result = ResultModel(0, "success", mockList)
+
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.view.WindowInsetsController
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
+import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
@@ -18,6 +20,7 @@ import com.kizitonwose.calendarview.ui.DayBinder
 import com.kizitonwose.calendarview.utils.yearMonth
 import com.peopleofandroido.base.common.BaseBindingFragment
 import com.peopleofandroido.base.util.logd
+import com.peopleofandroido.base.util.px
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.common.daysOfWeekFromLocale
 import com.peopleofandroido.chillaxingcat.common.getColorCompat
@@ -91,7 +94,13 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
             (v as TextView).apply {
                 text = daysOfWeek[index].getDisplayName(TextStyle.SHORT, Locale.getDefault())
                     .uppercase(Locale.getDefault())
-                setTextColorRes(R.color.accentNormal)
+                if (daysOfWeek[index] == DayOfWeek.SATURDAY) {
+                    setTextColorRes(R.color.calendarSaturday)
+                } else if(daysOfWeek[index] == DayOfWeek.SUNDAY) {
+                    setTextColorRes(R.color.calendarSundayHoliday)
+                } else {
+                    setTextColorRes(R.color.accentNormal)
+                }
             }
         }
 
@@ -109,12 +118,14 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                     logd("1 ${day.date}")
                     binding.calendarviewCalendar.notifyDayChanged(day)
 
-                    val dialogBinding = DataBindingUtil.inflate<DialogDayRecordBinding>(
-                        LayoutInflater.from(context), R.layout.dialog_day_record, null, false
-                    )
-                    dialogBinding.vm = binding.vm
-                    val dialog = DayDataDialog(requireContext(), dialogBinding)
-                    dialog.show()
+                    if (today > day.date || binding.vm?.holidaysMap?.contains(day.date) == true) {
+                        val dialogBinding = DataBindingUtil.inflate<DialogDayRecordBinding>(
+                            LayoutInflater.from(context), R.layout.dialog_day_record, null, false
+                        )
+                        dialogBinding.vm = binding.vm
+                        val dialog = DayDataDialog(requireContext(), dialogBinding)
+                        dialog.show()
+                    }
                 }
 
             override fun bind(container: DayViewContainer, day: CalendarDay) {
@@ -122,39 +133,57 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                 val textView = container.textView
                 textView.text = day.date.dayOfMonth.toString()
                 if (day.owner == DayOwner.THIS_MONTH) {
-//                    when {
-//                        container.selectedDates.contains(day.date) -> { // 선택된 날짜 표시
-//                            textView.setTextColorRes(R.color.backgroundLight)
-//                            textView.setBackgroundResource(R.drawable.background_cat)
-//                            var color: Int = R.color.dayStatusRed
-//                            i++
-//                            when {
-//                                i % 5 == 1 ->
-//                                    color = R.color.dayStatusRed
-//                                i % 5 == 2 ->
-//                                    color = R.color.dayStatusOrange
-//                                i % 5 == 3 ->
-//                                    color = R.color.dayStatusYellow
-//                                i % 5 == 4 ->
-//                                    color = R.color.dayStatusGreen
-//                                i % 5 == 0 ->
-//                                    color = R.color.dayStatusBlue
-//                            }
-//                            context?.let {
-//                                textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, color))
-//                            }
-//                        }
-//                        today == day.date -> { // 오늘 날짜 체크 표시
-//                            textView.setTextColorRes(R.color.black)
-//                            textView.setBackgroundResource(R.drawable.line_circle)
-//                        }
-//                        else -> { // 기본 날짜 색상
-//                            textView.setTextColorRes(R.color.black)
-//                        }
-//                    }
+                    logd("holidaysMap: ${binding.vm?.holidaysMap?.size}")
+                    logd("day.date: ${day.date}")
+                    binding.vm?.let { vm ->
+                        when {
+                            !vm.chillaxingLengthInDay.containsKey(day.date) -> { // 키 자체가 없다면 기록이 없는 것
+
+                            }
+                            vm.criteriaChillaxingLength <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                                textView.setTextColorRes(R.color.backgroundLight)
+                                textView.setBackgroundResource(R.drawable.background_cat)
+                                context?.let {
+                                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusBlue))
+                                }
+                            }
+                            vm.criteriaChillaxingLength * 0.8 <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                                textView.setTextColorRes(R.color.backgroundLight)
+                                textView.setBackgroundResource(R.drawable.background_cat)
+                                context?.let {
+                                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusGreen))
+                                }
+                            }
+                            vm.criteriaChillaxingLength * 0.5 <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                                textView.setTextColorRes(R.color.backgroundLight)
+                                textView.setBackgroundResource(R.drawable.background_cat)
+                                context?.let {
+                                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusYellow))
+                                }
+                            }
+                            vm.criteriaChillaxingLength * 0.3 <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                                textView.setTextColorRes(R.color.backgroundLight)
+                                textView.setBackgroundResource(R.drawable.background_cat)
+                                context?.let {
+                                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusOrange))
+                                }
+                            }
+                            vm.criteriaChillaxingLength * 0.3 > vm.chillaxingLengthInDay[day.date]?:0L -> {
+                                textView.setTextColorRes(R.color.backgroundLight)
+                                textView.setBackgroundResource(R.drawable.background_cat)
+                                context?.let {
+                                    textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusRed))
+                                }
+                            }
+                            else -> {}
+                        }
+                    }
 
                     // 기록이 있는 날짜를 표시하기 위함
                     if (binding.vm?.historicalDates?.contains(day.date) == true) {
+                        val layoutParams = textView.layoutParams as ConstraintLayout.LayoutParams
+                        layoutParams.setMargins(10.px)
+                        textView.layoutParams = layoutParams
                         textView.setBackgroundResource(R.drawable.line_circle)
                     }
                     // 오늘 기준으로 미래 날짜에 대한 표현
@@ -172,6 +201,10 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
 
                     if (today == day.date) { // 오늘 날짜 체크 표시
                         textView.setTextColorRes(R.color.backgroundLight)
+
+                        val layoutParams = textView.layoutParams as ConstraintLayout.LayoutParams
+                        layoutParams.setMargins(10.px)
+                        textView.layoutParams = layoutParams
                         textView.setBackgroundResource(R.drawable.button_square_round_corner)
                     }
                 } else { // 선택한 달에 해당하지 않는 날짜들의 색상
@@ -181,13 +214,19 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
             }
         }
 
-        binding.calendarviewCalendar.monthScrollListener = {
+        binding.calendarviewCalendar.monthScrollListener = { calMonth ->
+            // 해당하는 달의 데이터 새로고침
+            val yyyymm = calMonth.yearMonth.toString().replace("-", "")
+            binding.vm?.loadComponentInCalendar("${yyyymm.substring(0,4)}${yyyymm.substring(4,6)}", false)
+//            logd("calendarMonth: $calMonth")
+//            logd("yearMonth: ${calMonth.yearMonth.toString().replace("-", "")}")
+//            logd("calendarMonth2: ${calMonth.month} ${calMonth.year} ${calMonth.yearMonth} ${calMonth.weekDays.size}")
             if (binding.calendarviewCalendar.maxRowCount == 6) {
-                binding.tvCalendarCurrentYearText.text = it.yearMonth.year.toString()
-                binding.tvCalendarCurrentMonthText.text = monthTitleFormatter.format(it.yearMonth)
+                binding.tvCalendarCurrentYearText.text = calMonth.yearMonth.year.toString()
+                binding.tvCalendarCurrentMonthText.text = monthTitleFormatter.format(calMonth.yearMonth)
             } else {
-                val firstDate = it.weekDays.first().first().date
-                val lastDate = it.weekDays.last().last().date
+                val firstDate = calMonth.weekDays.first().first().date
+                val lastDate = calMonth.weekDays.last().last().date
                 if (firstDate.yearMonth == lastDate.yearMonth) {
                     binding.tvCalendarCurrentYearText.text = firstDate.yearMonth.year.toString()
                     binding.tvCalendarCurrentMonthText.text = monthTitleFormatter.format(firstDate)
