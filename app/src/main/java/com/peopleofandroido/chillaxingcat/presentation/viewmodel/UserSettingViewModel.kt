@@ -3,6 +3,7 @@ package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 import android.app.AlarmManager
 import android.app.Application
 import android.app.PendingIntent
+import android.app.PendingIntent.*
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -13,6 +14,7 @@ import com.peopleofandroido.base.common.NavManager
 import com.peopleofandroido.base.util.NotNullMutableLiveData
 import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.chillaxingcat.AlarmReceiver
+import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.domain.UseCases
 import kotlinx.coroutines.launch
 import java.util.*
@@ -173,24 +175,10 @@ class UserSettingViewModel (
 
                 //저장이 끝나면 이동
                 if (isInitial) {
-                    _actionEvent.value = Event(Action.DialogAction("pop_to_main"))
+                    _actionEvent.value = Event(Action.DialogAction("pop"))
                 }
             } ?: run {
                 logd("putNotificationStatus(): error")
-            }
-        }
-    }
-
-    private fun storeIsAppFirstLaunched(status : Boolean) {
-        viewModelScope.launch() {
-            val result = useCases.putIsAppFirstLaunched(status)
-            result.data?.let {
-                if (it) {
-                    logd("putIsAppFirstLaunched(): success")
-                } else
-                    logd("putIsAppFirstLaunched(): fail")
-            } ?: run {
-                logd("putIsAppFirstLaunched(): error")
             }
         }
     }
@@ -201,7 +189,7 @@ class UserSettingViewModel (
 
     private fun cancelAlarm() {
         val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(getApplication<Application>(), 0, receiverIntent, PendingIntent.FLAG_MUTABLE)
+        val pendingIntent = getBroadcast(getApplication<Application>(), 0, receiverIntent, FLAG_MUTABLE)
         alarmManager?.cancel(pendingIntent)
     }
 
@@ -210,7 +198,9 @@ class UserSettingViewModel (
 
         //AlarmReceiver에 값 전달
         val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(getApplication<Application>(), 0, receiverIntent, PendingIntent.FLAG_MUTABLE)
+        val pendingIntent = getBroadcast(getApplication<Application>(), 0, receiverIntent,
+            FLAG_MUTABLE
+        )
 
         //alarm 등록 전, 이전 push cancel
         alarmManager?.cancel(pendingIntent)
@@ -245,12 +235,12 @@ class UserSettingViewModel (
             storeReminderTime(reminderTime.value)
             storeGoalRestingTime(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
             storeReminderText(reminderText.value)
-            storeIsAppFirstLaunched(false)
             storePushSetting(pushAvailable.value)
 
-            Toast.makeText(getApplication(), "저장이 완료되었습니다 :)", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.user_setting_toast_saved), Toast.LENGTH_SHORT).show()
+            _actionEvent.value = Event(Action.DialogAction("pop"))
         } else {
-            Toast.makeText(getApplication(), "설정 값을 입력해 주세요 :)", Toast.LENGTH_SHORT).show()
+            Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.user_setting_toast_input_required), Toast.LENGTH_SHORT).show()
         }
     }
 

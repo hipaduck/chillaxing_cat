@@ -89,8 +89,6 @@ class MainMenuViewModel(
             val result = useCases.getIsAppFirstLaunched()
             result.data?.let { it ->
                 if(it) {
-                    _actionEvent.value = Event(Action.DialogAction("main_time_setting_dialog"))
-                } else {
                     moveToUserSetting()
                 }
             }

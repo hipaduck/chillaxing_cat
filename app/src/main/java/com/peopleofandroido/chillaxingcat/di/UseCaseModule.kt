@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 val useCaseModule = module {
     single {
-        UseCases(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),  get(), get(), get(), get(), get(), get(), get(), get())
+        UseCases(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
     }
 
     single { AddDayOff(get(), get()) }
@@ -27,6 +27,5 @@ val useCaseModule = module {
     single { PutReminderTime(get(), get()) }
     single { GetGoalRestingTime(get(), get()) }
     single { PutGoalRestingTime(get(), get()) }
-    single { PutIsAppFirstLaunched(get(), get()) }
     single { GetIsAppFirstLaunched(get(), get()) }
 }

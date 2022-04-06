@@ -69,7 +69,7 @@ class UserSettingFragment : BaseBindingFragment<FragmentUserSettingBinding>() {
                                     timePickerDialog.show()
                                 }
 
-                                "pop_to_main" -> {
+                                "pop" -> {
                                     findNavController().navigateUp()
                                 }
                             }

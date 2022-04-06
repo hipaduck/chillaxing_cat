@@ -16,7 +16,4 @@ interface SettingsRepository {
 
     suspend fun getGoalRestingTime(): Flow<String>
     suspend fun updateGoalRestingTime(time: String)
-
-    suspend fun getIsAppFirstLaunched(): Flow<Boolean>
-    suspend fun updateIsAppFirstLaunched(status: Boolean)
 }

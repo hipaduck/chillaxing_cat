@@ -5,13 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.peopleofandroido.base.common.BaseBindingFragment
 import com.peopleofandroido.chillaxingcat.R
-import com.peopleofandroido.chillaxingcat.databinding.DialogCatJobBinding
 import com.peopleofandroido.chillaxingcat.databinding.FragmentSettingBinding
-import com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class SettingFragment : BaseBindingFragment<FragmentSettingBinding>() {
@@ -33,29 +30,5 @@ class SettingFragment : BaseBindingFragment<FragmentSettingBinding>() {
         super.onViewCreated(view, savedInstanceState)
         binding.settingToolbar.basicToolbarBack.setOnClickListener { findNavController().navigateUp() }
 
-        binding.vm?.actionEvent?.observe(viewLifecycleOwner) { event ->
-            event.getContentIfNotHandled()?.let { action ->
-                when (action) {
-                    is SettingViewModel.Action.DialogAction -> {
-                        when (action.type) {
-                            "setting_job_setting_dialog" -> {
-                                val dialogBinding = DataBindingUtil.inflate<DialogCatJobBinding>(
-                                    LayoutInflater.from(context), R.layout.dialog_cat_job, null, false)
-                                dialogBinding.vm = binding.vm
-                                val dialog = JobSettingDialog(requireContext(), dialogBinding)
-                                dialog.show()
-                            }
-                            "setting_job_setting_dialog" -> {
-                                val dialogBinding = DataBindingUtil.inflate<DialogCatJobBinding>(
-                                    LayoutInflater.from(context), R.layout.dialog_cat_job, null, false)
-                                dialogBinding.vm = binding.vm
-                                val dialog = JobSettingDialog(requireContext(), dialogBinding)
-                                dialog.show()
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

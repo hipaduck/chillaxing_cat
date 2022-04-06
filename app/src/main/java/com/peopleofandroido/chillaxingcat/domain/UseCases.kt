@@ -22,5 +22,4 @@ data class UseCases (
     val putReminderTime: PutReminderTime,
     val putGoalRestingTime: PutGoalRestingTime,
     val getIsAppFirstLaunched: GetIsAppFirstLaunched,
-    val putIsAppFirstLaunched: PutIsAppFirstLaunched,
 )

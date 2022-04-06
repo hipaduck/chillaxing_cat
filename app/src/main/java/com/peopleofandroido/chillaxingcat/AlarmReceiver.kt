@@ -49,7 +49,7 @@ class AlarmReceiver : BroadcastReceiver() {
             context,
             NOTIFICATION_ID, // requestCode
             contentIntent, // 알림 클릭 시 이동할 인텐트
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_MUTABLE
             /*
             1. FLAG_UPDATE_CURRENT : 현재 PendingIntent를 유지하고, 대신 인텐트의 extra data는 새로 전달된 Intent로 교체
             2. FLAG_CANCEL_CURRENT : 현재 인텐트가 이미 등록되어있다면 삭제, 다시 등록

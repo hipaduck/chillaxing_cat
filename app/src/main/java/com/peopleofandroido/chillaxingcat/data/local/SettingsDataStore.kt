@@ -25,9 +25,9 @@ class SettingsDataStore(val context: Context) {
             }
         }
 
-    val pushEnabledFlow: Flow<Boolean> = settingsFlow
+    val notificationEnabledFlow: Flow<Boolean> = settingsFlow
         .map { settings ->
-            settings.pushEnabled
+            settings.notificationEnabled
         }
 
     val reminderTextFlow: Flow<String> = settingsFlow
@@ -45,15 +45,10 @@ class SettingsDataStore(val context: Context) {
             settings.goalRestingTime
         }
 
-    val isAppFirstLaunchedFlow: Flow<Boolean> = settingsFlow
-        .map { settings ->
-            settings.isAppFirstLaunched
-        }
-
     suspend fun writeNotificationEnabled(status: Boolean) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
-                .setPushEnabled(status)
+                .setNotificationEnabled(status)
                 .build()
         }
     }
@@ -70,14 +65,6 @@ class SettingsDataStore(val context: Context) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
                 .setGoalRestingTime(time)
-                .build()
-        }
-    }
-
-    suspend fun writeIsAppFirstLaunched(isFirst: Boolean) {
-        context.settingsDataStore.updateData { currentSettings ->
-            currentSettings.toBuilder()
-                .setIsAppFirstLaunched(isFirst)
                 .build()
         }
     }

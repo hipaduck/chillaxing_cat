@@ -5,23 +5,22 @@ import com.peopleofandroido.base.domain.ResultHandler
 import com.peopleofandroido.chillaxingcat.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import java.lang.Exception
 
 class GetIsAppFirstLaunched(
     private val repository: SettingsRepository,
     private val resultHandler: ResultHandler
 ) {
     suspend operator fun invoke(): Result<Boolean> {
-        val result: Flow<Boolean>
+        val result: Flow<String>
         try {
-            result = repository.getIsAppFirstLaunched()
+            result = repository.getGoalRestingTime()
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)
         }
 
         return try {
-            resultHandler.handleSuccess(result.first())
+            resultHandler.handleSuccess(result.first().isEmpty())
         } catch (e: Exception) {
             resultHandler.handleFailure(e)
         }
