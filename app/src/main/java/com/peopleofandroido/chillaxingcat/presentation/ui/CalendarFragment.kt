@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowInsetsController
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
