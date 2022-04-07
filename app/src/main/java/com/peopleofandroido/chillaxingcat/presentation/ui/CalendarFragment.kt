@@ -1,5 +1,6 @@
 package com.peopleofandroido.chillaxingcat.presentation.ui
 
+import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowInsetsController
 import android.widget.TextView
 import androidx.annotation.LayoutRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.setMargins
