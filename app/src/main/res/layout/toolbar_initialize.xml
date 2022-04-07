@@ -7,19 +7,11 @@
         android:elevation="3dp"
         android:gravity="center_vertical"
         xmlns:android="http://schemas.android.com/apk/res/android">
-        <ImageView
-            android:id="@+id/basic_toolbar_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="start"
-            android:background="@drawable/back_arrow"
-            android:backgroundTint="@color/accentNormal"
-            />
         <TextView
             android:id="@+id/basic_toolbar_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/toolbar_setting"
+            android:text="@string/toolbar_initialize"
             android:textSize="25sp"
             android:textColor="@color/accentNormal"
             android:textStyle="bold"

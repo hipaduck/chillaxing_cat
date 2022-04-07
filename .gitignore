@@ -19,3 +19,9 @@ app/src/main/res/raw/third_party_licenses
 
 .idea/codeStyles/Project.xml
 /.gradle/
+
+\.idea/compiler\.xml
+
+\.idea/gradle\.xml
+
+\.idea/misc\.xml

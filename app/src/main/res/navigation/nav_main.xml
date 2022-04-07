@@ -33,6 +33,9 @@
             android:id="@+id/action_mainMenuFragment_to_dueDateFragment"
             app:destination="@id/dueDateFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_userSettingFragment"
+            app:destination="@id/userSettingFragment" />
     </fragment>
 
     <fragment
@@ -49,6 +52,20 @@
         android:id="@+id/settingFragment"
         android:name="com.peopleofandroido.chillaxingcat.presentation.ui.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_userSettingFragment"
+            app:destination="@id/userSettingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userSettingFragment"
+        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.UserSettingFragment"
+        android:label="UserSettingFragment" >
+        <argument
+            android:name="input_type"
+            app:argType="string"
+            android:defaultValue="path"
+            />
+    </fragment>
 
 </navigation>

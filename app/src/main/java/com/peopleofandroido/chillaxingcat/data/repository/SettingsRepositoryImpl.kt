@@ -8,6 +8,14 @@ internal class SettingsRepositoryImpl(
     private val settingsDataStore: SettingsDataStore,
 ): SettingsRepository {
     override suspend fun getNotificationEnabledStatus(): Flow<Boolean> = settingsDataStore.notificationEnabledFlow
-
     override suspend fun updateNotificationEnabledStatus(status: Boolean) = settingsDataStore.writeNotificationEnabled(status)
+
+    override suspend fun getReminderText(): Flow<String> = settingsDataStore.reminderTextFlow
+    override suspend fun updateReminderText(text: String) = settingsDataStore.writeReminderText(text)
+
+    override suspend fun getReminderTime(): Flow<String> = settingsDataStore.reminderTimeFlow
+    override suspend fun updateReminderTime(time: String) = settingsDataStore.writeReminderTime(time)
+
+    override suspend fun getGoalRestingTime(): Flow<String> = settingsDataStore.goalRestingTimeFlow
+    override suspend fun updateGoalRestingTime(time: String) = settingsDataStore.writeGoalRestingTime(time)
 }

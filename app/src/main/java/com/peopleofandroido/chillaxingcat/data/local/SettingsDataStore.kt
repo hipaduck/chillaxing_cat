@@ -30,10 +30,49 @@ class SettingsDataStore(val context: Context) {
             settings.notificationEnabled
         }
 
+    val reminderTextFlow: Flow<String> = settingsFlow
+        .map { settings ->
+            settings.reminderText
+        }
+
+    val reminderTimeFlow: Flow<String> = settingsFlow
+        .map { settings ->
+            settings.reminderTime
+        }
+
+    val goalRestingTimeFlow: Flow<String> = settingsFlow
+        .map { settings ->
+            settings.goalRestingTime
+        }
+
     suspend fun writeNotificationEnabled(status: Boolean) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
                 .setNotificationEnabled(status)
+                .build()
+        }
+    }
+
+    suspend fun writeReminderText(text: String) {
+        context.settingsDataStore.updateData { currentSettings ->
+            currentSettings.toBuilder()
+                .setReminderText(text)
+                .build()
+        }
+    }
+
+    suspend fun writeGoalRestingTime(time: String) {
+        context.settingsDataStore.updateData { currentSettings ->
+            currentSettings.toBuilder()
+                .setGoalRestingTime(time)
+                .build()
+        }
+    }
+
+    suspend fun writeReminderTime(time: String) {
+        context.settingsDataStore.updateData { currentSettings ->
+            currentSettings.toBuilder()
+                .setReminderTime(time)
                 .build()
         }
     }
