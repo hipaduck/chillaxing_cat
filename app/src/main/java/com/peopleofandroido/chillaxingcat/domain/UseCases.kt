@@ -21,5 +21,5 @@ data class UseCases (
     val putReminderText: PutReminderText,
     val putReminderTime: PutReminderTime,
     val putGoalRestingTime: PutGoalRestingTime,
-    val getIsAppFirstLaunched: GetIsAppFirstLaunched,
+    val isRequiredValuesEntered: IsRequiredValuesEntered,
 )

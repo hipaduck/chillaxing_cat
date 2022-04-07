@@ -6,7 +6,7 @@ import com.peopleofandroido.chillaxingcat.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-class GetIsAppFirstLaunched(
+class IsRequiredValuesEntered(
     private val repository: SettingsRepository,
     private val resultHandler: ResultHandler
 ) {

@@ -12,6 +12,7 @@
     <string name="total_count_time_to_read">총 %s시간 %s분</string>
     <string name="toolbar_setting">설정</string>
     <string name="toolbar_initialize">초기 설정</string>
+    <string name="setting_modify_user_info">사용자 설정 정보 수정</string>
     <string name="user_setting_get_push_notification">푸시 알림 받기</string>
     <string name="user_setting_reminder_time_title">리마인더 시간</string>
     <string name="user_setting_set_goal_resting_time_title">목표 쉬는 시간 지정</string>

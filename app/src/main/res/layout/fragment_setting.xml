@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="사용자 설정 정보 수정"
+                android:text="@string/setting_modify_user_info"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"/>
             <ImageView

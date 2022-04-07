@@ -86,7 +86,7 @@ class MainMenuViewModel(
 
     private fun checkFirstTime() {
         viewModelScope.launch() {
-            val result = useCases.getIsAppFirstLaunched()
+            val result = useCases.isRequiredValuesEntered()
             result.data?.let { it ->
                 if(it) {
                     moveToUserSetting()

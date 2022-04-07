@@ -2,7 +2,6 @@ package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 
 import android.app.AlarmManager
 import android.app.Application
-import android.app.PendingIntent
 import android.app.PendingIntent.*
 import android.content.Context
 import android.content.Intent
@@ -45,9 +44,9 @@ class UserSettingViewModel (
     val goalRestingTimeMinute: NotNullMutableLiveData<String>
         get() = _goalRestingTimeMinute
 
-    private val _pushEnable: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
-    val pushAvailable: NotNullMutableLiveData<Boolean>
-        get() = _pushEnable
+    private val _notificationEnable: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
+    val notificationEnabled: NotNullMutableLiveData<Boolean>
+        get() = _notificationEnable
     private var mCalender: GregorianCalendar? = null
     var isInitial: Boolean = false
 
@@ -57,17 +56,17 @@ class UserSettingViewModel (
         mCalender = GregorianCalendar()
         alarmManager =
             getApplication<Application>().getSystemService(Context.ALARM_SERVICE) as AlarmManager?
-        loadPushAvailable()
+        loadNotificationStatus()
         loadReminderTime()
         loadReminderText()
         loadGoalRestingTime()
     }
 
-    private fun loadPushAvailable() {
+    private fun loadNotificationStatus() {
         viewModelScope.launch() {
             val result = useCases.getNotificationStatus()
             result.data?.let { it ->
-                pushAvailable.value = it
+                notificationEnabled.value = it
             }
             logd("getNotificationStatus()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
         }
@@ -101,7 +100,8 @@ class UserSettingViewModel (
         viewModelScope.launch() {
             val result = useCases.getGoalRestingTime()
             result.data?.let { it ->
-                if (it.isNotEmpty() && it.contains(":")) {
+                val regex = Regex("[0-2][0-9][:][0-5][0-9]")
+                if (regex.matchEntire(it)?.groupValues?.size?:0 > 0) {
                     val goalRestingTime = it.split(":")
                     if (goalRestingTime.size >= 2) {
                         goalRestingTimeHour.value = goalRestingTime[0]
@@ -158,14 +158,14 @@ class UserSettingViewModel (
         }
     }
 
-    private fun storePushSetting(getPush : Boolean) {
+    private fun storeNotificationSetting(notificationEnabled : Boolean) {
         viewModelScope.launch() {
-            val result = useCases.putNotificationStatus(getPush)
+            val result = useCases.putNotificationStatus(notificationEnabled)
             result.data?.let {
                 if (it) {
                     logd("putNotificationStatus(): success")
-                    pushAvailable.value = getPush
-                    if (getPush) {
+                    this@UserSettingViewModel.notificationEnabled.value = notificationEnabled
+                    if (notificationEnabled) {
                         setAlarm(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
                     } else {
                         cancelAlarm()
@@ -194,15 +194,13 @@ class UserSettingViewModel (
     }
 
     private fun setAlarm(hour: Int, minute: Int) {
-        if (!pushAvailable.value) return
+        if (!notificationEnabled.value) return
 
         //AlarmReceiver에 값 전달
         val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
-        val pendingIntent = getBroadcast(getApplication<Application>(), 0, receiverIntent,
-            FLAG_MUTABLE
-        )
+        val pendingIntent = getBroadcast(getApplication<Application>(), 0, receiverIntent, FLAG_MUTABLE)
 
-        //alarm 등록 전, 이전 push cancel
+        //alarm 등록 전, 이전 notification cancel
         alarmManager?.cancel(pendingIntent)
 
         // Set the alarm to start at time and minute
@@ -211,10 +209,9 @@ class UserSettingViewModel (
             set(Calendar.HOUR_OF_DAY, hour)
             set(Calendar.MINUTE, minute)
             set(Calendar.SECOND, 0)
-        }
-
-        if (calendar.time < Date()) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
+            if (this.time < Date()) {
+                add(Calendar.DAY_OF_MONTH, 1)
+            }
         }
 
         alarmManager?.setRepeating(
@@ -226,16 +223,16 @@ class UserSettingViewModel (
     }
 
     fun saveAll() {
-        if ((pushAvailable.value &&
+        if ((notificationEnabled.value &&
             reminderText.value.isNotEmpty() &&
             checkGoalRestingTimeHour() &&
             checkGoalRestingTimeMinute()) ||
-            (!pushAvailable.value && checkGoalRestingTimeHour() &&
+            (!notificationEnabled.value && checkGoalRestingTimeHour() &&
                     checkGoalRestingTimeMinute())) {
             storeReminderTime(reminderTime.value)
             storeGoalRestingTime(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
             storeReminderText(reminderText.value)
-            storePushSetting(pushAvailable.value)
+            storeNotificationSetting(notificationEnabled.value)
 
             Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.user_setting_toast_saved), Toast.LENGTH_SHORT).show()
             _actionEvent.value = Event(Action.DialogAction("pop"))
@@ -246,8 +243,8 @@ class UserSettingViewModel (
 
     private fun checkGoalRestingTimeHour(): Boolean {
         return (goalRestingTimeHour.value.isNotEmpty() &&
-                Integer.parseInt(goalRestingTimeHour.value) >= 0 &&
-                Integer.parseInt(goalRestingTimeHour.value) <= 12)
+                goalRestingTimeHour.value.toIntOrNull() ?: -1 >= 0 &&
+                goalRestingTimeHour.value.toIntOrNull() ?: Integer.MAX_VALUE <= 12)
     }
 
     private fun checkGoalRestingTimeMinute(): Boolean {
