@@ -26,4 +26,9 @@
     <string name="common_start">시작하기</string>
     <string name="common_minute">분</string>
     <string name="common_hour">시간</string>
+    <string name="title_open_source_license">오픈소스 라이선스</string>
+    <!-- for about libraries -->
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">쉬고싶은 고양이를 만들기 위해 사용된 오픈소스 라이브러리/프레임워크입니다.</string>
 </resources>

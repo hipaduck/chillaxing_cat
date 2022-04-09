@@ -3,6 +3,7 @@ package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.mikepenz.aboutlibraries.LibsBuilder
 import com.peopleofandroido.base.common.Event
 import com.peopleofandroido.base.common.NavManager
 import com.peopleofandroido.base.util.NotNullMutableLiveData
@@ -33,6 +34,19 @@ class SettingViewModel(
         _actionEvent.value = Event(Action.DialogAction("setting_push_setting_dialog"))
     }
 
+    fun moveToOpenSourceLicenseMenu() {
+        val builder = LibsBuilder()
+        builder.apply {
+            activityTitle = getApplication<Application>().getString(getStringId("title_open_source_license"))
+            aboutAppName = getApplication<Application>().getString(getStringId("app_name"))
+            aboutShowIcon = true
+            showLoadingProgress = true
+            showLicense = true
+        }.start(getApplication())
+    }
+
+    private fun getStringId(strName: String) : Int =
+        getApplication<Application>().resources.getIdentifier(strName, "string", getApplication<Application>().packageName)
 
     open class Action {
         class DialogAction(val type: String): Action()
