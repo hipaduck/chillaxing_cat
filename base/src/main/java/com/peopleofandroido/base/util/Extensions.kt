@@ -10,6 +10,10 @@ import com.google.gson.Gson
 import com.peopleofandroido.base.domain.model.ResultModel
 import retrofit2.Response
 
+fun Any.logd(msg: String) {
+    Log.d("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
+}
+
 fun Fragment.logd(tag: String, msg: String) {
     Log.d("ChillaxingCat", "[$tag] : $msg")
 }

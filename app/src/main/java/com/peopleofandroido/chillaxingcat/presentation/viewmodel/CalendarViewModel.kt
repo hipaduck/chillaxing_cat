@@ -47,33 +47,26 @@ class CalendarViewModel(
 
     // todo 현재 usecase가 만들어지지 않아서 mock으로 진행
     private fun loadChillaxingLengths() {
+        chillaxingLengthInDay[LocalDate.of(2022, 3, 14)] = 2 * 60 * 60 * 1_000L
+        chillaxingLengthInDay[LocalDate.of(2022, 3, 20)] = 1 * 60 * 60 * 1_000L
+        chillaxingLengthInDay[LocalDate.of(2022, 3, 18)] = 1 * 30 * 30 * 1_000L
         chillaxingLengthInDay[LocalDate.of(2022, 4, 1)] = 5 * 60 * 60 * 1_000L
         chillaxingLengthInDay[LocalDate.of(2022, 4, 7)] = 4 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 10)] = 3 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 14)] = 2 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 20)] = 1 * 60 * 60 * 1_000L
+        chillaxingLengthInDay[LocalDate.of(2022, 4, 9)] = 3 * 60 * 60 * 1_000L
         chillaxingLengthInDay[LocalDate.of(2022, 4, 3)] = 6 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 18)] = 1 * 30 * 30 * 1_000L
+        chillaxingLengthInDay[LocalDate.of(2022, 4, 11)] = 3 * 60 * 60 * 1_000L + 11 * 60 * 1_000L + 25 * 1_000L
     }
 
     // todo 현재 usecase가 만들어지지 않아서 mock으로 진행
     private fun loadCriteriaChillaxingLength(): Long = DEFAULT_CHILLAXING_LENGTH
 
+    fun storeSpecifiedDayRecord(day: LocalDate, hours: Int, minutes: Int) {
+        // 지정한 날의 시간과 분을 저장한다
+    }
+
     /**
      * param format(example): yyyyMM(202204)
      */
-    fun loadComponentInCalendar(month: String, init: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            loadRestingDaysInMonth(month.toInt())
-            loadHolidaysInMonth(month, month)
-            if (init) {
-                withContext(Dispatchers.Main) {
-                    _actionEvent.value = Event(Action.CalendarAction("fill_days"))
-                }
-            }
-        }
-    }
-
     fun loadComponentInCalendar(startMonth: String, endMonth: String, init: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             loadRestingDaysInMonth(startMonth.toInt(), endMonth.toInt())
@@ -82,25 +75,6 @@ class CalendarViewModel(
                 withContext(Dispatchers.Main) {
                     _actionEvent.value = Event(Action.CalendarAction("fill_days"))
                 }
-            }
-        }
-    }
-
-    private suspend fun loadRestingDaysInMonth(month: Int) {
-        val result = useCases.findOutRestingDaysInMonth(month, month)
-        when (result.status) {
-            Status.SUCCESS -> {
-                logd("list: ${result.data?.size}")
-                result.data?.let {
-                    for (dayInt in it) {
-                        if (dayInt.toString().length >= 8) {
-                            historicalDates.add(LocalDate.parse(dayInt.toString(), DateTimeFormatter.ofPattern("yyyyMMdd")))
-                        }
-                    }
-                }
-            }
-            Status.ERROR -> {
-                loge("error: ${result.message}")
             }
         }
     }

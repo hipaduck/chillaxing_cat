@@ -9,7 +9,7 @@
     <string name="days_of_week_name_thu">THU</string>
     <string name="days_of_week_name_fri">FRI</string>
     <string name="days_of_week_name_sat">SAT</string>
-    <string name="total_count_time_to_read">총 %s시간 %s분</string>
+    <string name="total_count_time_to_read">총 %1$s시간 %2$s분</string>
     <string name="toolbar_setting">설정</string>
     <string name="toolbar_initialize">초기 설정</string>
     <string name="setting_modify_user_info">사용자 설정 정보 수정</string>
@@ -26,6 +26,8 @@
     <string name="common_start">시작하기</string>
     <string name="common_minute">분</string>
     <string name="common_hour">시간</string>
+    <string name="common_modification">수정</string>
+    <string name="common_save">저장</string>
     <string name="title_open_source_license">오픈소스 라이선스</string>
     <!-- for about libraries -->
     <string name="aboutLibraries_description_showIcon">true</string>

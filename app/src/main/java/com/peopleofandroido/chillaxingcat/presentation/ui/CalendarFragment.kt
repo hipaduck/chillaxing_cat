@@ -121,7 +121,7 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                             LayoutInflater.from(context), R.layout.dialog_day_record, null, false
                         )
                         dialogBinding.vm = binding.vm
-                        val dialog = DayDataDialog(requireContext(), dialogBinding)
+                        val dialog = DayDataDialog(requireContext(), dialogBinding, day.date)
                         dialog.show()
                     }
                 }
@@ -198,12 +198,13 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                     }
 
                     if (today == day.date) { // 오늘 날짜 체크 표시
-                        textView.setTextColorRes(R.color.backgroundLight)
+//                        textView.setTextColorRes(R.color.backgroundLight)
+                        textView.setTextColorRes(R.color.calendarWeekdaysPast)
 
                         val layoutParams = textView.layoutParams as ConstraintLayout.LayoutParams
                         layoutParams.setMargins(10.px)
                         textView.layoutParams = layoutParams
-                        textView.setBackgroundResource(R.drawable.button_square_round_corner)
+                        textView.setBackgroundResource(R.drawable.line_circle)
                     }
                 } else { // 선택한 달에 해당하지 않는 날짜들의 색상
                     textView.setTextColorRes(R.color.material_on_primary_disabled)
@@ -215,7 +216,8 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
         binding.calendarviewCalendar.monthScrollListener = { calMonth ->
             // 해당하는 달의 데이터 새로고침
             val yyyymm = calMonth.yearMonth.toString().replace("-", "")
-            binding.vm?.loadComponentInCalendar("${yyyymm.substring(0,4)}${yyyymm.substring(4,6)}", false)
+            binding.vm?.loadComponentInCalendar("${yyyymm.substring(0,4)}${yyyymm.substring(4,6)}",
+                "${yyyymm.substring(0,4)}${yyyymm.substring(4,6)}", false)
 //            logd("calendarMonth: $calMonth")
 //            logd("yearMonth: ${calMonth.yearMonth.toString().replace("-", "")}")
 //            logd("calendarMonth2: ${calMonth.month} ${calMonth.year} ${calMonth.yearMonth} ${calMonth.weekDays.size}")
