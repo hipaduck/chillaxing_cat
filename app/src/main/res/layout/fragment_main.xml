@@ -110,7 +110,7 @@
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/start_icon"
+                android:src="@drawable/check"
                 />
             <TextView
                 android:layout_width="match_parent"

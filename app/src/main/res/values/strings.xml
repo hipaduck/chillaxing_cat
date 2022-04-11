@@ -13,6 +13,10 @@
     <string name="toolbar_setting">설정</string>
     <string name="toolbar_initialize">초기 설정</string>
     <string name="setting_modify_user_info">사용자 설정 정보 수정</string>
+    <string name="setting_go_to_rate_the_app">앱 평가하러 가기</string>
+    <string name="setting_send_email">이메일로 문의하기</string>
+    <string name="setting_developer_introduce">개발자 소개</string>
+    <string name="setting_opensource">오픈 소스</string>
     <string name="user_setting_get_push_notification">푸시 알림 받기</string>
     <string name="user_setting_reminder_time_title">리마인더 시간</string>
     <string name="user_setting_set_goal_resting_time_title">목표 쉬는 시간 지정</string>
@@ -26,4 +30,13 @@
     <string name="common_start">시작하기</string>
     <string name="common_minute">분</string>
     <string name="common_hour">시간</string>
+    <string name="email_receiver" translatable="false">mutualogic@gmail.com</string>
+    <string name="email_title">쉬는 고양 문제/문의/건의 사항</string>
+    <string name="email_text">기기명 : \n안드로이드 OS : \n문제/문의/건의사항 : \n</string>
+    <string name="developer_name_1">흰냥이</string>
+    <string name="developer_name_2">회색냥이</string>
+    <string name="developer_introduce">
+        JACKSON: Hello, I\'m Jackson! I\'m the developer who made this app! \nHuh… Nice to meet you girl! Oops!\n\nMARSHAL: My name is Marshal, to meet you \nToday I\'m lucky! anyway! Please take care from now on~\n
+         \nLeave calligraphy on the picture you want to remember.\nComplete the precious moment! anyway! \n\nI\'ll also recommend sensitive classic writings~ Oops~
+    </string>
 </resources>
