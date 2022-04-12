@@ -33,6 +33,7 @@ class CalendarViewModel(
     }
 
     val historicalDates: MutableList<LocalDate> = mutableListOf()
+    val historicalTimestampMap: MutableMap<LocalDate, Long> = mutableMapOf()
     val holidaysMap: MutableMap<LocalDate, String> = mutableMapOf()
     val chillaxingLengthInDay: MutableMap<LocalDate, Long> = mutableMapOf() // 하루의 쉼의 시간을 Long으로 반영
 
@@ -69,7 +70,7 @@ class CalendarViewModel(
      */
     fun loadComponentInCalendar(startMonth: String, endMonth: String, init: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
-            loadRestingDaysInMonth(startMonth.toInt(), endMonth.toInt())
+            loadChillaxingDaysInMonth(startMonth.toInt(), endMonth.toInt())
             loadHolidaysInMonth(startMonth, endMonth)
             if (init) {
                 withContext(Dispatchers.Main) {
@@ -80,15 +81,22 @@ class CalendarViewModel(
     }
 
     // new
-    private suspend fun loadRestingDaysInMonth(prevMonth: Int, nextMonth: Int) {
+    private suspend fun loadChillaxingDaysInMonth(prevMonth: Int, nextMonth: Int) {
         val result = useCases.findOutRestingDaysInMonth(prevMonth, nextMonth)
         when (result.status) {
             Status.SUCCESS -> {
+                // 비우고 시작
+                historicalDates.clear()
+                historicalTimestampMap.clear()
                 logd("list: ${result.data?.size}")
                 result.data?.let {
-                    for (dayInt in it) {
+                    for (model in it) {
+                        val dayInt = model.id
+                        val totalTime = model.totalTime
                         if (dayInt.toString().length >= 8) {
-                            historicalDates.add(LocalDate.parse(dayInt.toString(), DateTimeFormatter.ofPattern("yyyyMMdd")))
+                            val localDate = LocalDate.parse(dayInt.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
+                            historicalDates.add(localDate)
+                            historicalTimestampMap[localDate] = totalTime
                         }
                     }
                 }

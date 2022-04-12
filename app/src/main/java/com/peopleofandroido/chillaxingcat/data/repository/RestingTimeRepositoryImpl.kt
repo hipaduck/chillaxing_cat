@@ -68,4 +68,28 @@ class RestingTimeRepositoryImpl(private val restingTimeDao: RestingTimeDao) : Re
             ResultModel(1, failMessage, restingTimeModel)
         }
     }
+
+    override suspend fun getRestingTimeInMonth(month: String): ResultModel<List<RestingTimeModel>> {
+        var failMessage = ""
+
+        val restingTimeList: List<RestingTime>
+        var restingTimeModelList: List<RestingTimeModel>? = null
+
+        val result: Boolean = try {
+            restingTimeList  = restingTimeDao.getRestingDaysInMonth(month)
+            restingTimeModelList = restingTimeList.map {
+                RestingTimeModel(it.id, it.history, it.totalTime)
+            }
+            true
+        } catch (e: Exception) {
+            failMessage = e.message!!
+            false
+        }
+
+        return if(result) {
+            ResultModel(0, "success", restingTimeModelList)
+        } else {
+            ResultModel(1, failMessage, restingTimeModelList)
+        }
+    }
 }

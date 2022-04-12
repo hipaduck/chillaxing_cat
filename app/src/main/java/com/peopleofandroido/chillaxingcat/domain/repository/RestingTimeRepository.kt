@@ -7,4 +7,5 @@ interface RestingTimeRepository {
     suspend fun addRestingTime(restingTime: RestingTimeModel): ResultModel<String>
     suspend fun editRestingTime(id: Int, history: String): ResultModel<String>
     suspend fun getRestingTime(id: Int): ResultModel<RestingTimeModel>
+    suspend fun getRestingTimeInMonth(month: String): ResultModel<List<RestingTimeModel>>
 }

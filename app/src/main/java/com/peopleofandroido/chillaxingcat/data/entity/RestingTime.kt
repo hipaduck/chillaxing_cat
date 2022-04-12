@@ -9,7 +9,7 @@ import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
 data class RestingTime(
     @PrimaryKey(autoGenerate = false) var id : Int,
     @ColumnInfo(name = "history") val history : String,
-    @ColumnInfo(name = "total_time") val totalTime : String
+    @ColumnInfo(name = "total_time") val totalTime : Long
 ) {
     companion object {
         internal fun fromDomainModel(restingTimeModel: RestingTimeModel): RestingTime {
