@@ -2,7 +2,8 @@ package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 
 import android.app.AlarmManager
 import android.app.Application
-import android.app.PendingIntent.*
+import android.app.PendingIntent.FLAG_MUTABLE
+import android.app.PendingIntent.getBroadcast
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.chillaxingcat.AlarmReceiver
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.domain.UseCases
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -113,18 +115,16 @@ class UserSettingViewModel (
         }
     }
 
-    private fun storeReminderText(text : String) {
-        viewModelScope.launch() {
-            val result = useCases.putReminderText(text)
-            result.data?.let {
-                if (it) {
-                    logd("putReminderText(): success")
-                    reminderText.value = text
-                } else
-                    logd("putReminderText(): fail")
-            } ?: run {
-                logd("putReminderText(): error")
-            }
+    private suspend fun storeReminderText(text : String) {
+        val result = useCases.putReminderText(text)
+        result.data?.let {
+            if (it) {
+                logd("putReminderText(): success")
+                reminderText.value = text
+            } else
+                logd("putReminderText(): fail")
+        } ?: run {
+            logd("putReminderText(): error")
         }
     }
 
@@ -143,43 +143,39 @@ class UserSettingViewModel (
         }
     }
 
-    private fun storeReminderTime(time: String) {
-        viewModelScope.launch {
-            val result = useCases.putReminderTime(time)
-            result.data?.let {
-                if (it) {
-                    logd("putReminderTime(): success")
-                    reminderTime.value = time
-                } else
-                    logd("putReminderTime(): fail")
-            } ?: run {
-                logd("putReminderTime(): error")
-            }
+    private suspend fun storeReminderTime(time: String) {
+        val result = useCases.putReminderTime(time)
+        result.data?.let {
+            if (it) {
+                logd("putReminderTime(): success")
+                reminderTime.value = time
+            } else
+                logd("putReminderTime(): fail")
+        } ?: run {
+            logd("putReminderTime(): error")
         }
     }
 
-    private fun storeNotificationSetting(notificationEnabled : Boolean) {
-        viewModelScope.launch() {
-            val result = useCases.putNotificationStatus(notificationEnabled)
-            result.data?.let {
-                if (it) {
-                    logd("putNotificationStatus(): success")
-                    this@UserSettingViewModel.notificationEnabled.value = notificationEnabled
-                    if (notificationEnabled) {
-                        setAlarm(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
-                    } else {
-                        cancelAlarm()
-                    }
-                } else
-                    logd("putNotificationStatus(): fail")
-
-                //저장이 끝나면 이동
-                if (isInitial) {
-                    _actionEvent.value = Event(Action.DialogAction("pop"))
+    private suspend fun storeNotificationSetting(notificationEnabled : Boolean) {
+        val result = useCases.putNotificationStatus(notificationEnabled)
+        result.data?.let {
+            if (it) {
+                logd("putNotificationStatus(): success")
+                this@UserSettingViewModel.notificationEnabled.value = notificationEnabled
+                if (notificationEnabled) {
+                    setAlarm(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
+                } else {
+                    cancelAlarm()
                 }
-            } ?: run {
-                logd("putNotificationStatus(): error")
+            } else
+                logd("putNotificationStatus(): fail")
+
+            //저장이 끝나면 이동
+            if (isInitial) {
+                _actionEvent.value = Event(Action.DialogAction("pop"))
             }
+        } ?: run {
+            logd("putNotificationStatus(): error")
         }
     }
 
@@ -229,13 +225,30 @@ class UserSettingViewModel (
             checkGoalRestingTimeMinute()) ||
             (!notificationEnabled.value && checkGoalRestingTimeHour() &&
                     checkGoalRestingTimeMinute())) {
-            storeReminderTime(reminderTime.value)
-            storeGoalRestingTime(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
-            storeReminderText(reminderText.value)
-            storeNotificationSetting(notificationEnabled.value)
+            viewModelScope.launch {
+                val storeAll = async {
+                    storeReminderTime(reminderTime.value)
+                    storeGoalRestingTime(
+                        Integer.parseInt(goalRestingTimeHour.value),
+                        Integer.parseInt(goalRestingTimeMinute.value)
+                    )
+                    storeReminderText(reminderText.value)
+                    storeNotificationSetting(notificationEnabled.value)
+                    Toast.makeText(
+                        getApplication(),
+                        getApplication<Application>().getText(R.string.user_setting_toast_saving),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                storeAll.await()
+                Toast.makeText(
+                    getApplication(),
+                    getApplication<Application>().getText(R.string.user_setting_toast_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
+                _actionEvent.value = Event(Action.DialogAction("pop"))
+            }
 
-            Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.user_setting_toast_saved), Toast.LENGTH_SHORT).show()
-            _actionEvent.value = Event(Action.DialogAction("pop"))
         } else {
             Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.user_setting_toast_input_required), Toast.LENGTH_SHORT).show()
         }

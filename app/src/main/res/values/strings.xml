@@ -21,6 +21,7 @@
     <string name="alarm_title">퇴근할 시간이다냥..!!</string>
     <string name="alarm_text">퇴근 안하는고냥? 쉬고싶다냥..</string>
     <string name="user_setting_toast_saved">저장이 완료되었습니다 :)</string>
+    <string name="user_setting_toast_saving">저장중입니다.</string>
     <string name="user_setting_toast_input_required">설정 값을 입력해 주세요 :)</string>
     <string name="common_modify">수정하기</string>
     <string name="common_start">시작하기</string>
