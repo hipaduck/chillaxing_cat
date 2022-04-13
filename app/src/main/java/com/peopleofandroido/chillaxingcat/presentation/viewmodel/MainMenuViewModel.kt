@@ -249,28 +249,28 @@ class MainMenuViewModel(
     private fun changeButtonUiForTodayState (state: String) {
         when(state) {
             "" -> {
-                isStartButtonVisible.value = true
-                isPauseButtonVisible.value = false
-                isResumeButtonVisible.value = false
-                isStopButtonVisible.value = false
+                _isStartButtonVisible.value = true
+                _isPauseButtonVisible.value = false
+                _isResumeButtonVisible.value = false
+                _isStopButtonVisible.value = false
             }
             "rest" -> {
-                isStartButtonVisible.value = false
-                isPauseButtonVisible.value = true
-                isResumeButtonVisible.value = false
-                isStopButtonVisible.value = true
+                _isStartButtonVisible.value = false
+                _isPauseButtonVisible.value = true
+                _isResumeButtonVisible.value = false
+                _isStopButtonVisible.value = true
             }
             "pause" -> {
-                isStartButtonVisible.value = false
-                isPauseButtonVisible.value = false
-                isResumeButtonVisible.value = true
-                isStopButtonVisible.value = true
+                _isStartButtonVisible.value = false
+                _isPauseButtonVisible.value = false
+                _isResumeButtonVisible.value = true
+                _isStopButtonVisible.value = true
             }
             "finish" -> {
-                isStartButtonVisible.value = false
-                isPauseButtonVisible.value = false
-                isResumeButtonVisible.value = false
-                isStopButtonVisible.value = true
+                _isStartButtonVisible.value = false
+                _isPauseButtonVisible.value = false
+                _isResumeButtonVisible.value = false
+                _isStopButtonVisible.value = true
             }
         }
     }
