@@ -181,12 +181,12 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                     }
 
                     // 기록이 있는 날짜를 표시하기 위함
-                    if (binding.vm?.historicalDates?.contains(day.date) == true) {
-                        val layoutParams = textView.layoutParams as ConstraintLayout.LayoutParams
-                        layoutParams.setMargins(10.px)
-                        textView.layoutParams = layoutParams
-                        textView.setBackgroundResource(R.drawable.line_circle)
-                    }
+//                    if (binding.vm?.historicalDates?.contains(day.date) == true) {
+//                        val layoutParams = textView.layoutParams as ConstraintLayout.LayoutParams
+//                        layoutParams.setMargins(10.px)
+//                        textView.layoutParams = layoutParams
+//                        textView.setBackgroundResource(R.drawable.line_circle)
+//                    }
                     // 오늘 기준으로 미래 날짜에 대한 표현
                     if (LocalDate.now() < day.date) {
                         textView.setTextColorRes(R.color.calendarWeekdaysFuture)

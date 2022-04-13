@@ -32,7 +32,7 @@ class CalendarViewModel(
         loadCriteriaChillaxingLength()
     }
 
-    val historicalDates: MutableList<LocalDate> = mutableListOf()
+//    val historicalDates: MutableList<LocalDate> = mutableListOf()
     val holidaysMap: MutableMap<LocalDate, String> = mutableMapOf()
     val chillaxingLengthInDayMap: MutableMap<LocalDate, Long> = mutableMapOf() // 하루의 쉼의 시간을 Long으로 반영
     val chillaxingRecordInDayMap: MutableMap<LocalDate, String> = mutableMapOf() // 하루의 데이터를 저장(위 데이터와 통합 필요)
@@ -68,6 +68,7 @@ class CalendarViewModel(
             val editResult = useCases.writeChillaxingTotalTime(yyyyMMdd.toInt(), timestamp)
             when (editResult.status) {
                 Status.SUCCESS -> {
+//                    historicalDates.add(day)
                     chillaxingLengthInDayMap[day] = timestamp // 해당 날짜 ViewModel 데이터 업데이트
                     logd("write succeed: ${editResult.data}")
                 }
@@ -99,14 +100,14 @@ class CalendarViewModel(
         when (result.status) {
             Status.SUCCESS -> {
                 // 비우고 시작
-                historicalDates.clear()
+//                historicalDates.clear()
                 chillaxingLengthInDayMap.clear()
                 logd("list: ${result.data?.size}")
                 result.data?.let {
                     for (model in it) {
                         if (model.id.toString().length >= 8) {
                             val localDate = LocalDate.parse(model.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
-                            historicalDates.add(localDate)
+//                            historicalDates.add(localDate)
                             chillaxingLengthInDayMap[localDate] = model.totalTime
                             chillaxingRecordInDayMap[localDate] = model.history
 
