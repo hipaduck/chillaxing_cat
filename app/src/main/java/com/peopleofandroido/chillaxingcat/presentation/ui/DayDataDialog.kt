@@ -12,6 +12,11 @@ import java.time.LocalDate
 
 class DayDataDialog(private val context: Context, val binding: DialogDayRecordBinding, private val currentDate: LocalDate) {
     private val dialog = BottomSheetDialog(context)
+    private var updateListener: (()->Unit)? = null
+
+    fun setOnUpdateListener(listener: (()->Unit)?) {
+        updateListener = listener
+    }
 
     fun show() {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -20,8 +25,8 @@ class DayDataDialog(private val context: Context, val binding: DialogDayRecordBi
         dialog.dismissWithAnimation = true
 
         binding.vm?.let { vm ->
-            if (vm.chillaxingLengthInDay.containsKey(currentDate)) {
-                val lengthTimestamp = vm.chillaxingLengthInDay[currentDate] ?: 0L
+            if (vm.chillaxingLengthInDayMap.containsKey(currentDate)) {
+                val lengthTimestamp = vm.chillaxingLengthInDayMap[currentDate] ?: 0L
                 val lengthSeconds = lengthTimestamp / 1000L
                 val lengthMinutes = lengthSeconds / 60
                 val lengthHours = (lengthMinutes / 60).toInt()
@@ -39,16 +44,20 @@ class DayDataDialog(private val context: Context, val binding: DialogDayRecordBi
             } else {
                 binding.tvDialogDayRecordExtraTitle.visibility = View.GONE
             }
+
+            if (vm.chillaxingRecordInDayMap.containsKey(currentDate)) {
+                binding.tvDialogDayRecordFullRecords.text = vm.chillaxingRecordInDayMap[currentDate]
+            }
         }
 
-        binding.tvDialogDayRecordModify.setOnClickListener {
-            binding.tvDialogDayRecordModify.visibility = View.GONE
+        binding.ivDialogDayRecordModify.setOnClickListener {
+            binding.ivDialogDayRecordModify.visibility = View.GONE
             binding.tvDialogDayRecordTitle.visibility = View.GONE
             binding.llayoutDialogDayRecordModifyGroup.visibility = View.VISIBLE
-            binding.tvDialogDayRecordSave.visibility = View.VISIBLE
+            binding.ivDialogDayRecordSave.visibility = View.VISIBLE
         }
 
-        binding.tvDialogDayRecordSave.setOnClickListener {
+        binding.ivDialogDayRecordSave.setOnClickListener {
             binding.vm?.let { vm ->
                 val hours = binding.etDialogDayRecordHoursInput.text.toString().toIntOrNull() ?: 0
                 val minutes = binding.etDialogDayRecordMinutesInput.text.toString().toIntOrNull() ?: 0
@@ -57,12 +66,14 @@ class DayDataDialog(private val context: Context, val binding: DialogDayRecordBi
 
                 binding.tvDialogDayRecordTitle.text =
                     String.format(context.getString(R.string.total_count_time_to_read), hours.toString(), minutes.toString())
+
+                updateListener?.invoke()
             }
             binding.tvDialogDayRecordFullRecords.text = ""
-            binding.tvDialogDayRecordModify.visibility = View.VISIBLE
+            binding.ivDialogDayRecordModify.visibility = View.VISIBLE
             binding.tvDialogDayRecordTitle.visibility = View.VISIBLE
             binding.llayoutDialogDayRecordModifyGroup.visibility = View.GONE
-            binding.tvDialogDayRecordSave.visibility = View.GONE
+            binding.ivDialogDayRecordSave.visibility = View.GONE
         }
 
         dialog.show()

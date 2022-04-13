@@ -19,6 +19,9 @@ interface RestingTimeDao {
     @Query("UPDATE resting_time SET history = :history WHERE id = :id")
     fun editRestingTime(id: Int, history: String)
 
+    @Query("UPDATE resting_time SET total_time = :totalTime WHERE id = :id")
+    fun updateTotalTime(id: Int, totalTime: Long): Int
+
     @Query("SELECT * FROM resting_time WHERE id LIKE :month || '%'")
     fun getRestingDaysInMonth(month: String): List<RestingTime>
 }

@@ -12,7 +12,7 @@ import com.peopleofandroido.chillaxingcat.data.entity.Holiday
 import com.peopleofandroido.chillaxingcat.data.entity.RestingTime
 
 const val DB_VERSION = 1
-private const val DB_NAME = "chillaxing_cat.db"
+private const val DB_NAME = "chillaxing_cat_test.db" // todo db이름은 향후에 제대로 변경 필요
 
 @Database(entities = [Holiday::class, RestingTime::class, DayOff::class], version = DB_VERSION, exportSchema = true)
 abstract class LocalDatabase : RoomDatabase() {

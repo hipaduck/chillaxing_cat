@@ -6,7 +6,9 @@ import org.koin.dsl.module
 
 val useCaseModule = module {
     single {
-        UseCases(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get())
+        UseCases(get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get(), get(), get(), get(),
+            get(), get(), get(), get(), get())
     }
 
     single { AddDayOff(get(), get()) }
@@ -28,4 +30,5 @@ val useCaseModule = module {
     single { GetGoalRestingTime(get(), get()) }
     single { PutGoalRestingTime(get(), get()) }
     single { IsRequiredValuesEntered(get(), get()) }
+    single { WriteChillaxingTotalTime(get(), get()) }
 }

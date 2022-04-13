@@ -33,9 +33,9 @@ class CalendarViewModel(
     }
 
     val historicalDates: MutableList<LocalDate> = mutableListOf()
-    val historicalTimestampMap: MutableMap<LocalDate, Long> = mutableMapOf()
     val holidaysMap: MutableMap<LocalDate, String> = mutableMapOf()
-    val chillaxingLengthInDay: MutableMap<LocalDate, Long> = mutableMapOf() // 하루의 쉼의 시간을 Long으로 반영
+    val chillaxingLengthInDayMap: MutableMap<LocalDate, Long> = mutableMapOf() // 하루의 쉼의 시간을 Long으로 반영
+    val chillaxingRecordInDayMap: MutableMap<LocalDate, String> = mutableMapOf() // 하루의 데이터를 저장(위 데이터와 통합 필요)
 
     init {
         val prevYearMonth = LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("yyyyMM"))
@@ -43,26 +43,39 @@ class CalendarViewModel(
         val yyyyMM = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))
         logd("current yyyyMM: $yyyyMM")
         loadComponentInCalendar(prevYearMonth, nextYearMonth, true)
-        loadChillaxingLengths()
     }
 
     // todo 현재 usecase가 만들어지지 않아서 mock으로 진행
-    private fun loadChillaxingLengths() {
-        chillaxingLengthInDay[LocalDate.of(2022, 3, 14)] = 2 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 3, 20)] = 1 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 3, 18)] = 1 * 30 * 30 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 1)] = 5 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 7)] = 4 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 9)] = 3 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 3)] = 6 * 60 * 60 * 1_000L
-        chillaxingLengthInDay[LocalDate.of(2022, 4, 11)] = 3 * 60 * 60 * 1_000L + 11 * 60 * 1_000L + 25 * 1_000L
+    private fun loadMockChillaxingLengths() {
+        chillaxingLengthInDayMap[LocalDate.of(2022, 3, 14)] = 2 * 60 * 60 * 1_000L
+        chillaxingLengthInDayMap[LocalDate.of(2022, 3, 20)] = 1 * 60 * 60 * 1_000L
+        chillaxingLengthInDayMap[LocalDate.of(2022, 3, 18)] = 1 * 30 * 30 * 1_000L
+        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 1)] = 5 * 60 * 60 * 1_000L
+        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 7)] = 4 * 60 * 60 * 1_000L
+        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 9)] = 3 * 60 * 60 * 1_000L
+        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 3)] = 6 * 60 * 60 * 1_000L
+        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 11)] = 3 * 60 * 60 * 1_000L + 11 * 60 * 1_000L + 25 * 1_000L
     }
 
     // todo 현재 usecase가 만들어지지 않아서 mock으로 진행
     private fun loadCriteriaChillaxingLength(): Long = DEFAULT_CHILLAXING_LENGTH
 
     fun storeSpecifiedDayRecord(day: LocalDate, hours: Int, minutes: Int) {
+        val yyyyMMdd = day.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        val timestamp: Long = hours * 60 * 60 * 1_000L + minutes * 60 * 1_000L
         // 지정한 날의 시간과 분을 저장한다
+        viewModelScope.launch(Dispatchers.IO) {
+            val editResult = useCases.writeChillaxingTotalTime(yyyyMMdd.toInt(), timestamp)
+            when (editResult.status) {
+                Status.SUCCESS -> {
+                    chillaxingLengthInDayMap[day] = timestamp // 해당 날짜 ViewModel 데이터 업데이트
+                    logd("write succeed: ${editResult.data}")
+                }
+                Status.ERROR -> {
+                    loge("write failed: ${editResult.message}")
+                }
+            }
+        }
     }
 
     /**
@@ -87,16 +100,18 @@ class CalendarViewModel(
             Status.SUCCESS -> {
                 // 비우고 시작
                 historicalDates.clear()
-                historicalTimestampMap.clear()
+                chillaxingLengthInDayMap.clear()
                 logd("list: ${result.data?.size}")
                 result.data?.let {
                     for (model in it) {
-                        val dayInt = model.id
-                        val totalTime = model.totalTime
-                        if (dayInt.toString().length >= 8) {
-                            val localDate = LocalDate.parse(dayInt.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
+                        if (model.id.toString().length >= 8) {
+                            val localDate = LocalDate.parse(model.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
                             historicalDates.add(localDate)
-                            historicalTimestampMap[localDate] = totalTime
+                            chillaxingLengthInDayMap[localDate] = model.totalTime
+                            chillaxingRecordInDayMap[localDate] = model.history
+
+                            // 테스트를 위해 임시로 아래 코드 호출
+//                            loadMockChillaxingLengths()
                         }
                     }
                 }

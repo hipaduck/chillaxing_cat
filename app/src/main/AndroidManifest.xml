@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.peopleofandroido.chillaxingcat">
 
+    <!-- android:allowBackup="false"는 출시 때 true로 바꾸자 -->
     <application
         android:name=".ChillaxingCatApplication"
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"

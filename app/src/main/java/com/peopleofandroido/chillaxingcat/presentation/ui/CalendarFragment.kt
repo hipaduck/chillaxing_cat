@@ -122,6 +122,9 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                         )
                         dialogBinding.vm = binding.vm
                         val dialog = DayDataDialog(requireContext(), dialogBinding, day.date)
+                        dialog.setOnUpdateListener {
+                            binding.calendarviewCalendar.notifyDayChanged(day)
+                        }
                         dialog.show()
                     }
                 }
@@ -135,38 +138,38 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                     logd("day.date: ${day.date}")
                     binding.vm?.let { vm ->
                         when {
-                            !vm.chillaxingLengthInDay.containsKey(day.date) -> { // 키 자체가 없다면 기록이 없는 것
+                            !vm.chillaxingLengthInDayMap.containsKey(day.date) -> { // 키 자체가 없다면 기록이 없는 것
 
                             }
-                            vm.criteriaChillaxingLength <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                            vm.criteriaChillaxingLength <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusBlue))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.8 <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                            vm.criteriaChillaxingLength * 0.8 <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusGreen))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.5 <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                            vm.criteriaChillaxingLength * 0.5 <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusYellow))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.3 <= vm.chillaxingLengthInDay[day.date]?:0L -> {
+                            vm.criteriaChillaxingLength * 0.3 <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusOrange))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.3 > vm.chillaxingLengthInDay[day.date]?:0L -> {
+                            vm.criteriaChillaxingLength * 0.3 > vm.chillaxingLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {

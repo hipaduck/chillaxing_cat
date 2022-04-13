@@ -10,6 +10,9 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class RestingTimeRepositoryImpl(private val restingTimeDao: RestingTimeDao) : RestingTimeRepository {
+    companion object {
+        const val FAIL_RETURN = -1
+    }
     override suspend fun addRestingTime(restingTime: RestingTimeModel): ResultModel<String> {
         var failMessage = ""
 
@@ -44,6 +47,23 @@ class RestingTimeRepositoryImpl(private val restingTimeDao: RestingTimeDao) : Re
             ResultModel(0, "success", "success")
         } else {
             ResultModel(1, failMessage, "while editing $id")
+        }
+    }
+
+    override suspend fun editTotalTime(id: Int, totalTime: Long): ResultModel<Boolean> {
+        var failMessage = ""
+
+        val result: Int = try {
+            restingTimeDao.updateTotalTime(id, totalTime)
+        } catch (e: Exception) {
+            failMessage = e.message!!
+            FAIL_RETURN
+        }
+
+        return if(result == FAIL_RETURN) {
+            ResultModel(1, failMessage, false)
+        } else {
+            ResultModel(0, "success", true)
         }
     }
 

@@ -30,6 +30,7 @@
         <entry key="app/src/main/res/layout/dialog_day_record.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.2740036231884058" />
+        <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2866847826086957" />
       </map>
     </option>
   </component>
