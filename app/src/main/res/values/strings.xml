@@ -40,4 +40,9 @@
         JACKSON: Hello, I\'m Jackson! I\'m the developer who made this app! \nHuh… Nice to meet you girl! Oops!\n\nMARSHAL: My name is Marshal, to meet you \nToday I\'m lucky! anyway! Please take care from now on~\n
          \nLeave calligraphy on the picture you want to remember.\nComplete the precious moment! anyway! \n\nI\'ll also recommend sensitive classic writings~ Oops~
     </string>
+    <string name="main_resting_finished_toast_message">오늘 쉬는시간이 이미 종료되었습니다 :)</string>
+    <string name="main_resting_start">쉬는 시간 시작</string>
+    <string name="main_resting_pause">일시중지</string>
+    <string name="main_resting_resume">재개</string>
+    <string name="main_resting_stop">쉬는 시간 끝</string>
 </resources>

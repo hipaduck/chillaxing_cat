@@ -1,14 +1,8 @@
 package com.peopleofandroido.chillaxingcat.di
 
 import com.peopleofandroido.chillaxingcat.data.remote.api.HolidayApi
-import com.peopleofandroido.chillaxingcat.data.repository.DayOffRepositoryImpl
-import com.peopleofandroido.chillaxingcat.data.repository.HolidayRepositoryImpl
-import com.peopleofandroido.chillaxingcat.data.repository.RestingTimeRepositoryImpl
-import com.peopleofandroido.chillaxingcat.data.repository.SettingsRepositoryImpl
-import com.peopleofandroido.chillaxingcat.domain.repository.DayOffRepository
-import com.peopleofandroido.chillaxingcat.domain.repository.HolidayRepository
-import com.peopleofandroido.chillaxingcat.domain.repository.RestingTimeRepository
-import com.peopleofandroido.chillaxingcat.domain.repository.SettingsRepository
+import com.peopleofandroido.chillaxingcat.data.repository.*
+import com.peopleofandroido.chillaxingcat.domain.repository.*
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
@@ -32,5 +26,9 @@ val repositoryModule = module {
 
     single<SettingsRepository> {
         SettingsRepositoryImpl(get())
+    }
+
+    single<TodayDataRepository> {
+        TodayDataRepositoryImpl(get())
     }
 }
