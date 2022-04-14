@@ -7,16 +7,19 @@
             name="vm"
             type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.SplashViewModel" />
     </data>
-<FrameLayout
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.SplashFragment">
+    tools:context=".presentation.ui.SplashFragment"
+    android:gravity="center">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <ImageView
+        android:id="@+id/splash_fragment_image"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/splash_cat_sub_eng"
+        />
 
-</FrameLayout>
+</LinearLayout>
 </layout>

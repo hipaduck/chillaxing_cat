@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.peopleofandroido.base.common.BaseBindingFragment
+import com.peopleofandroido.base.util.showToast
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.databinding.FragmentSettingBinding
+import com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class SettingFragment : BaseBindingFragment<FragmentSettingBinding>() {
@@ -29,6 +32,24 @@ class SettingFragment : BaseBindingFragment<FragmentSettingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.settingToolbar.basicToolbarBack.setOnClickListener { findNavController().navigateUp() }
+        binding.settingRecyclerview.layoutManager = LinearLayoutManager(context)
+        binding.settingRecyclerview.setHasFixedSize(true)
 
+        binding.settingToolbar.basicToolbarBack.setOnClickListener { findNavController().navigateUp() }
+
+        binding.vm?.actionEvent?.observe(viewLifecycleOwner) { event->
+            event.getContentIfNotHandled()?.let { action ->
+                when (action) {
+                    is SettingViewModel.Action.DialogAction -> {
+                        when(action.type) {
+
+                        }
+                    }
+                    is SettingViewModel.Action.ToastAction -> {
+                        showToast(action.msg)
+                    }
+                }
+            }
+        }
     }
 }

@@ -2,7 +2,8 @@ package com.peopleofandroido.chillaxingcat.presentation.viewmodel
 
 import android.app.AlarmManager
 import android.app.Application
-import android.app.PendingIntent.*
+import android.app.PendingIntent.FLAG_MUTABLE
+import android.app.PendingIntent.getBroadcast
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
@@ -44,9 +45,9 @@ class UserSettingViewModel (
     val goalRestingTimeMinute: NotNullMutableLiveData<String>
         get() = _goalRestingTimeMinute
 
-    private val _notificationEnable: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
+    private val _notificationEnabled: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
     val notificationEnabled: NotNullMutableLiveData<Boolean>
-        get() = _notificationEnable
+        get() = _notificationEnabled
     private var mCalender: GregorianCalendar? = null
     var isInitial: Boolean = false
 
@@ -66,7 +67,7 @@ class UserSettingViewModel (
         viewModelScope.launch() {
             val result = useCases.getNotificationStatus()
             result.data?.let { it ->
-                notificationEnabled.value = it
+                _notificationEnabled.value = it
             }
             logd("getNotificationStatus()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
         }
@@ -77,7 +78,7 @@ class UserSettingViewModel (
             val result = useCases.getReminderTime()
             result.data?.let { it ->
                 if (it.isNotEmpty()) {
-                    reminderTime.value = it
+                    _reminderTime.value = it
                 }
             }
             logd("getReminderTime()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
@@ -89,7 +90,7 @@ class UserSettingViewModel (
             val result = useCases.getReminderText()
             result.data?.let { it ->
                 if (it.isNotEmpty()) {
-                    reminderText.value = it
+                    _reminderText.value = it
                 }
             }
             logd("getReminderText()::data: ${result.data}, message: ${result.message}, status: ${result.status}")
@@ -104,8 +105,8 @@ class UserSettingViewModel (
                 if (regex.matchEntire(it)?.groupValues?.size?:0 > 0) {
                     val goalRestingTime = it.split(":")
                     if (goalRestingTime.size >= 2) {
-                        goalRestingTimeHour.value = goalRestingTime[0]
-                        goalRestingTimeMinute.value = goalRestingTime[1]
+                        _goalRestingTimeHour.value = goalRestingTime[0]
+                        _goalRestingTimeMinute.value = goalRestingTime[1]
                     }
                 }
             }
@@ -113,18 +114,16 @@ class UserSettingViewModel (
         }
     }
 
-    private fun storeReminderText(text : String) {
-        viewModelScope.launch() {
-            val result = useCases.putReminderText(text)
-            result.data?.let {
-                if (it) {
-                    logd("putReminderText(): success")
-                    reminderText.value = text
-                } else
-                    logd("putReminderText(): fail")
-            } ?: run {
-                logd("putReminderText(): error")
-            }
+    private suspend fun storeReminderText(text : String) {
+        val result = useCases.putReminderText(text)
+        result.data?.let {
+            if (it) {
+                logd("putReminderText(): success")
+                _reminderText.value = text
+            } else
+                logd("putReminderText(): fail")
+        } ?: run {
+            logd("putReminderText(): error")
         }
     }
 
@@ -134,7 +133,7 @@ class UserSettingViewModel (
             result.data?.let {
                 if (it) {
                     logd("putGoalRestingTime(): success")
-                    goalRestingTimeHour.value = hour.toString()
+                    _goalRestingTimeHour.value = hour.toString()
                 } else
                     logd("putGoalRestingTime(): fail")
             } ?: run {
@@ -143,43 +142,39 @@ class UserSettingViewModel (
         }
     }
 
-    private fun storeReminderTime(time: String) {
-        viewModelScope.launch {
-            val result = useCases.putReminderTime(time)
-            result.data?.let {
-                if (it) {
-                    logd("putReminderTime(): success")
-                    reminderTime.value = time
-                } else
-                    logd("putReminderTime(): fail")
-            } ?: run {
-                logd("putReminderTime(): error")
-            }
+    private suspend fun storeReminderTime(time: String) {
+        val result = useCases.putReminderTime(time)
+        result.data?.let {
+            if (it) {
+                logd("putReminderTime(): success")
+                _reminderTime.value = time
+            } else
+                logd("putReminderTime(): fail")
+        } ?: run {
+            logd("putReminderTime(): error")
         }
     }
 
-    private fun storeNotificationSetting(notificationEnabled : Boolean) {
-        viewModelScope.launch() {
-            val result = useCases.putNotificationStatus(notificationEnabled)
-            result.data?.let {
-                if (it) {
-                    logd("putNotificationStatus(): success")
-                    this@UserSettingViewModel.notificationEnabled.value = notificationEnabled
-                    if (notificationEnabled) {
-                        setAlarm(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
-                    } else {
-                        cancelAlarm()
-                    }
-                } else
-                    logd("putNotificationStatus(): fail")
-
-                //저장이 끝나면 이동
-                if (isInitial) {
-                    _actionEvent.value = Event(Action.DialogAction("pop"))
+    private suspend fun storeNotificationSetting(notificationEnabled : Boolean) {
+        val result = useCases.putNotificationStatus(notificationEnabled)
+        result.data?.let {
+            if (it) {
+                logd("putNotificationStatus(): success")
+                this@UserSettingViewModel._notificationEnabled.value = notificationEnabled
+                if (notificationEnabled) {
+                    setAlarm(Integer.parseInt(_goalRestingTimeHour.value), Integer.parseInt(_goalRestingTimeMinute.value))
+                } else {
+                    cancelAlarm()
                 }
-            } ?: run {
-                logd("putNotificationStatus(): error")
+            } else
+                logd("putNotificationStatus(): fail")
+
+            //저장이 끝나면 이동
+            if (isInitial) {
+                _actionEvent.value = Event(Action.DialogAction("pop"))
             }
+        } ?: run {
+            logd("putNotificationStatus(): error")
         }
     }
 
@@ -194,7 +189,7 @@ class UserSettingViewModel (
     }
 
     private fun setAlarm(hour: Int, minute: Int) {
-        if (!notificationEnabled.value) return
+        if (!_notificationEnabled.value) return
 
         //AlarmReceiver에 값 전달
         val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
@@ -223,34 +218,49 @@ class UserSettingViewModel (
     }
 
     fun saveAll() {
-        if ((notificationEnabled.value &&
-            reminderText.value.isNotEmpty() &&
+        if ((_notificationEnabled.value &&
+            _reminderText.value.isNotEmpty() &&
             checkGoalRestingTimeHour() &&
             checkGoalRestingTimeMinute()) ||
-            (!notificationEnabled.value && checkGoalRestingTimeHour() &&
+            (!_notificationEnabled.value && checkGoalRestingTimeHour() &&
                     checkGoalRestingTimeMinute())) {
-            storeReminderTime(reminderTime.value)
-            storeGoalRestingTime(Integer.parseInt(goalRestingTimeHour.value), Integer.parseInt(goalRestingTimeMinute.value))
-            storeReminderText(reminderText.value)
-            storeNotificationSetting(notificationEnabled.value)
+            viewModelScope.launch {
+                storeReminderTime(_reminderTime.value)
+                storeGoalRestingTime(
+                    Integer.parseInt(_goalRestingTimeHour.value),
+                    Integer.parseInt(_goalRestingTimeMinute.value)
+                )
+                storeReminderText(_reminderText.value)
+                storeNotificationSetting(_notificationEnabled.value)
+                Toast.makeText(
+                    getApplication(),
+                    getApplication<Application>().getText(R.string.user_setting_toast_saving),
+                    Toast.LENGTH_SHORT
+                ).show()
 
-            Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.user_setting_toast_saved), Toast.LENGTH_SHORT).show()
-            _actionEvent.value = Event(Action.DialogAction("pop"))
+                Toast.makeText(
+                    getApplication(),
+                    getApplication<Application>().getText(R.string.user_setting_toast_saved),
+                    Toast.LENGTH_SHORT
+                ).show()
+                _actionEvent.value = Event(Action.DialogAction("pop"))
+            }
+
         } else {
             Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.user_setting_toast_input_required), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun checkGoalRestingTimeHour(): Boolean {
-        return (goalRestingTimeHour.value.isNotEmpty() &&
-                goalRestingTimeHour.value.toIntOrNull() ?: -1 >= 0 &&
-                goalRestingTimeHour.value.toIntOrNull() ?: Integer.MAX_VALUE <= 12)
+        return (_goalRestingTimeHour.value.isNotEmpty() &&
+                _goalRestingTimeHour.value.toIntOrNull() ?: -1 >= 0 &&
+                _goalRestingTimeHour.value.toIntOrNull() ?: Integer.MAX_VALUE <= 12)
     }
 
     private fun checkGoalRestingTimeMinute(): Boolean {
-        return (goalRestingTimeMinute.value.isNotEmpty() &&
-                Integer.parseInt(goalRestingTimeMinute.value) >= 0 &&
-                Integer.parseInt(goalRestingTimeMinute.value) <= 60)
+        return (_goalRestingTimeMinute.value.isNotEmpty() &&
+                Integer.parseInt(_goalRestingTimeMinute.value) >= 0 &&
+                Integer.parseInt(_goalRestingTimeMinute.value) <= 60)
     }
 
     fun changeToDisplayTime(hour: Int, minute: Int) : String {
