@@ -1,6 +1,7 @@
 package com.peopleofandroido.base.util
 
 import android.app.Activity
+import android.content.res.Resources
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -8,6 +9,10 @@ import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.peopleofandroido.base.domain.model.ResultModel
 import retrofit2.Response
+
+fun Any.logd(msg: String) {
+    Log.d("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
+}
 
 fun Fragment.logd(tag: String, msg: String) {
     Log.d("ChillaxingCat", "[$tag] : $msg")
@@ -74,3 +79,9 @@ fun <T> Response<*>.getErrorResultModel(gson: Gson): ResultModel<T> {
         }
     }
 }
+
+val Int.dp: Int
+    get() = (this / Resources.getSystem().displayMetrics.density).toInt()
+
+val Int.px: Int
+    get() = (this * Resources.getSystem().displayMetrics.density).toInt()

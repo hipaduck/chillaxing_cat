@@ -22,6 +22,7 @@ data class UseCases (
     val putReminderTime: PutReminderTime,
     val putGoalRestingTime: PutGoalRestingTime,
     val isRequiredValuesEntered: IsRequiredValuesEntered,
+    val writeChillaxingTotalTime: WriteChillaxingTotalTime,
     val getTodayDate: GetTodayDate,
     val putTodayDate: PutTodayDate,
     val getTodayHistory: GetTodayHistory,

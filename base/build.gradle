@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id "androidx.navigation.safeargs.kotlin"
+    id "com.mikepenz.aboutlibraries.plugin" version "10.1.0"
 }
 
 android {
@@ -56,6 +57,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.6'
     implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
+
+    // About Libraries
+    implementation "com.mikepenz:aboutlibraries-core:10.1.0"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

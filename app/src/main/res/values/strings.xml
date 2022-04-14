@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Chillaxing Cat</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="days_of_week_name_sun">SUN</string>
     <string name="days_of_week_name_mon">MON</string>
@@ -9,7 +8,7 @@
     <string name="days_of_week_name_thu">THU</string>
     <string name="days_of_week_name_fri">FRI</string>
     <string name="days_of_week_name_sat">SAT</string>
-    <string name="total_count_time_to_read">총 %s시간 %s분</string>
+    <string name="total_count_time_to_read">총 %1$s시간 %2$s분</string>
     <string name="toolbar_setting">설정</string>
     <string name="toolbar_initialize">초기 설정</string>
     <string name="setting_modify_user_info">사용자 설정 정보 수정</string>
@@ -31,6 +30,13 @@
     <string name="common_start">시작하기</string>
     <string name="common_minute">분</string>
     <string name="common_hour">시간</string>
+    <string name="common_modification">수정</string>
+    <string name="common_save">저장</string>
+    <string name="title_open_source_license">오픈소스 라이선스</string>
+    <!-- for about libraries -->
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">쉬고싶은 고양이를 만들기 위해 사용된 오픈소스 라이브러리/프레임워크입니다.</string>
     <string name="email_receiver" translatable="false">mutualogic@gmail.com</string>
     <string name="email_title">쉬는 고양 문제/문의/건의 사항</string>
     <string name="email_text">기기명 : \n안드로이드 OS : \n문제/문의/건의사항 : \n</string>

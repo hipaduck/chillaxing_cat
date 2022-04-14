@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
@@ -7,7 +8,6 @@
             type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.CalendarViewModel" />
     </data>
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -36,17 +36,76 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="visible"
                 />
             <ImageView
-                android:id="@+id/iv_dialog_day_record_close"
+                android:id="@+id/iv_dialog_day_record_modify"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/close_box"
+                android:text="@string/common_modification"
+                android:textSize="20sp"
+                android:gravity="center"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_margin="8dp"
-                app:tint="@color/accentNormal" />
+                android:src="@drawable/edit"
+                app:tint="@color/accentNormal"
+                android:visibility="visible"
+                />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/llayout_dialog_day_record_modify_group"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="gone"
+                >
+                <EditText
+                    android:id="@+id/et_dialog_day_record_hours_input"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    tools:text="3"
+                    android:textSize="18sp"
+                    android:autofillHints="3"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_hour"
+                    android:textSize="24sp"
+                    />
+                <EditText
+                    android:id="@+id/et_dialog_day_record_minutes_input"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    tools:text="35"
+                    android:textSize="18sp"
+                    android:autofillHints="3"
+                    android:inputType="numberDecimal"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/common_minute"
+                    android:textSize="24sp"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <ImageView
+                android:id="@+id/iv_dialog_day_record_save"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="@string/common_save"
+                android:textSize="20sp"
+                android:gravity="center"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_margin="8dp"
+                android:src="@drawable/save_to_disk"
+                app:tint="@color/accentNormal"
+                android:visibility="gone"
+                />
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
@@ -59,9 +118,11 @@
             android:orientation="horizontal"
             android:weightSum="2">
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_dialog_day_record_full_records"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Dummy data\nDummy data\nDummy data\nDummy data\nDummy data"
+                android:minHeight="100dp"
+                tools:text="Dummy data\nDummy data\nDummy data\nDummy data\nDummy data\nDummy data"
                 />
         </LinearLayout>
     </LinearLayout>
