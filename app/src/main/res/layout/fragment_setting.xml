@@ -20,88 +20,39 @@
             app:layout_constraintTop_toTopOf="parent"
             android:elevation="1dp"
             layout="@layout/toolbar_basic" />
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/setting_cat_job_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/setting_toolbar"
-            android:layout_margin="16dp"
-            android:background="@drawable/line_square_round_corner"
-            android:padding="16dp"
-            android:onClick="@{() -> vm.showJobSettingDialog()}">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="고양이 직업"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/right_arrow"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/setting_work_time_layout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/setting_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/setting_cat_job_layout"
-            android:layout_margin="16dp"
-            android:background="@drawable/line_square_round_corner"
-            android:padding="16dp"
-            android:onClick="@{() -> vm.moveToUserSetting()}">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/setting_modify_user_info"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/right_arrow"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/setting_push_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/setting_work_time_layout"
-            android:layout_margin="16dp"
-            android:background="@drawable/line_square_round_corner"
-            android:padding="16dp"
-            android:onClick="@{() -> vm.showPushSettingDialog()}">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="푸시 설정"
-                android:textSize="20sp"
-                app:layout_constraintStart_toStartOf="parent"/>
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="match_parent"
-                android:src="@drawable/right_arrow"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            app:layout_constraintBottom_toBottomOf="parent">
-            <EditText
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp" />
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/check"
-                app:tint="@color/accentNormal" />
-        </LinearLayout>
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/setting_toolbar"
+            app:settingList="@{vm.settingMenuItemList}"
+            app:view="@{vm}" />
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:id="@+id/setting_work_time_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/setting_toolbar"-->
+<!--            android:layout_margin="16dp"-->
+<!--            android:background="@drawable/line_square_round_corner"-->
+<!--            android:padding="16dp"-->
+<!--            android:onClick="@{() -> vm.moveToUserSetting()}">-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="@string/setting_modify_user_info"-->
+<!--                android:textSize="20sp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"/>-->
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:src="@drawable/right_arrow"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                />-->
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

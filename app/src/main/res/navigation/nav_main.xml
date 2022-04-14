@@ -56,7 +56,15 @@
         <action
             android:id="@+id/action_settingFragment_to_userSettingFragment"
             app:destination="@id/userSettingFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_developerFragment"
+            app:destination="@id/developerFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/developerFragment"
+        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.DeveloperFragment"
+        android:label="fragment_developer"
+        tools:layout="@layout/fragment_developer" />
     <fragment
         android:id="@+id/userSettingFragment"
         android:name="com.peopleofandroido.chillaxingcat.presentation.ui.UserSettingFragment"
