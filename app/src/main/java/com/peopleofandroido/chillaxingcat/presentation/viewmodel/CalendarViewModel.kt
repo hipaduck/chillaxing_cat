@@ -13,7 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class CalendarViewModel(
     private val navManager : NavManager,
@@ -28,9 +31,7 @@ class CalendarViewModel(
     val actionEvent: NotNullMutableLiveData<Event<Action>>
         get() = _actionEvent
 
-    val criteriaChillaxingLength: Long by lazy {
-        loadCriteriaChillaxingLength()
-    }
+    var criteriaChillaxingLength: Long = DEFAULT_CHILLAXING_LENGTH
 
 //    val historicalDates: MutableList<LocalDate> = mutableListOf()
     val holidaysMap: MutableMap<LocalDate, String> = mutableMapOf()
@@ -42,23 +43,30 @@ class CalendarViewModel(
         val nextYearMonth = LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("yyyyMM"))
         val yyyyMM = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))
         logd("current yyyyMM: $yyyyMM")
+        loadCriteriaChillaxingLength()
         loadComponentInCalendar(prevYearMonth, nextYearMonth, true)
     }
 
     // todo 현재 usecase가 만들어지지 않아서 mock으로 진행
-    private fun loadMockChillaxingLengths() {
-        chillaxingLengthInDayMap[LocalDate.of(2022, 3, 14)] = 2 * 60 * 60 * 1_000L
-        chillaxingLengthInDayMap[LocalDate.of(2022, 3, 20)] = 1 * 60 * 60 * 1_000L
-        chillaxingLengthInDayMap[LocalDate.of(2022, 3, 18)] = 1 * 30 * 30 * 1_000L
-        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 1)] = 5 * 60 * 60 * 1_000L
-        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 7)] = 4 * 60 * 60 * 1_000L
-        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 9)] = 3 * 60 * 60 * 1_000L
-        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 3)] = 6 * 60 * 60 * 1_000L
-        chillaxingLengthInDayMap[LocalDate.of(2022, 4, 11)] = 3 * 60 * 60 * 1_000L + 11 * 60 * 1_000L + 25 * 1_000L
+    private fun loadCriteriaChillaxingLength() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val goalResult = useCases.getGoalRestingTime()
+            when (goalResult.status) {
+                Status.SUCCESS -> {
+                    logd("getGoalRestingTime succeed: ${goalResult.data}")
+                    val originalStr = goalResult.data!!
+//                    val localDateTime = LocalDateTime.parse(originalStr, DateTimeFormatter.ofPattern("HH:mm"))
+                    val hour = originalStr.substring(0, 2).toInt()
+                    val minute = originalStr.substring(3, 4).toInt()
+                    criteriaChillaxingLength = hour * 60 * 60 * 1_000L + minute * 60 * 1_000L
+                    logd("getGoalRestingTime(criteriaChillaxingLength) succeed: $criteriaChillaxingLength")
+                }
+                Status.ERROR -> {
+                    loge("getGoalRestingTime failed: ${goalResult.message}")
+                }
+            }
+        }
     }
-
-    // todo 현재 usecase가 만들어지지 않아서 mock으로 진행
-    private fun loadCriteriaChillaxingLength(): Long = DEFAULT_CHILLAXING_LENGTH
 
     fun storeSpecifiedDayRecord(day: LocalDate, hours: Int, minutes: Int) {
         val yyyyMMdd = day.format(DateTimeFormatter.ofPattern("yyyyMMdd"))

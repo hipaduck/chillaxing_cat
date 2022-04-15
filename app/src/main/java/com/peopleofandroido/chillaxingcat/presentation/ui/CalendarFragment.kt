@@ -116,7 +116,7 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                     logd("1 ${day.date}")
                     binding.calendarviewCalendar.notifyDayChanged(day)
 
-                    if (today > day.date || binding.vm?.holidaysMap?.contains(day.date) == true) {
+                    if (today >= day.date || binding.vm?.holidaysMap?.contains(day.date) == true) {
                         val dialogBinding = DataBindingUtil.inflate<DialogDayRecordBinding>(
                             LayoutInflater.from(context), R.layout.dialog_day_record, null, false
                         )

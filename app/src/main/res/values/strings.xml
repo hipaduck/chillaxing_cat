@@ -37,7 +37,7 @@
     <string name="aboutLibraries_description_showIcon">true</string>
     <string name="aboutLibraries_description_showVersion">true</string>
     <string name="aboutLibraries_description_text">쉬고싶은 고양이를 만들기 위해 사용된 오픈소스 라이브러리/프레임워크입니다.</string>
-    <string name="email_receiver" translatable="false">mutualogic@gmail.com</string>
+    <string name="email_receiver" translatable="false">hipaduck@gmail.com</string>
     <string name="email_title">쉬는 고양 문제/문의/건의 사항</string>
     <string name="email_text">기기명 : \n안드로이드 OS : \n문제/문의/건의사항 : \n</string>
     <string name="developer_name_1">흰냥이</string>

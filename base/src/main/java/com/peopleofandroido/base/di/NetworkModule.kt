@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 private const val MAX_CACHE_SIZE = 20L * 1024 * 1024 // 20MB
@@ -26,6 +27,11 @@ val networkModule = module {
     //Gson
     single {
         GsonBuilder().setLenient().create()
+    }
+
+    //Scalars
+    single {
+
     }
 
     //OkHttpClient
@@ -48,6 +54,8 @@ val networkModule = module {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(get() as OkHttpClient)
+//            .addConverterFactory(NullOnEmptyConverterFactory())
+            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
     }

@@ -169,10 +169,6 @@ class UserSettingViewModel (
             } else
                 logd("putNotificationStatus(): fail")
 
-            //저장이 끝나면 이동
-            if (isInitial) {
-                _actionEvent.value = Event(Action.DialogAction("pop"))
-            }
         } ?: run {
             logd("putNotificationStatus(): error")
         }
