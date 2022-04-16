@@ -6,6 +6,7 @@ import android.app.PendingIntent.FLAG_MUTABLE
 import android.app.PendingIntent.getBroadcast
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -162,7 +163,8 @@ class UserSettingViewModel (
                 logd("putNotificationStatus(): success")
                 this@UserSettingViewModel._notificationEnabled.value = notificationEnabled
                 if (notificationEnabled) {
-                    setAlarm(Integer.parseInt(_goalRestingTimeHour.value), Integer.parseInt(_goalRestingTimeMinute.value))
+                    val time = _reminderTime.value.split(":")
+                    setAlarm(Integer.parseInt(time[0]), Integer.parseInt(time[1]))
                 } else {
                     cancelAlarm()
                 }
@@ -204,6 +206,8 @@ class UserSettingViewModel (
                 add(Calendar.DAY_OF_MONTH, 1)
             }
         }
+
+        Log.d("GAEGUL", "setAlarm: ${calendar.time}")
 
         alarmManager?.setRepeating(
             AlarmManager.RTC_WAKEUP,
