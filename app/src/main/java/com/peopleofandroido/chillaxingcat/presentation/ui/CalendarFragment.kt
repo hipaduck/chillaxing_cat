@@ -69,6 +69,11 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                                 logd("try to initial the calendar view...")
                                 initializeCalendarView()
                             }
+                            "notify_date" -> {
+                                action.localDate?.let {
+                                    binding.calendarviewCalendar.notifyDateChanged(it)
+                                }
+                            }
                         }
                     }
                 }
