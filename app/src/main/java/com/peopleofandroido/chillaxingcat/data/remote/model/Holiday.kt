@@ -7,8 +7,6 @@ import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 import com.peopleofandroido.chillaxingcat.domain.model.DayInfo
-import com.peopleofandroido.chillaxingcat.domain.model.DayInfoList
-import java.util.*
 
 data class HolidayResponse(
     @SerializedName("response")
