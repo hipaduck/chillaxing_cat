@@ -5,13 +5,13 @@ import android.text.TextUtils
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.peopleofandroido.base.common.Event
 import com.peopleofandroido.base.common.NavManager
 import com.peopleofandroido.base.util.NotNullMutableLiveData
 import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.domain.UseCases
 import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
+import com.peopleofandroido.chillaxingcat.presentation.enums.TodayStatus
 import com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragmentDirections
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,26 +25,9 @@ class MainMenuViewModel(
     private val navManager : NavManager,
     private val useCases: UseCases
 ) : AndroidViewModel(application) {
-    private val _actionEvent: NotNullMutableLiveData<Event<Action>> = NotNullMutableLiveData(Event(Action()))
-    val actionEvent: NotNullMutableLiveData<Event<Action>>
-        get() = _actionEvent
-
-    private val _isStartButtonVisible: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
-    val isStartButtonVisible: NotNullMutableLiveData<Boolean>
-        get() = _isStartButtonVisible
-    private val _isPauseButtonVisible: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(false)
-    val isPauseButtonVisible: NotNullMutableLiveData<Boolean>
-        get() = _isPauseButtonVisible
-    private val _isResumeButtonVisible: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(false)
-    val isResumeButtonVisible: NotNullMutableLiveData<Boolean>
-        get() = _isResumeButtonVisible
-    private val _isStopButtonVisible: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(false)
-    val isStopButtonVisible: NotNullMutableLiveData<Boolean>
-        get() = _isStopButtonVisible
-    private val _catImage: NotNullMutableLiveData<Int> = NotNullMutableLiveData(R.drawable.cat_normal)
-    val catImage: NotNullMutableLiveData<Int>
-        get() = _catImage
-
+    private val _catStatus: NotNullMutableLiveData<TodayStatus> = NotNullMutableLiveData(TodayStatus.Normal)
+    val catStatus: NotNullMutableLiveData<TodayStatus>
+        get() = _catStatus
 
     init {
         checkFirstTime()
@@ -146,7 +129,7 @@ class MainMenuViewModel(
                     val todayStatusResult = useCases.getTodayStatus()
                     todayStatusResult.data?.let { todayStatus ->
                         logd("getTodayStatus(): $todayStatus")
-                        changeUiForTodayState(todayStatus)
+                        _catStatus.value = TodayStatus.typeOf(todayStatus)
                     }
                 } else {
                     //이전 기록 db 저장
@@ -160,7 +143,7 @@ class MainMenuViewModel(
 
                     storeTodayDate(todayDate)
                     storeTodayHistory("")
-                    storeTodayStatus("")
+                    storeTodayStatus("normal")
                 }
             }
             logd("getTodayDate()::data: ${todayDateResult.data}, message: ${todayDateResult.message}, status: ${todayDateResult.status}")
@@ -186,10 +169,9 @@ class MainMenuViewModel(
     }
 
     fun startResting() {
-        val status = "rest"
-        storeTodayStatus(status)
+        _catStatus.value = TodayStatus.Rest
+        storeTodayStatus(_catStatus.value.type)
         storeTodayDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")))
-        changeUiForTodayState(status)
         //TimeStamp 저장
         viewModelScope.launch() {
             storeTodayHistory(System.currentTimeMillis().toString())
@@ -197,9 +179,8 @@ class MainMenuViewModel(
     }
 
     fun pauseResting() {
-        val status = "pause"
-        storeTodayStatus("pause")
-        changeUiForTodayState(status)
+        _catStatus.value = TodayStatus.Pause
+        storeTodayStatus(_catStatus.value.type)
         //TimeStamp 저장
         viewModelScope.launch() {
             val getTodayHistoryResult = useCases.getTodayHistory()
@@ -213,9 +194,8 @@ class MainMenuViewModel(
     }
 
     fun resumeResting() {
-        val status = "rest"
-        storeTodayStatus("rest")
-        changeUiForTodayState(status)
+        _catStatus.value = TodayStatus.Rest
+        storeTodayStatus(_catStatus.value.type)
         //TimeStamp 저장
         viewModelScope.launch() {
             val getTodayHistoryResult = useCases.getTodayHistory()
@@ -235,8 +215,8 @@ class MainMenuViewModel(
             getTodayStatus.data?.let { status ->
                 logd("getTodayStatus(): $status")
                 if (status != "finish") {
-                    storeTodayStatus("finish")
-                    changeUiForTodayState("finish")
+                    _catStatus.value = TodayStatus.Finish
+                    storeTodayStatus(_catStatus.value.type)
 
                     val getTodayHistoryResult = useCases.getTodayHistory()
                     getTodayHistoryResult.data?.let { todayHistory ->
@@ -266,39 +246,6 @@ class MainMenuViewModel(
                 } else {
                     Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.main_resting_finished_toast_message), Toast.LENGTH_SHORT).show()
                 }
-            }
-        }
-    }
-
-    private fun changeUiForTodayState (state: String) {
-        when(state) {
-            "" -> {
-                _isStartButtonVisible.value = true
-                _isPauseButtonVisible.value = false
-                _isResumeButtonVisible.value = false
-                _isStopButtonVisible.value = false
-                _catImage.value = R.drawable.cat_normal
-            }
-            "rest" -> {
-                _isStartButtonVisible.value = false
-                _isPauseButtonVisible.value = true
-                _isResumeButtonVisible.value = false
-                _isStopButtonVisible.value = true
-                _catImage.value = R.drawable.cat_home
-            }
-            "pause" -> {
-                _isStartButtonVisible.value = false
-                _isPauseButtonVisible.value = false
-                _isResumeButtonVisible.value = true
-                _isStopButtonVisible.value = true
-                _catImage.value = R.drawable.cat_work
-            }
-            "finish" -> {
-                _isStartButtonVisible.value = false
-                _isPauseButtonVisible.value = false
-                _isResumeButtonVisible.value = false
-                _isStopButtonVisible.value = true
-                _catImage.value = R.drawable.cat_sleep
             }
         }
     }
