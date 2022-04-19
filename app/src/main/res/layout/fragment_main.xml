@@ -15,7 +15,8 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.MainMenuFragment"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        style="@style/Theme.ChillaxingCat.FragmentBackground">
         <ImageView
             android:id="@+id/iv_main_cat"
             android:layout_width="200dp"

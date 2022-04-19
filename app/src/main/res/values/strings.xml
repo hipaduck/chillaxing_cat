@@ -10,6 +10,7 @@
     <string name="days_of_week_name_sat">SAT</string>
     <string name="total_count_time_to_read">총 %1$s시간 %2$s분</string>
     <string name="toolbar_setting">설정</string>
+    <string name="toolbar_calendar">달력</string>
     <string name="toolbar_initialize">초기 설정</string>
     <string name="setting_modify_user_info">사용자 설정 정보 수정</string>
     <string name="setting_go_to_rate_the_app">앱 평가하러 가기</string>

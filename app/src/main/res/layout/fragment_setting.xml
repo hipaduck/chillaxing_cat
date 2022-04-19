@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.SettingFragment">
+        tools:context=".presentation.ui.SettingFragment"
+        style="@style/Theme.ChillaxingCat.FragmentBackground">
         <include
             android:id="@+id/setting_toolbar"
             android:layout_width="match_parent"

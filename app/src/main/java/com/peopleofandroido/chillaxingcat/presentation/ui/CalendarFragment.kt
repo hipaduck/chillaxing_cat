@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
@@ -59,6 +60,7 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.calendarToolbar.basicToolbarBack.setOnClickListener { findNavController().navigateUp() }
 
         binding.vm?.actionEvent?.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { action ->

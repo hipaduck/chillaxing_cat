@@ -2,9 +2,9 @@ package com.peopleofandroido.chillaxingcat.data.remote.model
 
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
+import com.peopleofandroido.base.data.Item
 import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 import com.peopleofandroido.chillaxingcat.domain.model.DayInfo
 
@@ -29,11 +29,6 @@ data class Items (
     val pageNo : Int,
     @SerializedName("totalCount")
     val totalCount : Int,
-)
-
-data class Item (
-    @SerializedName("item")
-    val items : JsonArray,
 )
 
 internal fun Item.toDateModel(): List<DateModel> {

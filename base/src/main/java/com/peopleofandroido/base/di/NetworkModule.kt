@@ -1,6 +1,9 @@
 package com.peopleofandroido.base.di
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonArray
+import com.google.gson.JsonDeserializer
+import com.peopleofandroido.base.data.Item
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -8,7 +11,6 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 private const val MAX_CACHE_SIZE = 20L * 1024 * 1024 // 20MB
@@ -26,12 +28,35 @@ val networkModule = module {
 
     //Gson
     single {
-        GsonBuilder().setLenient().create()
-    }
-
-    //Scalars
-    single {
-
+        GsonBuilder().
+        setLenient()
+            .registerTypeAdapter(Item::class.java, JsonDeserializer { json, typeOfT, context ->
+                when {
+                    json?.isJsonArray == true -> {
+                        Item(json.asJsonArray)
+                    }
+                    json?.isJsonObject == true -> {
+                        val itemsObject = json.asJsonObject
+                        val itemJsonElement = itemsObject.get("item")
+                        when {
+                            itemJsonElement.isJsonObject -> {
+                                val jsonArray = JsonArray()
+                                jsonArray.add(itemJsonElement.asJsonObject)
+                                Item(jsonArray)
+                            }
+                            itemJsonElement.isJsonArray -> {
+                                Item(itemJsonElement.asJsonArray)
+                            }
+                            else -> {
+                                Item(JsonArray())
+                            }
+                        }
+                    }
+                    else -> {
+                        Item(JsonArray())
+                    }
+                }
+            }).create()
     }
 
     //OkHttpClient
@@ -54,8 +79,6 @@ val networkModule = module {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(get() as OkHttpClient)
-//            .addConverterFactory(NullOnEmptyConverterFactory())
-            .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(get()))
             .build()
     }
