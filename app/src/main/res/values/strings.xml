@@ -51,4 +51,7 @@
     <string name="main_resting_pause">일시중지</string>
     <string name="main_resting_resume">재개</string>
     <string name="main_resting_stop">쉬는 시간 끝</string>
+    <string name="label_public_holiday">공휴일</string>
+    <string name="text_present_decimal_date">D-%s</string>
+    <string name="label_loading">로딩중</string>
 </resources>

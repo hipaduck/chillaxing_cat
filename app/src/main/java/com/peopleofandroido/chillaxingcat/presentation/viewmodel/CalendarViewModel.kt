@@ -13,10 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class CalendarViewModel(
     private val navManager : NavManager,
@@ -141,7 +138,12 @@ class CalendarViewModel(
                     for (dateModel in it) {
                         if (dateModel.id.toString().length >= 8) {
                             logd("received: ${LocalDate.parse(dateModel.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))}")
-                            holidaysMap[LocalDate.parse(dateModel.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))] = dateModel.name
+                            val localDate = LocalDate.parse(dateModel.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
+                            holidaysMap[localDate] = dateModel.name
+
+                            withContext(Dispatchers.Main) {
+                                _actionEvent.value = Event(Action.CalendarAction("notify_date", localDate))
+                            }
                         }
                     }
                 }
@@ -154,6 +156,6 @@ class CalendarViewModel(
 
     open class Action {
         class EventAction(val type: String): Action()
-        class CalendarAction(val type: String): Action()
+        class CalendarAction(val type: String, val localDate: LocalDate? = null): Action()
     }
 }

@@ -32,8 +32,8 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:textSize="16sp"
-            android:text="공휴일"
-            tools:text="공휴일"
+            android:text="@{vm == null ? @string/label_loading : @string/label_public_holiday}"
+            tools:text="@string/label_public_holiday"
             />
         <TextView
             android:id="@+id/tv_main_public_holiday_remains_value"
@@ -42,8 +42,10 @@
             app:layout_constraintStart_toEndOf="@+id/tv_main_public_holiday_remains_label"
             app:layout_constraintTop_toTopOf="@+id/tv_main_public_holiday_remains_label"
             android:textSize="16sp"
+            android:text="@{vm == null ? @string/label_loading : @string/text_present_decimal_date(vm.holidayDDayFromToday)}"
             tools:text="D-100"
             />
+        <!--
         <TextView
             android:id="@+id/tv_main_personal_holiday_remains_label"
             android:layout_width="60dp"
@@ -64,6 +66,7 @@
             android:textSize="16sp"
             tools:text="D-123"
             />
+            -->
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
