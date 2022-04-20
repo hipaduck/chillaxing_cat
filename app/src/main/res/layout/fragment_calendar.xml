@@ -12,8 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".presentation.ui.CalendarFragment">
+        tools:context=".presentation.ui.CalendarFragment"
+        style="@style/Theme.ChillaxingCat.FragmentBackground">
         <!-- top layout of calendar view -->
+        <include
+            android:id="@+id/calendar_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="1dp"
+            layout="@layout/toolbar_calendar" />
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbarlayout_calendar_top"
             android:layout_width="match_parent"

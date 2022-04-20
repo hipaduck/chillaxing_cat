@@ -14,6 +14,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
@@ -45,6 +47,7 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
     private val today = LocalDate.now()
     private val monthTitleFormatter = DateTimeFormatter.ofPattern("MMMM")
     var i = 0
+    var calendarInitialized = false
 //    var dayViewContainer: DayViewContainer? = null
 
     override fun onCreateView(
@@ -59,6 +62,7 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.calendarToolbar.basicToolbarBack.setOnClickListener { findNavController().navigateUp() }
 
         binding.vm?.actionEvent?.observe(viewLifecycleOwner) { event ->
             event.getContentIfNotHandled()?.let { action ->
@@ -68,10 +72,13 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                             "fill_days" -> {
                                 logd("try to initial the calendar view...")
                                 initializeCalendarView()
+                                calendarInitialized = true
                             }
-                            "notify_date" -> {
-                                action.localDate?.let {
-                                    binding.calendarviewCalendar.notifyDateChanged(it)
+                            "notify_month" -> {
+                                action.yearMonth?.let {
+                                    if (calendarInitialized) {
+                                        binding.calendarviewCalendar.notifyMonthChanged(it)
+                                    }
                                 }
                             }
                         }
@@ -138,13 +145,12 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                 container.day = day
                 val textView = container.textView
                 textView.text = day.date.dayOfMonth.toString()
+
                 if (day.owner == DayOwner.THIS_MONTH) {
-                    logd("holidaysMap: ${binding.vm?.holidaysMap?.size}")
-                    logd("day.date: ${day.date}")
                     binding.vm?.let { vm ->
                         when {
                             !vm.chillaxingLengthInDayMap.containsKey(day.date) -> { // 키 자체가 없다면 기록이 없는 것
-
+                                textView.background = null
                             }
                             vm.criteriaChillaxingLength <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
@@ -185,13 +191,12 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                         }
                     }
 
-                    // 기록이 있는 날짜를 표시하기 위함
-//                    if (binding.vm?.historicalDates?.contains(day.date) == true) {
-//                        val layoutParams = textView.layoutParams as ConstraintLayout.LayoutParams
-//                        layoutParams.setMargins(10.px)
-//                        textView.layoutParams = layoutParams
-//                        textView.setBackgroundResource(R.drawable.line_circle)
-//                    }
+
+                    logd("holidaysMap: ${binding.vm?.holidaysMap?.size}")
+                    logd("vm.chillaxingLengthInDayMap: ${binding.vm?.chillaxingLengthInDayMap?.size}")
+                    logd("day.date: ${day.date}")
+
+
                     // 오늘 기준으로 미래 날짜에 대한 표현
                     if (LocalDate.now() < day.date) {
                         textView.setTextColorRes(R.color.calendarWeekdaysFuture)
@@ -199,10 +204,16 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                         textView.setTextColorRes(R.color.calendarWeekdaysPast)
                     }
 
-                    if (day.date.dayOfWeek == DayOfWeek.SATURDAY) {
-                        textView.setTextColorRes(R.color.calendarSaturday)
-                    } else if(day.date.dayOfWeek == DayOfWeek.SUNDAY || binding.vm?.holidaysMap?.contains(day.date) == true) {
-                        textView.setTextColorRes(R.color.calendarSundayHoliday)
+                    when {
+                        binding.vm?.holidaysMap?.contains(day.date) == true -> {
+                            textView.setTextColorRes(R.color.calendarSundayHoliday)
+                        }
+                        day.date.dayOfWeek == DayOfWeek.SATURDAY -> {
+                            textView.setTextColorRes(R.color.calendarSaturday)
+                        }
+                        day.date.dayOfWeek == DayOfWeek.SUNDAY -> {
+                            textView.setTextColorRes(R.color.calendarSundayHoliday)
+                        }
                     }
 
                     if (today == day.date) { // 오늘 날짜 체크 표시
@@ -226,9 +237,9 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
             val yyyymm = calMonth.yearMonth.toString().replace("-", "")
             binding.vm?.loadComponentInCalendar("${yyyymm.substring(0,4)}${yyyymm.substring(4,6)}",
                 "${yyyymm.substring(0,4)}${yyyymm.substring(4,6)}", false)
-//            logd("calendarMonth: $calMonth")
-//            logd("yearMonth: ${calMonth.yearMonth.toString().replace("-", "")}")
-//            logd("calendarMonth2: ${calMonth.month} ${calMonth.year} ${calMonth.yearMonth} ${calMonth.weekDays.size}")
+//            logd("AA calendarMonth: $calMonth")
+//            logd("AA yearMonth: ${calMonth.yearMonth.toString().replace("-", "")}")
+//            logd("AA calendarMonth2: ${calMonth.month} ${calMonth.year} ${calMonth.yearMonth} ${calMonth.weekDays.size}")
             if (binding.calendarviewCalendar.maxRowCount == 6) {
                 binding.tvCalendarCurrentYearText.text = calMonth.yearMonth.year.toString()
                 binding.tvCalendarCurrentMonthText.text = monthTitleFormatter.format(calMonth.yearMonth)

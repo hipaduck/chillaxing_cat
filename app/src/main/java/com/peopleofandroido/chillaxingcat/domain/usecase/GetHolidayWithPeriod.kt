@@ -12,7 +12,7 @@ class GetHolidayWithPeriod(
     private val resultHandler: ResultHandler
 ) {
     suspend operator fun invoke(startPeriod: String, endPeriod: String): Result<List<DateModel>> {
-        var result: ResultModel<List<DateModel>>
+        val result: ResultModel<List<DateModel>>
         try {
             result = repository.getHolidayWithPeriod(startPeriod, endPeriod)
 

@@ -7,18 +7,25 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.text.TextUtils
 import androidx.core.app.NotificationCompat
+import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.chillaxingcat.presentation.MainActivity
 
 
 class AlarmReceiver : BroadcastReceiver() {
-    var notificationManager: NotificationManager? = null
+    private var notificationManager: NotificationManager? = null
 
     override fun onReceive(context: Context, intent: Intent) {
         notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        var intentText = intent.getStringExtra("reminder_text")
+        if (intentText.isNullOrEmpty()) {
+            intentText = context.getString(R.string.alarm_text)
+        }
+        logd("intentText: $intentText")
 
         createNotificationChannel(context)
-        deliverNotification(context)
+        deliverNotification(context, intentText)
     }
 
     private fun createNotificationChannel(context: Context){
@@ -43,7 +50,7 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 
-    private fun deliverNotification(context: Context){
+    private fun deliverNotification(context: Context, reminderText: String){
         val contentIntent = Intent(context, MainActivity::class.java)
         val contentPendingIntent = PendingIntent.getActivity(
             context,
@@ -61,7 +68,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher_foreground) // 아이콘
             .setContentTitle(context.getText(R.string.alarm_title)) // 제목
-            .setContentText(context.getText(R.string.alarm_text)) // 내용
+            .setContentText(reminderText) // 내용
             .setContentIntent(contentPendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true)

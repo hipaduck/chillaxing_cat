@@ -10,6 +10,7 @@
     <string name="days_of_week_name_sat">SAT</string>
     <string name="total_count_time_to_read">총 %1$s시간 %2$s분</string>
     <string name="toolbar_setting">설정</string>
+    <string name="toolbar_calendar">달력</string>
     <string name="toolbar_initialize">초기 설정</string>
     <string name="setting_modify_user_info">사용자 설정 정보 수정</string>
     <string name="setting_go_to_rate_the_app">앱 평가하러 가기</string>
@@ -21,8 +22,8 @@
     <string name="user_setting_set_goal_resting_time_title">목표 쉬는 시간 지정</string>
     <string name="user_setting_set_reminder_text_title">리마인더 문구 지정</string>
     <string name="user_setting_reminder_text_hint">퇴근할 시간이다냥 ~~ </string>
-    <string name="alarm_title">퇴근할 시간이다냥..!!</string>
-    <string name="alarm_text">퇴근 안하는고냥? 쉬고싶다냥..</string>
+    <string name="alarm_title">이제 쉬는 시간이다냥..!!</string>
+    <string name="alarm_text">쉬고싶다냥..</string>
     <string name="user_setting_toast_saved">저장이 완료되었습니다 :)</string>
     <string name="user_setting_toast_saving">저장중입니다.</string>
     <string name="user_setting_toast_input_required">설정 값을 입력해 주세요 :)</string>
@@ -42,9 +43,8 @@
     <string name="email_text">기기명 : \n안드로이드 OS : \n문제/문의/건의사항 : \n</string>
     <string name="developer_name_1">흰냥이</string>
     <string name="developer_name_2">회색냥이</string>
-    <string name="developer_introduce">
-        JACKSON: Hello, I\'m Jackson! I\'m the developer who made this app! \nHuh… Nice to meet you girl! Oops!\n\nMARSHAL: My name is Marshal, to meet you \nToday I\'m lucky! anyway! Please take care from now on~\n
-         \nLeave calligraphy on the picture you want to remember.\nComplete the precious moment! anyway! \n\nI\'ll also recommend sensitive classic writings~ Oops~
+    <string name="developer_introduce"> 흰냥이 : 안녕하냥? 흰냥이다냥! 쉬는 시간은 매우 중요하다냥.. \n본인에게 오롯이 쏟아본 시간이 몇시간이나 되냥? \n회사도 학교도 물론 중요하지만 제일 중요한 것은 내일을 위한 충분한 휴식이다냥!
+        \n\n회색냥이 : 우리는 쉬는 것을 매우 좋아하옹. 그래서 매일 쉬고싶은고양~ \n근데 매일 바쁘고, 쉬는 방법도 잘 몰라서 항상 찌들어 살고 있는 것을 발견했다지 뭐양~ \n나도 쉬고 싶지만, 같이 하고 싶은 마음에 만들게 되었다옹! 매일을 파란색으로 칠하는 그날까지 화이팅!
     </string>
     <string name="main_resting_finished_toast_message">오늘 쉬는시간이 이미 종료되었습니다 :)</string>
     <string name="main_resting_start">쉬는 시간 시작</string>

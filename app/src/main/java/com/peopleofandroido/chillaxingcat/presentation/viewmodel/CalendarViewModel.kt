@@ -9,10 +9,12 @@ import com.peopleofandroido.base.util.NotNullMutableLiveData
 import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.base.util.loge
 import com.peopleofandroido.chillaxingcat.domain.UseCases
+import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 class CalendarViewModel(
@@ -95,6 +97,21 @@ class CalendarViewModel(
                 withContext(Dispatchers.Main) {
                     _actionEvent.value = Event(Action.CalendarAction("fill_days"))
                 }
+            } else {
+                withContext(Dispatchers.Main) {
+                    val startDate = LocalDate.parse("${startMonth}01", DateTimeFormatter.ofPattern("yyyyMMdd"))
+                    val endDate = LocalDate.parse("${endMonth}01", DateTimeFormatter.ofPattern("yyyyMMdd"))
+                    var loopDate = startDate
+                    while (loopDate <= endDate) {
+                        val date = loopDate.format(DateTimeFormatter.ofPattern("yyyyMM"))
+
+                        val yearMonth = YearMonth.parse(date.toString(), DateTimeFormatter.ofPattern("yyyyMM"))
+                        _actionEvent.value = Event(Action.CalendarAction("notify_month", yearMonth))
+                        logd("yearMonth notified: $yearMonth")
+
+                        loopDate = loopDate.plusMonths(1)
+                    }
+                }
             }
         }
     }
@@ -106,7 +123,7 @@ class CalendarViewModel(
             Status.SUCCESS -> {
                 // 비우고 시작
 //                historicalDates.clear()
-                chillaxingLengthInDayMap.clear()
+//                chillaxingLengthInDayMap.clear()
                 logd("list: ${result.data?.size}")
                 result.data?.let {
                     for (model in it) {
@@ -140,10 +157,6 @@ class CalendarViewModel(
                             logd("received: ${LocalDate.parse(dateModel.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))}")
                             val localDate = LocalDate.parse(dateModel.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
                             holidaysMap[localDate] = dateModel.name
-
-                            withContext(Dispatchers.Main) {
-                                _actionEvent.value = Event(Action.CalendarAction("notify_date", localDate))
-                            }
                         }
                     }
                 }
@@ -156,6 +169,6 @@ class CalendarViewModel(
 
     open class Action {
         class EventAction(val type: String): Action()
-        class CalendarAction(val type: String, val localDate: LocalDate? = null): Action()
+        class CalendarAction(val type: String, val yearMonth: YearMonth? = null): Action()
     }
 }

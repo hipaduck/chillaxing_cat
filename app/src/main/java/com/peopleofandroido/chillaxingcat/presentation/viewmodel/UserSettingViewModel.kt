@@ -6,6 +6,8 @@ import android.app.PendingIntent.FLAG_MUTABLE
 import android.app.PendingIntent.getBroadcast
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -155,14 +157,14 @@ class UserSettingViewModel (
         }
     }
 
-    private suspend fun storeNotificationSetting(notificationEnabled : Boolean) {
+    private suspend fun storeAndSetNotification(notificationEnabled : Boolean, reminderText: String) {
         val result = useCases.putNotificationStatus(notificationEnabled)
         result.data?.let {
             if (it) {
                 logd("putNotificationStatus(): success")
-                this@UserSettingViewModel._notificationEnabled.value = notificationEnabled
                 if (notificationEnabled) {
-                    setAlarm(Integer.parseInt(_goalRestingTimeHour.value), Integer.parseInt(_goalRestingTimeMinute.value))
+                    val time = _reminderTime.value.split(":")
+                    setAlarm(Integer.parseInt(time[0]), Integer.parseInt(time[1]), reminderText)
                 } else {
                     cancelAlarm()
                 }
@@ -184,13 +186,14 @@ class UserSettingViewModel (
         alarmManager?.cancel(pendingIntent)
     }
 
-    private fun setAlarm(hour: Int, minute: Int) {
+    private fun setAlarm(hour: Int, minute: Int, reminderText: String) {
         if (!_notificationEnabled.value) return
 
         //AlarmReceiver에 값 전달
         val receiverIntent = Intent(getApplication<Application>(), AlarmReceiver::class.java)
+        receiverIntent.putExtra("reminder_text", reminderText)
+        logd("ReminderText : $reminderText")
         val pendingIntent = getBroadcast(getApplication<Application>(), 0, receiverIntent, FLAG_MUTABLE)
-
         //alarm 등록 전, 이전 notification cancel
         alarmManager?.cancel(pendingIntent)
 
@@ -205,12 +208,27 @@ class UserSettingViewModel (
             }
         }
 
+        Log.d("GAEGUL", "setAlarm: ${calendar.time}")
+
         alarmManager?.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
             AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            alarmManager?.setExactAndAllowWhileIdle(
+//                AlarmManager.RTC_WAKEUP,
+//                calendar.timeInMillis,
+//                pendingIntent
+//            )
+//        } else {
+//            alarmManager?.setExact(
+//                AlarmManager.RTC_WAKEUP,
+//                calendar.timeInMillis,
+//                pendingIntent
+//            )
+//        }
     }
 
     fun saveAll() {
@@ -227,7 +245,7 @@ class UserSettingViewModel (
                     Integer.parseInt(_goalRestingTimeMinute.value)
                 )
                 storeReminderText(_reminderText.value)
-                storeNotificationSetting(_notificationEnabled.value)
+                storeAndSetNotification(_notificationEnabled.value, _reminderText.value)
                 Toast.makeText(
                     getApplication(),
                     getApplication<Application>().getText(R.string.user_setting_toast_saving),

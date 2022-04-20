@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View"/>
+        <import type="com.peopleofandroido.chillaxingcat.presentation.enums.TodayStatus" />
         <variable
             name="vm"
             type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.MainMenuViewModel" />
@@ -14,11 +15,13 @@
         android:layout_height="match_parent"
         tools:context=".presentation.ui.MainMenuFragment"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        style="@style/Theme.ChillaxingCat.FragmentBackground">
         <ImageView
+            android:id="@+id/iv_main_cat"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/cat_normal"
+            app:imgRes="@{vm.catStatus.symbolImageDrawable}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,7 +116,7 @@
             android:orientation="vertical"
             android:onClick="@{()->vm.startResting()}"
             android:layout_margin="16dp"
-            android:visibility="@{vm.isStartButtonVisible ? View.VISIBLE : View.GONE}">
+            android:visibility="@{vm.catStatus == TodayStatus.Normal ? View.VISIBLE : View.GONE}">
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -141,7 +144,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_margin="16dp"
-            android:visibility="@{vm.isResumeButtonVisible ? View.VISIBLE : View.GONE}">
+            android:visibility="@{vm.catStatus == TodayStatus.Pause ? View.VISIBLE : View.GONE}">
             <ImageView
                 android:layout_width="80dp"
                 android:layout_height="80dp"
@@ -169,7 +172,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="16dp"
-                android:visibility="@{vm.isPauseButtonVisible ? View.VISIBLE : View.GONE}">
+                android:visibility="@{vm.catStatus == TodayStatus.Rest ? View.VISIBLE : View.GONE}">
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -197,7 +200,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_margin="16dp"
-                android:visibility="@{vm.isStopButtonVisible ? View.VISIBLE : View.GONE}">
+                android:visibility="@{vm.catStatus == TodayStatus.Normal ? View.GONE : View.VISIBLE}">
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
