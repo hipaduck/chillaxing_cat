@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import java.lang.Exception
 
-class GetGoalRestingTime(
+class GetGoalRestTime(
     private val repository: SettingsRepository,
     private val resultHandler: ResultHandler
 ) {

@@ -32,20 +32,6 @@ class FindOutRestDaysInMonth(
                 loopDate = loopDate.plusMonths(1)
             }
 
-//            val mockList = mutableListOf<Int>()
-//            mockList.add("20220302".toInt())
-//            mockList.add("20220321".toInt())
-//            mockList.add("20220327".toInt())
-//            mockList.add("20220402".toInt())
-//            mockList.add("20220407".toInt())
-//            mockList.add("20220409".toInt())
-//            mockList.add("20220215".toInt())
-//            mockList.add("20220201".toInt())
-//            mockList.add("20220202".toInt())
-//            mockList.add("20220203".toInt())
-//            mockList.add("20220218".toInt())
-//            mockList.add("20220228".toInt())
-//            mockList.add("${endMonth}20".toInt())
             result = ResultModel(0, "success", resultList)
         } catch (e: Exception) {
             e.printStackTrace()

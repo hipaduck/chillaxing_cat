@@ -64,7 +64,7 @@ class UserSettingViewModel (
     }
 
     private fun loadNotificationStatus() {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             val result = useCases.getNotificationStatus()
             result.data?.let { it ->
                 _notificationEnabled.value = it
@@ -74,7 +74,7 @@ class UserSettingViewModel (
     }
 
     private fun loadReminderTime() {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             val result = useCases.getReminderTime()
             result.data?.let { it ->
                 if (it.isNotEmpty()) {
@@ -86,7 +86,7 @@ class UserSettingViewModel (
     }
 
     private fun loadReminderText() {
-        viewModelScope.launch() {
+        viewModelScope.launch {
             val result = useCases.getReminderText()
             result.data?.let { it ->
                 if (it.isNotEmpty()) {

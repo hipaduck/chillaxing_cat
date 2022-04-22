@@ -1,13 +1,10 @@
 package com.peopleofandroido.chillaxingcat.data.repository
 
-import android.util.Log
 import com.google.gson.Gson
 import com.peopleofandroido.base.domain.model.ResultModel
-import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.base.util.loge
 import com.peopleofandroido.chillaxingcat.BuildConfig
 import com.peopleofandroido.chillaxingcat.data.dao.HolidayDao
-import com.peopleofandroido.chillaxingcat.data.entity.DayOff
 import com.peopleofandroido.chillaxingcat.data.entity.Holiday
 import com.peopleofandroido.chillaxingcat.data.remote.api.HolidayApi
 import com.peopleofandroido.chillaxingcat.data.remote.model.toDateModel
@@ -90,44 +87,5 @@ internal class HolidayRepositoryImpl(
         }
 
         return ResultModel(0, "success", holidayList)
-    }
-
-    override suspend fun addHoliday(dateModel: DateModel): ResultModel<String> {
-        var failMessage = ""
-
-        val result: Boolean = try {
-            holidayDao.insert(Holiday.fromDomainModel(dateModel))
-            true
-        } catch (e: Exception) {
-            failMessage = e.message!!
-            false
-        }
-
-        return if(result) {
-            ResultModel(0, "success", "success")
-        } else {
-            ResultModel(1, failMessage, "while adding ${dateModel.id.toString()}")
-        }
-    }
-
-    override suspend fun getHoliday(id: Int): ResultModel<DateModel> {
-        var failMessage = ""
-        val holiday: Holiday?
-        var dateModel: DateModel? = null
-
-        val result: Boolean = try {
-            holiday = holidayDao.getHoliday(id)
-            dateModel = DateModel(holiday.id, holiday.name)
-            true
-        } catch (e: Exception) {
-            failMessage = e.message!!
-            false
-        }
-
-        return if(result) {
-            ResultModel(0, "success", dateModel)
-        } else {
-            ResultModel(1, failMessage, dateModel)
-        }
     }
 }

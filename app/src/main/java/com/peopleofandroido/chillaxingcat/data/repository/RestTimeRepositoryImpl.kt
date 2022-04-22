@@ -28,25 +28,6 @@ class RestTimeRepositoryImpl(private val restingTimeDao: RestTimeDao) : RestTime
         }
     }
 
-
-    override suspend fun editRestingTime(id: Int, history: String): ResultModel<String> {
-        var failMessage = ""
-
-        val result: Boolean = try {
-            restingTimeDao.editRestingTime(id, history)
-            true
-        } catch (e: Exception) {
-            failMessage = e.message!!
-            false
-        }
-
-        return if(result) {
-            ResultModel(0, "success", "success")
-        } else {
-            ResultModel(1, failMessage, "while editing $id")
-        }
-    }
-
     override suspend fun editTotalTime(id: Int, totalTime: Long): ResultModel<Boolean> {
         var failMessage = ""
 
