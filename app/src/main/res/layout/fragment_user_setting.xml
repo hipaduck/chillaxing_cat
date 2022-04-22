@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="vm"
-            type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.UserSettingViewModel" />
+            type="com.hipaduck.chillaxingcat.presentation.viewmodel.UserSettingViewModel" />
     </data>
 
     <LinearLayout

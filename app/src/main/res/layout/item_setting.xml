@@ -9,11 +9,11 @@
 
         <variable
             name="item"
-            type="com.peopleofandroido.chillaxingcat.domain.model.SettingMenuItemModel" />
+            type="com.hipaduck.chillaxingcat.domain.model.SettingMenuItemModel" />
 
         <variable
             name="vm"
-            type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.SettingViewModel" />
+            type="com.hipaduck.chillaxingcat.presentation.viewmodel.SettingViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

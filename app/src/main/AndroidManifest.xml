@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.peopleofandroido.chillaxingcat">
+    package="com.hipaduck.chillaxingcat">
 
     <!-- android:allowBackup="false"는 출시 때 true로 바꾸자 -->
     <application
-        android:name=".ChillaxingCatApplication"
-        android:allowBackup="false"
+        android:name="com.hipaduck.chillaxingcat.ChillaxingCatApplication"
+        android:allowBackup="true"
         android:icon="@drawable/splash_cat"
         android:label="@string/app_name"
         android:roundIcon="@drawable/splash_cat"
@@ -14,14 +14,14 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.ChillaxingCat"
         tools:targetApi="m">
-        <activity android:name=".presentation.MainActivity" android:exported="true">
+        <activity android:name="com.hipaduck.chillaxingcat.presentation.MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <receiver android:name=".AlarmReceiver"
+        <receiver android:name="com.hipaduck.chillaxingcat.AlarmReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

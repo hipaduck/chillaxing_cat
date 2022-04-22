@@ -6,7 +6,7 @@
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.SplashFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.MainMenuFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
@@ -40,17 +40,17 @@
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.CalendarFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/dueDateFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.DueDateFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.DueDateFragment"
         android:label="fragment_due_date"
         tools:layout="@layout/fragment_due_date" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.SettingFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
         <action
@@ -62,12 +62,12 @@
     </fragment>
     <fragment
         android:id="@+id/developerFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.DeveloperFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.DeveloperFragment"
         android:label="fragment_developer"
         tools:layout="@layout/fragment_developer" />
     <fragment
         android:id="@+id/userSettingFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.UserSettingFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.UserSettingFragment"
         android:label="UserSettingFragment" >
         <argument
             android:name="input_type"

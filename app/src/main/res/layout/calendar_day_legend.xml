@@ -4,7 +4,7 @@
     <data>
         <variable
             name="vm"
-            type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.CalendarViewModel" />
+            type="com.hipaduck.chillaxingcat.presentation.viewmodel.CalendarViewModel" />
     </data>
     <LinearLayout
         android:id="@+id/layout_legend"

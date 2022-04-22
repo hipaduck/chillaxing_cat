@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View"/>
-        <import type="com.peopleofandroido.chillaxingcat.presentation.enums.TodayStatus" />
+        <import type="com.hipaduck.chillaxingcat.presentation.enums.TodayStatus" />
         <variable
             name="vm"
-            type="com.peopleofandroido.chillaxingcat.presentation.viewmodel.MainMenuViewModel" />
+            type="com.hipaduck.chillaxingcat.presentation.viewmodel.MainMenuViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
