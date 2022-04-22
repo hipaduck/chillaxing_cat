@@ -208,7 +208,7 @@ class UserSettingViewModel (
             }
         }
 
-        Log.d("GAEGUL", "setAlarm: ${calendar.time}")
+        logd("setAlarm: ${calendar.time}")
 
         alarmManager?.setRepeating(
             AlarmManager.RTC_WAKEUP,

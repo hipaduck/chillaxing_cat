@@ -1,6 +1,5 @@
 package com.peopleofandroido.chillaxingcat.presentation.component.calendar
 
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.kizitonwose.calendarview.model.CalendarDay
@@ -15,13 +14,10 @@ class DayViewContainer(view: View, val listener: (day: CalendarDay) -> Unit) : V
     // Will be set when this container is bound
     lateinit var day: CalendarDay
 
-    val selectedDates = mutableSetOf<LocalDate>()
+    private val selectedDates = mutableSetOf<LocalDate>()
 
     init {
         view.setOnClickListener {
-            // Check the day owner as we do not want to select in or out dates.
-            Log.d("TEST", "day.date: ${day.date}")
-            Log.d("TEST", "  selectedDates: ${selectedDates.size}}")
             if (day.owner == DayOwner.THIS_MONTH) {
                 if (selectedDates.contains(day.date)) {
                     selectedDates.remove(day.date)

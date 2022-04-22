@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 import com.peopleofandroido.base.data.Item
+import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.chillaxingcat.domain.model.DateModel
 import com.peopleofandroido.chillaxingcat.domain.model.DayInfo
 
@@ -38,7 +39,7 @@ internal fun Item.toDateModel(): List<DateModel> {
         val itemInfo : DayInfo = Gson().fromJson(jsonElement, DayInfo::class.java)
         if (itemInfo.isHoliday == "Y") {
             dateModelList.add(DateModel(itemInfo.locdate, itemInfo.dateName))
-            Log.e("GAEGUL", "item : ${itemInfo.dateName} / ${itemInfo.locdate} / ${itemInfo.isHoliday}")
+//            logd("item : ${itemInfo.dateName} / ${itemInfo.locdate} / ${itemInfo.isHoliday}")
         }
     }
 

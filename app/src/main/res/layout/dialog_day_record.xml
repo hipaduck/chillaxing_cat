@@ -95,7 +95,6 @@
                 android:id="@+id/iv_dialog_day_record_save"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:text="@string/common_save"
                 android:textSize="20sp"
                 android:gravity="center"
                 app:layout_constraintRight_toRightOf="parent"
@@ -122,6 +121,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="100dp"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:lineSpacingExtra="8dp"
+                android:gravity="center_horizontal"
                 tools:text="Dummy data\nDummy data\nDummy data\nDummy data\nDummy data\nDummy data"
                 />
         </LinearLayout>

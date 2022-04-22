@@ -1,11 +1,9 @@
 package com.peopleofandroido.base.util
 
-import android.app.Activity
 import android.content.res.Resources
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
 import com.peopleofandroido.base.domain.model.ResultModel
 import retrofit2.Response
@@ -14,52 +12,23 @@ fun Any.logd(msg: String) {
     Log.d("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
 }
 
-fun Fragment.logd(tag: String, msg: String) {
+fun Any.logd(tag: String, msg: String) {
     Log.d("ChillaxingCat", "[$tag] : $msg")
 }
-
-fun Fragment.logd(msg: String) {
-    Log.d("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
+fun Any.loge(msg: String, throwable: Throwable? = null) {
+    throwable?.let {
+        Log.e("ChillaxingCat", "[${this::class.java.simpleName}] : $msg", throwable)
+    } ?: run {
+        Log.e("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
+    }
 }
 
-fun Fragment.loge(msg: String) {
-    Log.e("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
-}
-
-fun Fragment.loge(tag: String, msg: String) {
-    Log.e("ChillaxingCat", "[$tag] : $msg")
-}
-
-fun Activity.logd(tag: String, msg: String) {
-    Log.d("ChillaxingCat", "[$tag] : $msg")
-}
-
-fun Activity.logd(msg: String) {
-    Log.d("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
-}
-
-fun Activity.loge(msg: String) {
-    Log.e("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
-}
-
-fun Activity.loge(tag: String, msg: String) {
-    Log.e("ChillaxingCat", "[$tag] : $msg")
-}
-
-fun ViewModel.logd(tag: String, msg: String) {
-    Log.d("ChillaxingCat", "[$tag] : $msg")
-}
-
-fun ViewModel.logd(msg: String) {
-    Log.d("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
-}
-
-fun ViewModel.loge(msg: String) {
-    Log.e("ChillaxingCat", "[${this::class.java.simpleName}] : $msg")
-}
-
-fun ViewModel.loge(tag: String, msg: String) {
-    Log.e("ChillaxingCat", "[$tag] : $msg")
+fun Any.loge(tag: String, msg: String, throwable: Throwable? = null) {
+    throwable?.let {
+        Log.e("ChillaxingCat", "[$tag] : $msg", throwable)
+    } ?: run {
+        Log.e("ChillaxingCat", "[$tag] : $msg")
+    }
 }
 
 fun Fragment.showToast(msg: String) {

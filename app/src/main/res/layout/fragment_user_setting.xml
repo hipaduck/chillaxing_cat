@@ -225,7 +225,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="15dp"
                 android:onClick="@{() -> vm.saveAll()}"
-                android:text="@string/common_modify"
+                android:text="@string/common_save"
                 android:background="@drawable/button_square_round_corner"
                 />
         </LinearLayout>

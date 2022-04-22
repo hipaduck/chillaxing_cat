@@ -8,7 +8,11 @@ import android.view.Window
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.databinding.DialogDayRecordBinding
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class DayDataDialog(private val context: Context, val binding: DialogDayRecordBinding, private val currentDate: LocalDate) {
     private val dialog = BottomSheetDialog(context)
@@ -46,7 +50,20 @@ class DayDataDialog(private val context: Context, val binding: DialogDayRecordBi
             }
 
             if (vm.chillaxingRecordInDayMap.containsKey(currentDate)) {
-                binding.tvDialogDayRecordFullRecords.text = vm.chillaxingRecordInDayMap[currentDate]
+                // |로 데이터간의 간격 구별,  -로 시작 끝 구별
+                val rawText = vm.chillaxingRecordInDayMap[currentDate]?:""
+                val texts = rawText.split("|")
+                var textForPrint = ""
+                texts.forEach { text ->
+                    val periodTexts = text.split("-")
+                    if (periodTexts.size > 1) {
+                        val start = SimpleDateFormat.getTimeInstance().format(Date(periodTexts[0].toLong()))
+                        val end = SimpleDateFormat.getTimeInstance().format(Date(periodTexts[1].toLong()))
+                        //LocalDate.parse("${startMonth}01", DateTimeFormatter.ofPattern("yyyyMMdd"))
+                        textForPrint += "$start - $end\n"
+                    }
+                }
+                binding.tvDialogDayRecordFullRecords.text = textForPrint
             }
         }
 

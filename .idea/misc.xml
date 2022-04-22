@@ -31,6 +31,7 @@
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.13728470111448834" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2866847826086957" />
+        <entry key="app/src/main/res/layout/fragment_user_setting.xml" value="0.1403242147922999" />
       </map>
     </option>
   </component>

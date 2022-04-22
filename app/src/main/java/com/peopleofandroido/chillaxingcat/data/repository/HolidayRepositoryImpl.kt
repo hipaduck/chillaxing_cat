@@ -3,6 +3,8 @@ package com.peopleofandroido.chillaxingcat.data.repository
 import android.util.Log
 import com.google.gson.Gson
 import com.peopleofandroido.base.domain.model.ResultModel
+import com.peopleofandroido.base.util.logd
+import com.peopleofandroido.base.util.loge
 import com.peopleofandroido.chillaxingcat.BuildConfig
 import com.peopleofandroido.chillaxingcat.data.dao.HolidayDao
 import com.peopleofandroido.chillaxingcat.data.entity.DayOff
@@ -73,10 +75,10 @@ internal class HolidayRepositoryImpl(
                         try {
                             holidayDao.insertAll(insertList)
                         } catch (e: Exception) {
-                            Log.e("GAEGUL", "getHolidayWithPeriod: adding error ${e.message}")
+                            loge("getHolidayWithPeriod: adding error", e)
                         }
                     } ?: run {
-                        Log.d("GAEGUL", "getHolidayWithPeriod: response body is null")
+                        loge("getHolidayWithPeriod: response body is null")
                         return ResultModel(1, "request error", arrayListOf())
                     }
                 } else {
