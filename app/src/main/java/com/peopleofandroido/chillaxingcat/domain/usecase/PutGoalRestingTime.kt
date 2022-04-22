@@ -10,7 +10,7 @@ class PutGoalRestingTime(
 ) {
     suspend operator fun invoke(time: String): Result<Boolean> {
         try {
-            repository.updateGoalRestingTime(time)
+            repository.updateGoalRestTime(time)
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

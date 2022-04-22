@@ -3,26 +3,26 @@ package com.peopleofandroido.chillaxingcat.domain.usecase
 import com.peopleofandroido.base.domain.Result
 import com.peopleofandroido.base.domain.ResultHandler
 import com.peopleofandroido.base.domain.model.ResultModel
-import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
-import com.peopleofandroido.chillaxingcat.domain.repository.RestingTimeRepository
+import com.peopleofandroido.chillaxingcat.domain.model.RestTimeModel
+import com.peopleofandroido.chillaxingcat.domain.repository.RestTimeRepository
 
-class WriteChillaxingTotalTime(
-    private val restingTimeRepository: RestingTimeRepository,
+class WriteRestTotalTime(
+    private val restTimeRepository: RestTimeRepository,
     private val resultHandler: ResultHandler
 ) {
     suspend operator fun invoke(id: Int, totalTime: Long) : Result<Boolean> {
-        val getRestingTimeResult: ResultModel<RestingTimeModel>
+        val getRestTimeResult: ResultModel<RestTimeModel>
         try {
-            getRestingTimeResult = restingTimeRepository.getRestingTime(id)
+            getRestTimeResult = restTimeRepository.getRestingTime(id)
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)
         }
 
-        if (getRestingTimeResult.code == 0 && getRestingTimeResult.data != null) {
+        if (getRestTimeResult.code == 0 && getRestTimeResult.data != null) {
             val editRestingTimeResult: ResultModel<Boolean>
             try {
-                editRestingTimeResult = restingTimeRepository.editTotalTime(id, totalTime)
+                editRestingTimeResult = restTimeRepository.editTotalTime(id, totalTime)
             } catch (e: Exception) {
                 e.printStackTrace()
                 return resultHandler.handleFailure(e)
@@ -41,9 +41,9 @@ class WriteChillaxingTotalTime(
 
     private suspend fun addChillaxingTime(id: Int, totalTime: Long): Result<Boolean> {
         val addRestingTimeResult: ResultModel<String>
-        val restingTimeModel = RestingTimeModel(id, "", totalTime)
+        val restingTimeModel = RestTimeModel(id, "", totalTime)
         try {
-            addRestingTimeResult = restingTimeRepository.addRestingTime(restingTimeModel)
+            addRestingTimeResult = restTimeRepository.addRestingTime(restingTimeModel)
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

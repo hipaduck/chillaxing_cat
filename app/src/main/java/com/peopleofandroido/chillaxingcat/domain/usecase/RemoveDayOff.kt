@@ -4,7 +4,6 @@ import com.peopleofandroido.base.domain.Result
 import com.peopleofandroido.base.domain.ResultHandler
 import com.peopleofandroido.base.domain.model.ResultModel
 import com.peopleofandroido.chillaxingcat.domain.model.DateModel
-import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
 import com.peopleofandroido.chillaxingcat.domain.repository.DayOffRepository
 
 class RemoveDayOff(

@@ -12,8 +12,8 @@ val repositoryModule = module {
             .create(HolidayApi::class.java)
     }
 
-    single<RestingTimeRepository> {
-        RestingTimeRepositoryImpl(get())
+    single<RestTimeRepository> {
+        RestTimeRepositoryImpl(get())
     }
 
     single<HolidayRepository> {

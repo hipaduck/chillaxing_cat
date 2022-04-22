@@ -15,7 +15,6 @@ import androidx.core.view.children
 import androidx.core.view.setMargins
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.kizitonwose.calendarview.model.CalendarDay
 import com.kizitonwose.calendarview.model.DayOwner
 import com.kizitonwose.calendarview.ui.DayBinder
@@ -149,38 +148,38 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
                 if (day.owner == DayOwner.THIS_MONTH) {
                     binding.vm?.let { vm ->
                         when {
-                            !vm.chillaxingLengthInDayMap.containsKey(day.date) -> { // 키 자체가 없다면 기록이 없는 것
+                            !vm.restTimeLengthInDayMap.containsKey(day.date) -> { // 키 자체가 없다면 기록이 없는 것
                                 textView.background = null
                             }
-                            vm.criteriaChillaxingLength <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
+                            vm.criteriaRestTimeLength <= vm.restTimeLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusBlue))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.8 <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
+                            vm.criteriaRestTimeLength * 0.8 <= vm.restTimeLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusGreen))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.5 <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
+                            vm.criteriaRestTimeLength * 0.5 <= vm.restTimeLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusYellow))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.3 <= vm.chillaxingLengthInDayMap[day.date]?:0L -> {
+                            vm.criteriaRestTimeLength * 0.3 <= vm.restTimeLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
                                     textView.backgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(it, R.color.dayStatusOrange))
                                 }
                             }
-                            vm.criteriaChillaxingLength * 0.3 > vm.chillaxingLengthInDayMap[day.date]?:0L -> {
+                            vm.criteriaRestTimeLength * 0.3 > vm.restTimeLengthInDayMap[day.date]?:0L -> {
                                 textView.setTextColorRes(R.color.backgroundLight)
                                 textView.setBackgroundResource(R.drawable.background_cat)
                                 context?.let {
@@ -193,7 +192,7 @@ class CalendarFragment : BaseBindingFragment<FragmentCalendarBinding>() {
 
 
                     logd("holidaysMap: ${binding.vm?.holidaysMap?.size}")
-                    logd("vm.chillaxingLengthInDayMap: ${binding.vm?.chillaxingLengthInDayMap?.size}")
+                    logd("vm.restTimeLengthInDayMap: ${binding.vm?.restTimeLengthInDayMap?.size}")
                     logd("day.date: ${day.date}")
 
 

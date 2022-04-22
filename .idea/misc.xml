@@ -29,6 +29,7 @@
         <entry key="app/src/main/res/layout/calendar_day_legend.xml" value="0.1734375" />
         <entry key="app/src/main/res/layout/dialog_day_record.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.13728470111448834" />
+        <entry key="app/src/main/res/layout/fragment_main.xml" value="0.1403242147922999" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.2740036231884058" />
         <entry key="app/src/main/res/layout/fragment_splash.xml" value="0.2866847826086957" />
         <entry key="app/src/main/res/layout/fragment_user_setting.xml" value="0.1403242147922999" />

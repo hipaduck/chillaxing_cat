@@ -126,7 +126,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/main_resting_start"
+                android:text="@string/main_rest_start"
                 android:textAlignment="center"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -154,7 +154,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/main_resting_resume"
+                android:text="@string/main_rest_resume"
                 android:textAlignment="center"
                 android:textSize="15sp"
                 android:textStyle="bold"
@@ -182,7 +182,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/main_resting_pause"
+                    android:text="@string/main_rest_pause"
                     android:textAlignment="center"
                     android:textSize="15sp"
                     android:textStyle="bold"
@@ -210,7 +210,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/main_resting_stop"
+                    android:text="@string/main_rest_stop"
                     android:textAlignment="center"
                     android:textSize="15sp"
                     android:textStyle="bold"

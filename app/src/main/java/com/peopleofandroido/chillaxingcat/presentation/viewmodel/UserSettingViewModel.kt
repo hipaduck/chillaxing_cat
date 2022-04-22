@@ -6,8 +6,6 @@ import android.app.PendingIntent.FLAG_MUTABLE
 import android.app.PendingIntent.getBroadcast
 import android.content.Context
 import android.content.Intent
-import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,12 +38,12 @@ class UserSettingViewModel (
     val reminderText: NotNullMutableLiveData<String>
         get() = _reminderText
 
-    private val _goalRestingTimeHour: NotNullMutableLiveData<String> = NotNullMutableLiveData("")
-    val goalRestingTimeHour: NotNullMutableLiveData<String>
-        get() = _goalRestingTimeHour
-    private val _goalRestingTimeMinute: NotNullMutableLiveData<String> = NotNullMutableLiveData("")
-    val goalRestingTimeMinute: NotNullMutableLiveData<String>
-        get() = _goalRestingTimeMinute
+    private val _goalRestTimeHour: NotNullMutableLiveData<String> = NotNullMutableLiveData("")
+    val goalRestTimeHour: NotNullMutableLiveData<String>
+        get() = _goalRestTimeHour
+    private val _goalRestTimeMinute: NotNullMutableLiveData<String> = NotNullMutableLiveData("")
+    val goalRestTimeMinute: NotNullMutableLiveData<String>
+        get() = _goalRestTimeMinute
 
     private val _notificationEnabled: NotNullMutableLiveData<Boolean> = NotNullMutableLiveData(true)
     val notificationEnabled: NotNullMutableLiveData<Boolean>
@@ -101,14 +99,14 @@ class UserSettingViewModel (
 
     private fun loadGoalRestingTime() {
         viewModelScope.launch() {
-            val result = useCases.getGoalRestingTime()
+            val result = useCases.getGoalRestTime()
             result.data?.let { it ->
                 val regex = Regex("[0-2][0-9][:][0-5][0-9]")
                 if (regex.matchEntire(it)?.groupValues?.size?:0 > 0) {
                     val goalRestingTime = it.split(":")
                     if (goalRestingTime.size >= 2) {
-                        _goalRestingTimeHour.value = goalRestingTime[0]
-                        _goalRestingTimeMinute.value = goalRestingTime[1]
+                        _goalRestTimeHour.value = goalRestingTime[0]
+                        _goalRestTimeMinute.value = goalRestingTime[1]
                     }
                 }
             }
@@ -135,7 +133,7 @@ class UserSettingViewModel (
             result.data?.let {
                 if (it) {
                     logd("putGoalRestingTime(): success")
-                    _goalRestingTimeHour.value = hour.toString()
+                    _goalRestTimeHour.value = hour.toString()
                 } else
                     logd("putGoalRestingTime(): fail")
             } ?: run {
@@ -234,15 +232,15 @@ class UserSettingViewModel (
     fun saveAll() {
         if ((_notificationEnabled.value &&
             _reminderText.value.isNotEmpty() &&
-            checkGoalRestingTimeHour() &&
-            checkGoalRestingTimeMinute()) ||
-            (!_notificationEnabled.value && checkGoalRestingTimeHour() &&
-                    checkGoalRestingTimeMinute())) {
+            checkGoalRestTimeHour() &&
+            checkGoalRestTimeMinute()) ||
+            (!_notificationEnabled.value && checkGoalRestTimeHour() &&
+                    checkGoalRestTimeMinute())) {
             viewModelScope.launch {
                 storeReminderTime(_reminderTime.value)
                 storeGoalRestingTime(
-                    Integer.parseInt(_goalRestingTimeHour.value),
-                    Integer.parseInt(_goalRestingTimeMinute.value)
+                    Integer.parseInt(_goalRestTimeHour.value),
+                    Integer.parseInt(_goalRestTimeMinute.value)
                 )
                 storeReminderText(_reminderText.value)
                 storeAndSetNotification(_notificationEnabled.value, _reminderText.value)
@@ -265,16 +263,16 @@ class UserSettingViewModel (
         }
     }
 
-    private fun checkGoalRestingTimeHour(): Boolean {
-        return (_goalRestingTimeHour.value.isNotEmpty() &&
-                _goalRestingTimeHour.value.toIntOrNull() ?: -1 >= 0 &&
-                _goalRestingTimeHour.value.toIntOrNull() ?: Integer.MAX_VALUE <= 12)
+    private fun checkGoalRestTimeHour(): Boolean {
+        return (_goalRestTimeHour.value.isNotEmpty() &&
+                _goalRestTimeHour.value.toIntOrNull() ?: -1 >= 0 &&
+                _goalRestTimeHour.value.toIntOrNull() ?: Integer.MAX_VALUE <= 12)
     }
 
-    private fun checkGoalRestingTimeMinute(): Boolean {
-        return (_goalRestingTimeMinute.value.isNotEmpty() &&
-                Integer.parseInt(_goalRestingTimeMinute.value) >= 0 &&
-                Integer.parseInt(_goalRestingTimeMinute.value) <= 60)
+    private fun checkGoalRestTimeMinute(): Boolean {
+        return (_goalRestTimeMinute.value.isNotEmpty() &&
+                Integer.parseInt(_goalRestTimeMinute.value) >= 0 &&
+                Integer.parseInt(_goalRestTimeMinute.value) <= 60)
     }
 
     fun changeToDisplayTime(hour: Int, minute: Int) : String {

@@ -9,7 +9,6 @@ import com.peopleofandroido.base.util.NotNullMutableLiveData
 import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.base.util.loge
 import com.peopleofandroido.chillaxingcat.domain.UseCases
-import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,7 +21,7 @@ class CalendarViewModel(
     private val useCases: UseCases
 ) : BaseViewModel() {
     companion object {
-        const val DEFAULT_CHILLAXING_LENGTH = 5 * 60 * 60 * 1_000L // 5시간
+        const val DEFAULT_REST_TIME_LENGTH = 5 * 60 * 60 * 1_000L // 5시간
     }
     // 쉬는시간 >= 목표시간 * 1: 파랑, 쉬는시간 >= 목표시간 * 0.8: 녹색, 쉬는시간 >= 목표시간 * 0.5: 노랑
     // 쉬는시간 >= 목표시간 * 0.3: 오렌지, else(쉬는시간 < 목표시간 * 0.3: 빨강)
@@ -30,12 +29,12 @@ class CalendarViewModel(
     val actionEvent: NotNullMutableLiveData<Event<Action>>
         get() = _actionEvent
 
-    var criteriaChillaxingLength: Long = DEFAULT_CHILLAXING_LENGTH
+    var criteriaRestTimeLength: Long = DEFAULT_REST_TIME_LENGTH
 
 //    val historicalDates: MutableList<LocalDate> = mutableListOf()
     val holidaysMap: MutableMap<LocalDate, String> = mutableMapOf()
-    val chillaxingLengthInDayMap: MutableMap<LocalDate, Long> = mutableMapOf() // 하루의 쉼의 시간을 Long으로 반영
-    val chillaxingRecordInDayMap: MutableMap<LocalDate, String> = mutableMapOf() // 하루의 데이터를 저장(위 데이터와 통합 필요)
+    val restTimeLengthInDayMap: MutableMap<LocalDate, Long> = mutableMapOf() // 하루의 쉼의 시간을 Long으로 반영
+    val resTimeRecordInDayMap: MutableMap<LocalDate, String> = mutableMapOf() // 하루의 데이터를 저장(위 데이터와 통합 필요)
 
     init {
         val prevYearMonth = LocalDate.now().minusMonths(1).format(DateTimeFormatter.ofPattern("yyyyMM"))
@@ -49,7 +48,7 @@ class CalendarViewModel(
     // todo 현재 usecase가 만들어지지 않아서 mock으로 진행
     private fun loadCriteriaChillaxingLength() {
         viewModelScope.launch(Dispatchers.IO) {
-            val goalResult = useCases.getGoalRestingTime()
+            val goalResult = useCases.getGoalRestTime()
             when (goalResult.status) {
                 Status.SUCCESS -> {
                     logd("getGoalRestingTime succeed: ${goalResult.data}")
@@ -57,11 +56,11 @@ class CalendarViewModel(
 //                    val localDateTime = LocalDateTime.parse(originalStr, DateTimeFormatter.ofPattern("HH:mm"))
                     val hour = originalStr.substring(0, 2).toInt()
                     val minute = originalStr.substring(3, 4).toInt()
-                    criteriaChillaxingLength = hour * 60 * 60 * 1_000L + minute * 60 * 1_000L
-                    logd("getGoalRestingTime(criteriaChillaxingLength) succeed: $criteriaChillaxingLength")
+                    criteriaRestTimeLength = hour * 60 * 60 * 1_000L + minute * 60 * 1_000L
+                    logd("getGoalRestTime(criteriaChillaxingLength) succeed: $criteriaRestTimeLength")
                 }
                 Status.ERROR -> {
-                    loge("getGoalRestingTime failed: ${goalResult.message}")
+                    loge("getGoalRestTime failed: ${goalResult.message}")
                 }
             }
         }
@@ -72,11 +71,11 @@ class CalendarViewModel(
         val timestamp: Long = hours * 60 * 60 * 1_000L + minutes * 60 * 1_000L
         // 지정한 날의 시간과 분을 저장한다
         viewModelScope.launch(Dispatchers.IO) {
-            val editResult = useCases.writeChillaxingTotalTime(yyyyMMdd.toInt(), timestamp)
+            val editResult = useCases.writeRestTotalTime(yyyyMMdd.toInt(), timestamp)
             when (editResult.status) {
                 Status.SUCCESS -> {
 //                    historicalDates.add(day)
-                    chillaxingLengthInDayMap[day] = timestamp // 해당 날짜 ViewModel 데이터 업데이트
+                    restTimeLengthInDayMap[day] = timestamp // 해당 날짜 ViewModel 데이터 업데이트
                     logd("write succeed: ${editResult.data}")
                 }
                 Status.ERROR -> {
@@ -118,7 +117,7 @@ class CalendarViewModel(
 
     // new
     private suspend fun loadChillaxingDaysInMonth(prevMonth: Int, nextMonth: Int) {
-        val result = useCases.findOutRestingDaysInMonth(prevMonth, nextMonth)
+        val result = useCases.findOutRestDaysInMonth(prevMonth, nextMonth)
         when (result.status) {
             Status.SUCCESS -> {
                 // 비우고 시작
@@ -130,8 +129,8 @@ class CalendarViewModel(
                         if (model.id.toString().length >= 8) {
                             val localDate = LocalDate.parse(model.id.toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
 //                            historicalDates.add(localDate)
-                            chillaxingLengthInDayMap[localDate] = model.totalTime
-                            chillaxingRecordInDayMap[localDate] = model.history
+                            restTimeLengthInDayMap[localDate] = model.totalTime
+                            resTimeRecordInDayMap[localDate] = model.history
 
                             // 테스트를 위해 임시로 아래 코드 호출
 //                            loadMockChillaxingLengths()

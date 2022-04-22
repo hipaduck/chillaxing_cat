@@ -16,6 +16,6 @@ internal class SettingsRepositoryImpl(
     override suspend fun getReminderTime(): Flow<String> = settingsDataStore.reminderTimeFlow
     override suspend fun updateReminderTime(time: String) = settingsDataStore.writeReminderTime(time)
 
-    override suspend fun getGoalRestingTime(): Flow<String> = settingsDataStore.goalRestingTimeFlow
-    override suspend fun updateGoalRestingTime(time: String) = settingsDataStore.writeGoalRestingTime(time)
+    override suspend fun getGoalRestTime(): Flow<String> = settingsDataStore.goalRestTimeFlow
+    override suspend fun updateGoalRestTime(time: String) = settingsDataStore.writeGoalRestingTime(time)
 }

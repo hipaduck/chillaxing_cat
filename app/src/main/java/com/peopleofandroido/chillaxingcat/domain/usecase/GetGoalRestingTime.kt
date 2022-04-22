@@ -14,7 +14,7 @@ class GetGoalRestingTime(
     suspend operator fun invoke(): Result<String> {
         val result: Flow<String>
         try {
-            result = repository.getGoalRestingTime()
+            result = repository.getGoalRestTime()
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

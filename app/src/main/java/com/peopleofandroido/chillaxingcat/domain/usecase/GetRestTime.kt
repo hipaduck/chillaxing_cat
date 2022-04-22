@@ -3,17 +3,17 @@ package com.peopleofandroido.chillaxingcat.domain.usecase
 import com.peopleofandroido.base.domain.ResultHandler
 import com.peopleofandroido.base.domain.model.ResultModel
 import com.peopleofandroido.base.domain.Result
-import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
-import com.peopleofandroido.chillaxingcat.domain.repository.RestingTimeRepository
+import com.peopleofandroido.chillaxingcat.domain.model.RestTimeModel
+import com.peopleofandroido.chillaxingcat.domain.repository.RestTimeRepository
 
-class GetRestingTime(
-    private val restingTimeRepository: RestingTimeRepository,
+class GetRestTime(
+    private val restTimeRepository: RestTimeRepository,
     private val resultHandler: ResultHandler
 ) {
-    suspend operator fun invoke(id: Int): Result<RestingTimeModel> {
-        val result: ResultModel<RestingTimeModel>
+    suspend operator fun invoke(id: Int): Result<RestTimeModel> {
+        val result: ResultModel<RestTimeModel>
         try {
-            result = restingTimeRepository.getRestingTime(id)
+            result = restTimeRepository.getRestingTime(id)
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

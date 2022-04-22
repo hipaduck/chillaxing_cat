@@ -13,7 +13,7 @@ class IsRequiredValuesEntered(
     suspend operator fun invoke(): Result<Boolean> {
         val result: Flow<String>
         try {
-            result = repository.getGoalRestingTime()
+            result = repository.getGoalRestTime()
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)

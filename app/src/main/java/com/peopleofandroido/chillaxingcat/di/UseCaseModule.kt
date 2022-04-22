@@ -18,10 +18,10 @@ val useCaseModule = module {
     single { GetHoliday(get(), get()) }
     single { AddHoliday(get(), get()) }
     single { RemoveDayOff(get(), get()) }
-    single { AddRestingTime(get(), get()) }
-    single { EditRestingTime(get(), get()) }
-    single { GetRestingTime(get(), get()) }
-    single { FindOutRestingDaysInMonth(get(), get()) }
+    single { AddRestTime(get(), get()) }
+    single { EditRestTime(get(), get()) }
+    single { GetRestTime(get(), get()) }
+    single { FindOutRestDaysInMonth(get(), get()) }
     single { GetNotificationStatus(get(), get()) }
     single { PutNotificationStatus(get(), get()) }
     single { GetReminderText(get(), get()) }
@@ -31,7 +31,7 @@ val useCaseModule = module {
     single { GetGoalRestingTime(get(), get()) }
     single { PutGoalRestingTime(get(), get()) }
     single { IsRequiredValuesEntered(get(), get()) }
-    single { WriteChillaxingTotalTime(get(), get()) }
+    single { WriteRestTotalTime(get(), get()) }
     single { GetTodayDate(get(), get()) }
     single { PutTodayDate(get(), get()) }
     single { GetTodayHistory(get(), get()) }

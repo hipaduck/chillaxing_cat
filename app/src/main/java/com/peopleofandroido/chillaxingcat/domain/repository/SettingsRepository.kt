@@ -14,6 +14,6 @@ interface SettingsRepository {
     suspend fun getReminderTime(): Flow<String>
     suspend fun updateReminderTime(time: String)
 
-    suspend fun getGoalRestingTime(): Flow<String>
-    suspend fun updateGoalRestingTime(time: String)
+    suspend fun getGoalRestTime(): Flow<String>
+    suspend fun updateGoalRestTime(time: String)
 }

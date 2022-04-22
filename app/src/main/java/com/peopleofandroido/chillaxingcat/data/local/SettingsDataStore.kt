@@ -40,9 +40,9 @@ class SettingsDataStore(val context: Context) {
             settings.reminderTime
         }
 
-    val goalRestingTimeFlow: Flow<String> = settingsFlow
+    val goalRestTimeFlow: Flow<String> = settingsFlow
         .map { settings ->
-            settings.goalRestingTime
+            settings.goalRestTime
         }
 
     suspend fun writeNotificationEnabled(status: Boolean) {
@@ -64,7 +64,7 @@ class SettingsDataStore(val context: Context) {
     suspend fun writeGoalRestingTime(time: String) {
         context.settingsDataStore.updateData { currentSettings ->
             currentSettings.toBuilder()
-                .setGoalRestingTime(time)
+                .setGoalRestTime(time)
                 .build()
         }
     }

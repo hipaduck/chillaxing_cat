@@ -16,7 +16,6 @@ class ChillaxingCatApplication : Application() {
             androidLogger() //androidLogger를 KoinLogger로 사용
             androidContext(this@ChillaxingCatApplication) // 해당 안드로이드 context 사용
             koin.loadModules(arrayListOf( //이렇게로도 가능
-//            modules(
                 appViewModelModule,
                 componentModule,
                 repositoryModule,

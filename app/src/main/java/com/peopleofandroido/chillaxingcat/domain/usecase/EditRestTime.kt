@@ -3,26 +3,26 @@ package com.peopleofandroido.chillaxingcat.domain.usecase
 import com.peopleofandroido.base.domain.Result
 import com.peopleofandroido.base.domain.ResultHandler
 import com.peopleofandroido.base.domain.model.ResultModel
-import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
-import com.peopleofandroido.chillaxingcat.domain.repository.RestingTimeRepository
+import com.peopleofandroido.chillaxingcat.domain.model.RestTimeModel
+import com.peopleofandroido.chillaxingcat.domain.repository.RestTimeRepository
 
-class EditRestingTime(
-    private val restingTimeRepository: RestingTimeRepository,
+class EditRestTime(
+    private val restTimeRepository: RestTimeRepository,
     private val resultHandler: ResultHandler
 ) {
     suspend operator fun invoke(id: Int, history: String) : Result<String> {
-        val getRestingTimeResult: ResultModel<RestingTimeModel>
+        val getRestTimeResult: ResultModel<RestTimeModel>
         try {
-            getRestingTimeResult = restingTimeRepository.getRestingTime(id)
+            getRestTimeResult = restTimeRepository.getRestingTime(id)
         } catch (e: Exception) {
             e.printStackTrace()
             return resultHandler.handleFailure(e)
         }
 
-        if (getRestingTimeResult.code == 0 && getRestingTimeResult.data != null) {
+        if (getRestTimeResult.code == 0 && getRestTimeResult.data != null) {
             val editRestingTimeResult: ResultModel<String>
             try {
-                editRestingTimeResult = restingTimeRepository.editRestingTime(id, history)
+                editRestingTimeResult = restTimeRepository.editRestingTime(id, history)
             } catch (e: Exception) {
                 e.printStackTrace()
                 return resultHandler.handleFailure(e)

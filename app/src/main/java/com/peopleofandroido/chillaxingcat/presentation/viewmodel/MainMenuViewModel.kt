@@ -13,7 +13,7 @@ import com.peopleofandroido.base.util.logd
 import com.peopleofandroido.base.util.loge
 import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.domain.UseCases
-import com.peopleofandroido.chillaxingcat.domain.model.RestingTimeModel
+import com.peopleofandroido.chillaxingcat.domain.model.RestTimeModel
 import com.peopleofandroido.chillaxingcat.presentation.enums.TodayStatus
 import com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragmentDirections
 import kotlinx.coroutines.CoroutineScope
@@ -149,7 +149,7 @@ class MainMenuViewModel(
                     //이전 기록 db 저장
                     val todayHistory = useCases.getTodayHistory()
                     todayHistory.data?.let { history ->
-                        val addRestingTimeResult = useCases.addRestingTime(RestingTimeModel(date.toInt(), history, calculateTotalTime(history)))
+                        val addRestingTimeResult = useCases.addRestTime(RestTimeModel(date.toInt(), history, calculateTotalTime(history)))
                         addRestingTimeResult.data?.let {
                             logd("addRestingTimeResult(): $it")
                         }
@@ -243,8 +243,8 @@ class MainMenuViewModel(
                             storeTodayHistory(saveHistory)
                             val todayDate =
                                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"))
-                            val addRestingTimeResult = useCases.addRestingTime(
-                                RestingTimeModel(
+                            val addRestingTimeResult = useCases.addRestTime(
+                                RestTimeModel(
                                     todayDate.toInt(),
                                     saveHistory,
                                     calculateTotalTime(saveHistory)
@@ -258,7 +258,7 @@ class MainMenuViewModel(
                         logd("getTodayHistory(): error")
                     }
                 } else {
-                    Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.main_resting_finished_toast_message), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(getApplication(), getApplication<Application>().getText(R.string.main_rest_finished_toast_message), Toast.LENGTH_SHORT).show()
                 }
             }
         }

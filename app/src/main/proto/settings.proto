@@ -9,5 +9,5 @@ message Settings {
   bool notification_enabled = 1;
   string reminder_time = 2;
   string reminder_text = 3;
-  string goal_resting_time = 4;
+  string goal_rest_time = 4;
 }

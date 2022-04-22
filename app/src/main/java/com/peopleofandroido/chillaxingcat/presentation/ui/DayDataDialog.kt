@@ -10,8 +10,6 @@ import com.peopleofandroido.chillaxingcat.R
 import com.peopleofandroido.chillaxingcat.databinding.DialogDayRecordBinding
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class DayDataDialog(private val context: Context, val binding: DialogDayRecordBinding, private val currentDate: LocalDate) {
@@ -29,8 +27,8 @@ class DayDataDialog(private val context: Context, val binding: DialogDayRecordBi
         dialog.dismissWithAnimation = true
 
         binding.vm?.let { vm ->
-            if (vm.chillaxingLengthInDayMap.containsKey(currentDate)) {
-                val lengthTimestamp = vm.chillaxingLengthInDayMap[currentDate] ?: 0L
+            if (vm.restTimeLengthInDayMap.containsKey(currentDate)) {
+                val lengthTimestamp = vm.restTimeLengthInDayMap[currentDate] ?: 0L
                 val lengthSeconds = lengthTimestamp / 1000L
                 val lengthMinutes = lengthSeconds / 60
                 val lengthHours = (lengthMinutes / 60).toInt()
@@ -49,9 +47,9 @@ class DayDataDialog(private val context: Context, val binding: DialogDayRecordBi
                 binding.tvDialogDayRecordExtraTitle.visibility = View.GONE
             }
 
-            if (vm.chillaxingRecordInDayMap.containsKey(currentDate)) {
+            if (vm.resTimeRecordInDayMap.containsKey(currentDate)) {
                 // |로 데이터간의 간격 구별,  -로 시작 끝 구별
-                val rawText = vm.chillaxingRecordInDayMap[currentDate]?:""
+                val rawText = vm.resTimeRecordInDayMap[currentDate]?:""
                 val texts = rawText.split("|")
                 var textForPrint = ""
                 texts.forEach { text ->

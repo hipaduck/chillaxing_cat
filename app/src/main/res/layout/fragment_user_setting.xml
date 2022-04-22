@@ -158,7 +158,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/user_setting_set_goal_resting_time_title"
+                android:text="@string/user_setting_set_goal_rest_time_title"
                 android:textSize="20sp" />
 
             <LinearLayout
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="2"
-                    android:text="@={vm.goalRestingTimeHour}"
+                    android:text="@={vm.goalRestTimeHour}"
                     android:inputType="number"
                     android:digits="0123456789"
                     android:gravity="center"/>
@@ -187,12 +187,12 @@
                     android:gravity="center"
                     />
                 <EditText
-                    android:id="@+id/initialize_dialog_goal_resting_time_minute_et"
+                    android:id="@+id/initialize_dialog_goal_rest_time_minute_et"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:hint="30"
-                    android:text="@={vm.goalRestingTimeMinute}"
+                    android:text="@={vm.goalRestTimeMinute}"
                     android:inputType="number"
                     android:digits="0123456789"
                     android:gravity="center"/>
