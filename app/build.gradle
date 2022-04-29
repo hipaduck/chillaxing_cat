@@ -7,6 +7,10 @@ plugins {
     id "com.mikepenz.aboutlibraries.plugin" version "10.1.0"
 }
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 32
     buildToolsVersion "32.1.0-rc1"
@@ -22,10 +26,20 @@ android {
         buildConfigField ("String", "HOLIDAY_SERVER_KEY", HOLIDAY_SERVER_KEY)
     }
 
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
