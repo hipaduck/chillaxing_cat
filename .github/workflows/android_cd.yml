@@ -25,7 +25,8 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           cache: gradle
-          
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
       - name: Configure Keystore
         run: |
           echo "$KEYSTORE" > ./keystore/keystore.b64
