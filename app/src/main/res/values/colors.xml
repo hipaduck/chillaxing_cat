@@ -7,8 +7,23 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="base_normal">#F0E5CF</color>
-    <color name="base_light">#F7F6F2</color>
-    <color name="base_dark">#C8C6C6</color>
-    <color name="base_font">#4B6587</color>
+    <color name="backgroundLight">#FFFCF3</color>
+    <color name="backgroundNormal">#F6F0DF</color>
+    <color name="backgroundDark">#D1C39F</color>
+    <color name="accentLight">#6E7E95</color>
+    <color name="accentNormal">#4B6587</color>
+    <color name="accentDark">#2A5791</color>
+    <color name="secondaryLight">#9C8F75</color>
+    <color name="secondaryNormal">#A38953</color>
+    <color name="secondaryDark">#AA7B1B</color>
+    <color name="transparent">#00000000</color>
+    <color name="dayStatusRed">#BC5656</color>
+    <color name="dayStatusOrange">#e6956c</color>
+    <color name="dayStatusYellow">#f2cc79</color>
+    <color name="dayStatusGreen">#a4dfa8</color>
+    <color name="dayStatusBlue">#5a9cbf</color>
+    <color name="calendarWeekdaysPast">#656565</color>
+    <color name="calendarWeekdaysFuture">#9E9E9E</color>
+    <color name="calendarSundayHoliday">#DA0101</color>
+    <color name="calendarSaturday">#026DD4</color>
 </resources>

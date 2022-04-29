@@ -1,5 +1,57 @@
 <resources>
     <string name="app_name">Chillaxing Cat</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="days_of_week_name_sun">SUN</string>
+    <string name="days_of_week_name_mon">MON</string>
+    <string name="days_of_week_name_tue">TUE</string>
+    <string name="days_of_week_name_wed">WED</string>
+    <string name="days_of_week_name_thu">THU</string>
+    <string name="days_of_week_name_fri">FRI</string>
+    <string name="days_of_week_name_sat">SAT</string>
+    <string name="total_count_time_to_read">총 %1$s시간 %2$s분</string>
+    <string name="toolbar_setting">설정</string>
+    <string name="toolbar_calendar">달력</string>
+    <string name="toolbar_initialize">초기 설정</string>
+    <string name="setting_modify_user_info">사용자 설정 정보 수정</string>
+    <string name="setting_go_to_rate_the_app">앱 평가하러 가기</string>
+    <string name="setting_send_email">이메일로 문의하기</string>
+    <string name="setting_developer_introduce">개발자 소개</string>
+    <string name="setting_opensource">오픈 소스</string>
+    <string name="user_setting_get_push_notification">푸시 알림 받기</string>
+    <string name="user_setting_reminder_time_title">리마인더 시간</string>
+    <string name="user_setting_set_goal_rest_time_title">목표 쉬는 시간 지정</string>
+    <string name="user_setting_set_reminder_text_title">리마인더 문구 지정</string>
+    <string name="user_setting_reminder_text_hint">퇴근할 시간이다냥 ~~ </string>
+    <string name="alarm_title">이제 쉬는 시간이다냥..!!</string>
+    <string name="alarm_text">쉬고싶다냥..</string>
+    <string name="user_setting_toast_saved">저장이 완료되었습니다 :)</string>
+    <string name="user_setting_toast_saving">저장중입니다.</string>
+    <string name="user_setting_toast_input_required">설정 값을 입력해 주세요 :)</string>
+    <string name="common_modify">수정하기</string>
+    <string name="common_start">시작하기</string>
+    <string name="common_minute">분</string>
+    <string name="common_hour">시간</string>
+    <string name="common_modification">수정</string>
+    <string name="common_save">저장하기</string>
+    <string name="title_open_source_license">오픈소스 라이선스</string>
+    <!-- for about libraries -->
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">쉬고싶은 고양이를 만들기 위해 사용된 오픈소스 라이브러리/프레임워크입니다.</string>
+    <string name="email_receiver" translatable="false">hipaduck@gmail.com</string>
+    <string name="email_title">쉬는 고양 문제/문의/건의 사항</string>
+    <string name="email_text">기기명 : \n안드로이드 OS : \n문제/문의/건의사항 : \n</string>
+    <string name="developer_name_1">흰냥이</string>
+    <string name="developer_name_2">회색냥이</string>
+    <string name="developer_introduce"> 흰냥이 : 안녕하냥? 흰냥이다냥! 쉬는 시간은 매우 중요하다냥.. \n본인에게 오롯이 쏟아본 시간이 몇시간이나 되냥? \n회사도 학교도 물론 중요하지만 제일 중요한 것은 내일을 위한 충분한 휴식이다냥!
+        \n\n회색냥이 : 우리는 쉬는 것을 매우 좋아하옹. 그래서 매일 쉬고싶은고양~ \n근데 매일 바쁘고, 쉬는 방법도 잘 몰라서 항상 찌들어 살고 있는 것을 발견했다지 뭐양~ \n나도 쉬고 싶지만, 같이 하고 싶은 마음에 만들게 되었다옹! 매일을 파란색으로 칠하는 그날까지 화이팅!
+    </string>
+    <string name="main_rest_finished_toast_message">오늘 쉬는시간이 이미 종료되었습니다 :)</string>
+    <string name="main_rest_start">쉬는 시간 시작</string>
+    <string name="main_rest_pause">일시중지</string>
+    <string name="main_rest_resume">재개</string>
+    <string name="main_rest_stop">쉬는 시간 끝</string>
+    <string name="label_public_holiday">공휴일</string>
+    <string name="text_present_decimal_date">D-%s</string>
+    <string name="label_loading">로딩중</string>
 </resources>
