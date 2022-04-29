@@ -33,7 +33,6 @@ platform :android do
   desc "Deploy a new version to the Google Play"
   lane :deploy do
     gradle(task: "clean bundleRelease")
-    mapping_path = File.absolute_path "../app/build/outputs/mapping/release/mapping.txt"
-    upload_to_play_store(track: 'alpha', mapping:mapping_path)
+    upload_to_play_store(track: 'alpha')
   end
 end
