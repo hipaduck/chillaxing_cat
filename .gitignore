@@ -25,3 +25,7 @@ app/src/main/res/raw/third_party_licenses
 \.idea/gradle\.xml
 
 \.idea/misc\.xml
+
+keystore\.properties
+
+keystore/hipaduck_official\.jks
