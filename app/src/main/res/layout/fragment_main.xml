@@ -17,37 +17,104 @@
         android:orientation="vertical"
         android:gravity="center"
         style="@style/Theme.ChillaxingCat.FragmentBackground">
-        <ImageView
-            android:id="@+id/iv_main_cat"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            app:imgRes="@{vm.catStatus.symbolImageDrawable}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-        <TextView
-            android:id="@+id/tv_main_public_holiday_remains_label"
-            android:layout_width="60dp"
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/setting"
+            app:layout_constraintBottom_toTopOf="@id/menu_layout">
+            <ImageView
+                android:id="@+id/iv_main_cat"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:imgRes="@{vm.catStatus.symbolImageDrawable}" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:textSize="16sp"
-            android:text="@{vm == null ? @string/label_loading : @string/label_public_holiday}"
-            tools:text="@string/label_public_holiday"
-            />
-        <TextView
-            android:id="@+id/tv_main_public_holiday_remains_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/tv_main_public_holiday_remains_label"
-            app:layout_constraintTop_toTopOf="@+id/tv_main_public_holiday_remains_label"
-            android:textSize="16sp"
-            android:text="@{vm == null ? @string/label_loading : @string/text_present_decimal_date(vm.holidayDDayFromToday)}"
-            tools:text="D-100"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_margin="16dp"
+            android:background="@drawable/line_square_round_corner"
+            android:padding="8dp"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:src="@drawable/feeding_bowl"/>
+            <LinearLayout
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/accentDark"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                tools:text="300 + a"
+                android:gravity="end"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/panel_layout1"
+            android:layout_width="180dp"
+            android:layout_height="150dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/menu_layout"
+            android:background="@drawable/panel"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                tools:text="@string/label_public_holiday"
+                android:layout_marginTop="40dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                tools:text="D-1001"
+                android:layout_marginTop="40dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/panel_layout2"
+            android:layout_width="180dp"
+            android:layout_height="150dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/menu_layout"
+            android:background="@drawable/panel"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_main_public_holiday_remains_label"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@{vm == null ? @string/label_loading : @string/label_public_holiday}"
+                tools:text="@string/label_public_holiday"
+                android:layout_marginTop="40dp"
+                />
+            <TextView
+                android:id="@+id/tv_main_public_holiday_remains_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:text="@{vm == null ? @string/label_loading : @string/text_present_decimal_date(vm.holidayDDayFromToday)}"
+                tools:text="D-100"
+                android:layout_marginTop="40dp"
+                />
+        </LinearLayout>
         <!--
         <TextView
             android:id="@+id/tv_main_personal_holiday_remains_label"
@@ -71,6 +138,7 @@
             />
             -->
         <ImageView
+            android:id="@+id/setting"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/setting"
@@ -80,6 +148,7 @@
             android:onClick="@{()->vm.moveToSetting()}"
             />
         <LinearLayout
+            android:id="@+id/menu_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent">
