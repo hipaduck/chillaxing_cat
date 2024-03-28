@@ -27,7 +27,7 @@ jobs:
 
       - uses: actions/setup-ruby@v1
         with:
-          ruby-version: '2.6'
+          ruby-version: '2.6.5'
 
       - name: Install bundle
         run: |
@@ -36,10 +36,10 @@ jobs:
           bundle update --bundler
           bundle install --jobs 4 --retry 3
           bundle update fastlane
-          
+
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2    
-        
+        uses: android-actions/setup-android@v2
+
       - name: Configure Keystore
         run: |
           echo "$KEYSTORE" > ./keystore/keystore.b64
@@ -55,15 +55,15 @@ jobs:
           KEYSTORE_STORE_PASSWORD: ${{ secrets.APP_KEYSTORE_STORE_PASSWORD }}
 
       - name: Create Google Play Config file
-        run : |
+        run: |
           echo "$PLAY_CONFIG_JSON" > google_play_config.json.b64
           base64 -d -i google_play_config.json.b64 > ./pc-api-7428597401125837512-667-71fd415b55dd.json 
         env:
           PLAY_CONFIG_JSON: ${{ secrets.GOOGLE_PLAY_ACCESS_API }}
-          
+
       - name: Distribute app to Alpha track 🚀
         run: bundle exec fastlane deploy
-        
+
       - name: Upload AAB to Artifact
         if: success()
         uses: actions/upload-artifact@v1
