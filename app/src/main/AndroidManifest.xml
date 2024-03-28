@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.hipaduck.chillaxingcat">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- android:allowBackup="false"는 출시 때 true로 바꾸자 -->
     <application
