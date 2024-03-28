@@ -1,0 +1,53 @@
+name: Android CD
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master, release* ]
+    
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - name: set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: gradle
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Configure Keystore
+        run: |
+          echo "$KEYSTORE" > ./keystore/keystore.b64
+          base64 -d -i ./keystore/keystore.b64 > ./keystore/hipaduck_official.jks
+          echo "storeFile=../keystore/hipaduck_official.jks" >> keystore.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> keystore.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> keystore.properties
+        env:
+          KEYSTORE: ${{ secrets.APP_KEYSTORE_BASE64 }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.APP_KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.APP_KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.APP_KEYSTORE_STORE_PASSWORD }}
+          
+      - name: Build release APK
+        run: bash ./gradlew clean bundleRelease --stacktrace
+      #- name: Copy mapping file
+      #  run: cp app/build/outputs/mapping/release/* app/build/outputs/apk/release
+      - name: Upload AAB
+        if: success()
+        uses: actions/upload-artifact@v1
+        with:
+          name: app
+          path: app/build/outputs/bundle/release

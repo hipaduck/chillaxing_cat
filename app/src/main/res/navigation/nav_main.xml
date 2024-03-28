@@ -6,7 +6,7 @@
     app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.SplashFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.SplashFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash">
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/mainMenuFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.MainMenuFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.MainMenuFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
@@ -33,22 +33,47 @@
             android:id="@+id/action_mainMenuFragment_to_dueDateFragment"
             app:destination="@id/dueDateFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mainMenuFragment_to_userSettingFragment"
+            app:destination="@id/userSettingFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.CalendarFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.CalendarFragment"
         android:label="fragment_calendar"
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/dueDateFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.DueDateFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.DueDateFragment"
         android:label="fragment_due_date"
         tools:layout="@layout/fragment_due_date" />
     <fragment
         android:id="@+id/settingFragment"
-        android:name="com.peopleofandroido.chillaxingcat.presentation.ui.SettingFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_userSettingFragment"
+            app:destination="@id/userSettingFragment" />
+        <action
+            android:id="@+id/action_settingFragment_to_developerFragment"
+            app:destination="@id/developerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/developerFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.DeveloperFragment"
+        android:label="fragment_developer"
+        tools:layout="@layout/fragment_developer" />
+    <fragment
+        android:id="@+id/userSettingFragment"
+        android:name="com.hipaduck.chillaxingcat.presentation.ui.UserSettingFragment"
+        android:label="UserSettingFragment" >
+        <argument
+            android:name="input_type"
+            app:argType="string"
+            android:defaultValue="path"
+            />
+    </fragment>
 
 </navigation>

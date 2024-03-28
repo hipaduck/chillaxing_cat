@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="vm"
+            type="com.hipaduck.chillaxingcat.presentation.viewmodel.SettingViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Theme.ChillaxingCat.FragmentBackground">
+        <include
+            android:id="@+id/developer_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:elevation="1dp"
+            layout="@layout/toolbar_basic" />
+        <LinearLayout
+            android:id="@+id/developer_img_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/developer_toolbar"
+            android:background="@drawable/line_square_round_corner">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/developer_cat_1"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/developer_name_1"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="16dp"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/accentNormal"
+                app:layout_constraintBottom_toBottomOf="parent" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/developer_cat_2"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/developer_name_2"
+                    android:textSize="16dp"
+                    android:layout_marginBottom="16dp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="16dp"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@id/developer_img_layout"
+            android:text="@string/developer_introduce"
+            android:background="@drawable/line_square_round_corner"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
